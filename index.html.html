@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía Tu Camino - Pantalla Principal</title>
+    <!-- Tailwind CSS para diseño moderno y responsivo -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts amigables e infantiles -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700;900&family=Lexend:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Fredoka', 'Lexend', sans-serif;
+            background-color: #FDFCDC;
+            overflow-x: hidden;
+        }
+
+        /* Color del botón principal solicitado (#0081A7) */
+        .color-primary-action {
+            background-color: #0081A7;
+        }
+        .color-primary-action:hover {
+            background-color: #006887;
+        }
+
+        /* Enfoque accesible de alta visibilidad para navegación con teclado o pulsaciones */
+        *:focus-visible {
+            outline: 6px solid #F07167;
+            outline-offset: 4px;
+        }
+
+        /* Modo de Alto Contraste */
+        .high-contrast {
+            background-color: #000000 !important;
+            color: #FFFFFF !important;
+        }
+        .high-contrast h1 {
+            color: #FFFF00 !important;
+        }
+        .high-contrast .color-primary-action {
+            background-color: #FFFF00 !important;
+            color: #000000 !important;
+            border: 4px solid #FFFFFF;
+        }
+        .high-contrast .panel-box {
+            background-color: #1a1a1a !important;
+            border: 2px solid #FFFF00 !important;
+            color: #FFFFFF !important;
+        }
+        .high-contrast .placeholder-border {
+            border-color: #FFFF00 !important;
+            color: #FFFF00 !important;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between p-4 sm:p-6 transition-colors duration-300">
+
+    <!-- Encabezado con el Botón de Accesibilidad -->
+    <header class="w-full max-w-4xl mx-auto flex justify-end items-center relative z-50">
+        <!-- Botón Accesibilidad -->
+        <button 
+            id="acc-btn" 
+            class="flex items-center gap-2 bg-white text-gray-800 font-bold py-3 px-5 rounded-full shadow-lg border-2 border-[#0081A7] hover:scale-105 active:scale-95 transition-transform"
+            aria-label="Menú de Accesibilidad y Lectura de Voz"
+            title="Opciones de Accesibilidad"
+            aria-expanded="false"
+            aria-controls="acc-menu"
+        >
+            <!-- Icono universal de accesibilidad -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-[#0081A7]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+            <span class="text-lg hidden sm:inline text-gray-700">Accesibilidad</span>
+        </button>
+
+        <!-- Panel de Opciones de Accesibilidad -->
+        <div 
+            id="acc-menu" 
+            class="panel-box hidden absolute top-16 right-0 bg-white p-6 rounded-3xl border-3 border-gray-100 w-80 max-w-xs sm:max-w-none shadow-2xl transition-all duration-200"
+            role="dialog"
+            aria-label="Herramientas de Accesibilidad para Niños"
+        >
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-gray-800">Ayudas de Voz y Sonido</h2>
+                <button id="close-acc-btn" class="text-gray-400 hover:text-gray-600 font-bold text-2xl p-1" aria-label="Cerrar opciones">&times;</button>
+            </div>
+            
+            <div class="space-y-4">
+                <!-- Botón de Reproducir Instrucciones de voz de la pantalla -->
+                <button 
+                    id="btn-audiodescripcion" 
+                    class="w-full flex items-center justify-center gap-2 bg-amber-100 hover:bg-amber-200 text-amber-950 py-3.5 px-4 rounded-2xl font-bold transition-colors"
+                    aria-label="Escuchar instrucciones por voz y descripción de la pantalla"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-amber-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                    </svg>
+                    <span>Escuchar Instrucciones</span>
+                </button>
+
+                <!-- Lector en Voz Alta (Hover/Foco) -->
+                <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 border border-gray-100">
+                    <label for="switch-read-aloud" class="text-sm font-bold text-gray-700 cursor-pointer">Voz al tocar botones</label>
+                    <input 
+                        type="checkbox" 
+                        id="switch-read-aloud" 
+                        class="w-6 h-6 text-[#0081A7] rounded border-gray-300 focus:ring-[#0081A7] cursor-pointer"
+                        checked
+                        aria-label="Activar lectura de botones al pasar el dedo o el ratón"
+                    >
+                </div>
+
+                <!-- Sonidos e Instrumentación -->
+                <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 border border-gray-100">
+                    <label for="switch-sounds" class="text-sm font-bold text-gray-700 cursor-pointer">Efectos de Sonido</label>
+                    <input 
+                        type="checkbox" 
+                        id="switch-sounds" 
+                        class="w-6 h-6 text-[#0081A7] rounded border-gray-300 focus:ring-[#0081A7] cursor-pointer"
+                        checked
+                        aria-label="Activar efectos sonoros del juego"
+                    >
+                </div>
+
+                <!-- Control de Volumen -->
+                <div class="space-y-1 bg-gray-50 p-3 rounded-xl border border-gray-100">
+                    <div class="flex justify-between text-xs font-bold text-gray-600">
+                        <label for="range-volume">Volumen</label>
+                        <span id="volume-val">80%</span>
+                    </div>
+                    <input 
+                        type="range" 
+                        id="range-volume" 
+                        min="0" 
+                        max="100" 
+                        value="80" 
+                        class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#0081A7]"
+                        aria-label="Cambiar volumen de la voz"
+                    >
+                </div>
+
+                <!-- Control de Velocidad de Voz -->
+                <div class="space-y-1 bg-gray-50 p-3 rounded-xl border border-gray-100">
+                    <div class="flex justify-between text-xs font-bold text-gray-600">
+                        <label for="range-speed">Velocidad</label>
+                        <span id="speed-val">Normal</span>
+                    </div>
+                    <input 
+                        type="range" 
+                        id="range-speed" 
+                        min="5" 
+                        max="15" 
+                        value="10" 
+                        class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#0081A7]"
+                        aria-label="Ajustar velocidad de la voz"
+                    >
+                </div>
+
+                <!-- Modo de Alto Contraste -->
+                <button 
+                    id="btn-high-contrast" 
+                    class="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 py-3 px-4 rounded-xl font-bold transition-colors flex items-center justify-center gap-2"
+                    aria-label="Activar colores de alta visibilidad"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707.707M12 8a4 4 0 110 8 4 4 0 010-8z" />
+                    </svg>
+                    <span>Alto Contraste</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Contenido Principal -->
+    <main class="w-full max-w-2xl mx-auto flex-grow flex flex-col justify-center items-center text-center px-4 my-4">
+        
+        <!-- Título del Juego -->
+        <h1 
+            id="main-title"
+            class="text-[#F07167] text-5xl sm:text-6xl md:text-7xl font-black tracking-wider drop-shadow-sm mb-8 transition-all focus:outline-none"
+            tabindex="0"
+            aria-label="Título del videojuego: Guía tu camino"
+        >
+            GUÍA TU CAMINO
+        </h1>
+
+        <!-- Espacio reservado para el personaje principal (Sin imágenes, ilustraciones ni avatares) -->
+        <div 
+            class="placeholder-border w-64 h-80 sm:w-72 sm:h-96 flex flex-col justify-center items-center mb-8 border-4 border-dashed border-[#0081A7] text-[#0081A7] rounded-3xl p-6 bg-white/40 cursor-pointer focus:outline-none focus:ring-4 focus:ring-[#F07167] transition-all"
+            tabindex="0"
+            role="img"
+            aria-label="Espacio reservado para el personaje del juego"
+        >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mb-4 opacity-80" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <p class="font-bold text-lg sm:text-xl leading-snug">Inserta aquí la imagen del personaje</p>
+        </div>
+
+        <!-- Botón de Inicio: EMPIEZA LA AVENTURA (Estático y sin navegación programada) -->
+        <button 
+            id="start-btn" 
+            class="color-primary-action text-white font-black text-2xl sm:text-3xl py-5 px-10 rounded-3xl shadow-xl hover:scale-105 active:scale-95 transition-all w-full max-w-md border-b-8 border-[#005a75]"
+            aria-label="Botón: Empieza la aventura"
+        >
+            EMPIEZA LA AVENTURA
+        </button>
+
+    </main>
+
+    <!-- Pie de Página Fijo -->
+    <footer class="w-full text-center py-2 text-gray-500 font-bold text-xs sm:text-sm">
+        <p>Aventura Accesible - Para Estudiantes de Primaria ❤️</p>
+    </footer>
+
+    <!-- Scripts de Lógica y Accesibilidad Avanzada -->
+    <script>
+        // Configuración de estado inicial de accesibilidad
+        let synth = window.speechSynthesis;
+        let readAloudActive = true;
+        let soundEffectsActive = true;
+        let voiceVolume = 0.8;
+        let voiceSpeed = 1.0;
+        let speechUtterance = null;
+
+        // Elementos de la UI
+        const accBtn = document.getElementById('acc-btn');
+        const accMenu = document.getElementById('acc-menu');
+        const closeAccBtn = document.getElementById('close-acc-btn');
+        const startBtn = document.getElementById('start-btn');
+        const mainTitle = document.getElementById('main-title');
+        const btnAudiodescripcion = document.getElementById('btn-audiodescripcion');
+        const switchReadAloud = document.getElementById('switch-read-aloud');
+        const switchSounds = document.getElementById('switch-sounds');
+        const rangeVolume = document.getElementById('range-volume');
+        const rangeSpeed = document.getElementById('range-speed');
+        const btnHighContrast = document.getElementById('btn-high-contrast');
+        const volumeVal = document.getElementById('volume-val');
+        const speedVal = document.getElementById('speed-val');
+
+        // AUDIO SINTETIZADO: Web Audio API para simular efectos de sonido al interactuar
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playBeep(freq, type, duration) {
+            if (!soundEffectsActive) return;
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = type || 'sine';
+                osc.frequency.setValueAtTime(freq || 440, audioCtx.currentTime);
+                gain.gain.setValueAtTime(voiceVolume * 0.2, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch (e) {
+                console.log("Audio no habilitado:", e);
+            }
+        }
+
+        // Efecto alegre de selección
+        function playSelectionSound() {
+            if (!soundEffectsActive) return;
+            let freqs = [392.00, 523.25, 659.25]; // Sol-Do-Mi
+            freqs.forEach((f, i) => {
+                setTimeout(() => {
+                    playBeep(f, 'sine', 0.25);
+                }, i * 80);
+            });
+        }
+
+        // Síntesis de Voz Activa (TTS)
+        function speak(text) {
+            if (!synth) return;
+            synth.cancel(); // Evitar acumulación de voces activas
+
+            if (!readAloudActive) return;
+
+            speechUtterance = new SpeechSynthesisUtterance(text);
+            speechUtterance.lang = 'es-MX'; // Español Latinoamericano amigable
+            speechUtterance.volume = voiceVolume;
+            speechUtterance.rate = voiceSpeed;
+
+            const voices = synth.getVoices();
+            const esVoice = voices.find(v => v.lang.includes('es'));
+            if (esVoice) {
+                speechUtterance.voice = esVoice;
+            }
+
+            synth.speak(speechUtterance);
+        }
+
+        // Instrucción Auditiva Narrada completa
+        function playSceneInstructions() {
+            const instructions = "¡Hola! Estás en la pantalla principal de Guía Tu Camino. " +
+                "En la parte superior tenemos el título en letras coral. " +
+                "En el centro hay un espacio reservado para la imagen de tu personaje principal. " +
+                "Y abajo se encuentra el botón de color azul que dice: Empieza la aventura. " +
+                "Puedes abrir las opciones de accesibilidad arriba a la derecha para ajustar los sonidos y la voz guía.";
+            speak(instructions);
+        }
+
+        // Funciones del menú de accesibilidad
+        accBtn.addEventListener('click', () => {
+            const isOpen = !accMenu.classList.contains('hidden');
+            if (isOpen) {
+                accMenu.classList.add('hidden');
+                accBtn.setAttribute('aria-expanded', 'false');
+                speak("Opciones cerradas");
+            } else {
+                accMenu.classList.remove('hidden');
+                accBtn.setAttribute('aria-expanded', 'true');
+                accMenu.focus();
+                speak("Menú de accesibilidad abierto. Puedes ajustar las lecturas de voz, los sonidos o activar colores de alta visibilidad.");
+                playBeep(520, 'sine', 0.1);
+            }
+        });
+
+        closeAccBtn.addEventListener('click', () => {
+            accMenu.classList.add('hidden');
+            accBtn.setAttribute('aria-expanded', 'false');
+            speak("Menú de accesibilidad cerrado");
+            playBeep(350, 'sine', 0.1);
+        });
+
+        // Controles de configuración
+        switchReadAloud.addEventListener('change', (e) => {
+            readAloudActive = e.target.checked;
+            if (readAloudActive) {
+                speak("Voz al tocar botones activada.");
+            } else {
+                synth.cancel();
+            }
+        });
+
+        switchSounds.addEventListener('change', (e) => {
+            soundEffectsActive = e.target.checked;
+            if (soundEffectsActive) {
+                playBeep(600, 'sine', 0.2);
+            }
+        });
+
+        rangeVolume.addEventListener('input', (e) => {
+            voiceVolume = e.target.value / 100;
+            volumeVal.innerText = `${e.target.value}%`;
+            playBeep(440, 'sine', 0.05);
+        });
+
+        rangeSpeed.addEventListener('input', (e) => {
+            voiceSpeed = e.target.value / 10;
+            if (voiceSpeed < 0.8) speedVal.innerText = "Lenta";
+            else if (voiceSpeed <= 1.2) speedVal.innerText = "Normal";
+            else speedVal.innerText = "Rápida";
+        });
+
+        btnAudiodescripcion.addEventListener('click', () => {
+            playSceneInstructions();
+        });
+
+        // Alternar Alto Contraste
+        btnHighContrast.addEventListener('click', () => {
+            document.body.classList.toggle('high-contrast');
+            const hasHighContrast = document.body.classList.contains('high-contrast');
+            if (hasHighContrast) {
+                speak("Alto contraste activado. Colores negro y amarillo.");
+            } else {
+                speak("Colores normales restaurados.");
+            }
+            playBeep(hasHighContrast ? 800 : 400, 'triangle', 0.15);
+        });
+
+        // Eventos interactivos para lectores de pantalla amigables infantiles (Hover y Focus)
+        function addAccessibilityNarrator(element, hoverSpeech, focusSpeech) {
+            element.addEventListener('mouseenter', () => {
+                if (readAloudActive) speak(hoverSpeech);
+            });
+            element.addEventListener('focus', () => {
+                if (readAloudActive) speak(focusSpeech || hoverSpeech);
+            });
+        }
+
+        // Registrar lecturas interactivas de botones
+        addAccessibilityNarrator(mainTitle, "Título del juego: Guía tu camino.", "Has seleccionado el título principal: Guía tu camino.");
+        addAccessibilityNarrator(startBtn, "Botón: Empieza la aventura.", "Has seleccionado el botón Empieza la aventura.");
+        addAccessibilityNarrator(accBtn, "Botón de ayuda y accesibilidad.", "Has seleccionado el botón de opciones de ayuda visual y auditiva.");
+        addAccessibilityNarrator(btnHighContrast, "Botón de alto contraste.", "Has seleccionado el botón para cambiar el contraste.");
+        addAccessibilityNarrator(btnAudiodescripcion, "Botón para escuchar las instrucciones por voz.", "Has seleccionado el botón para escuchar instrucciones.");
+
+        // Acción de clic únicamente visual y sonora (Sin navegación o segunda pantalla)
+        startBtn.addEventListener('click', () => {
+            speak("¡Has pulsado Empieza la aventura! Prepárate para iniciar pronto.");
+            playSelectionSound();
+        });
+
+        // Narración automática al primer clic del usuario en pantalla
+        window.addEventListener('click', () => {
+            if (!window.hasSpokenWelcome) {
+                speak("Bienvenido a Guía tu camino. Pulsa el gran botón azul de abajo para empezar la aventura, o el botón de accesibilidad arriba a la derecha para configurar las ayudas.");
+                window.hasSpokenWelcome = true;
+            }
+        }, { once: true });
+
+        // Inicializar voces
+        if (synth) {
+            synth.onvoiceschanged = () => {
+                synth.getVoices();
+            };
+        }
+    </script>
+</body>
+</html>
