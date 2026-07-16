@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía Tu Camino - El Camino de Zeus</title>
+    <!-- Tailwind CSS para diseño moderno, adaptativo y responsivo -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts infantiles y de alta legibilidad -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700;900&family=Lexend:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Fredoka', 'Lexend', sans-serif;
+            background-color: #FDFCDC;
+            overflow-x: hidden;
+        }
+
+        /* Botones de nivel en color #0081A7 con números en #F07167 */
+        .level-circle {
+            background-color: #0081A7;
+            color: #F07167;
+            box-shadow: 0 8px 0px #005a75;
+            transition: all 0.2s ease-in-out;
+        }
+
+        /* Estilos específicos para niveles activos */
+        .level-unlocked:hover {
+            background-color: #0093be;
+            transform: translateY(2px) scale(1.05);
+            box-shadow: 0 6px 0px #005a75;
+        }
+        .level-unlocked:active {
+            transform: translateY(8px) scale(0.95);
+            box-shadow: 0 0px 0px #005a75;
+        }
+
+        /* Estilos específicos para niveles bloqueados */
+        .level-locked {
+            opacity: 0.55;
+            cursor: not-allowed !important;
+            box-shadow: 0 4px 0px #005a75;
+            transform: scale(0.95);
+        }
+
+        /* Enfoque accesible de alta visibilidad para teclado */
+        *:focus-visible {
+            outline: 6px solid #F07167 !important;
+            outline-offset: 4px;
+        }
+
+        /* Estilos del Modo de Alto Contraste */
+        .high-contrast {
+            background-color: #000000 !important;
+            color: #FFFFFF !important;
+        }
+        .high-contrast h1 {
+            color: #FFFF00 !important;
+        }
+        .high-contrast p {
+            color: #FFFFFF !important;
+        }
+        .high-contrast .level-circle {
+            background-color: #FFFF00 !important;
+            color: #000000 !important;
+            border: 4px solid #FFFFFF;
+            box-shadow: none !important;
+        }
+        .high-contrast .level-locked {
+            opacity: 0.3;
+            border: 4px dashed #777777 !important;
+        }
+        .high-contrast .panel-box {
+            background-color: #1a1a1a !important;
+            border: 2px solid #FFFF00 !important;
+            color: #FFFFFF !important;
+        }
+        .high-contrast .map-decor {
+            color: #FFFF00 !important;
+        }
+        .high-contrast .placeholder-border {
+            border-color: #FFFF00 !important;
+            color: #FFFF00 !important;
+            background-color: #111111 !important;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between p-4 sm:p-6 transition-colors duration-300">
+
+    <!-- Encabezado con el Botón de Accesibilidad -->
+    <header class="w-full max-w-4xl mx-auto flex justify-end items-center relative z-50">
+        <!-- Botón Accesibilidad -->
+        <button 
+            id="acc-btn" 
+            class="flex items-center gap-2 bg-white text-gray-800 font-bold py-3 px-5 rounded-full shadow-lg border-2 border-[#0081A7] hover:scale-105 active:scale-95 transition-transform"
+            aria-label="Menú de Accesibilidad y Lectura de Voz"
+            title="Opciones de Accesibilidad"
+            aria-expanded="false"
+            aria-controls="acc-menu"
+        >
+            <!-- Icono universal de accesibilidad -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-[#0081A7]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+            <span class="text-lg hidden sm:inline text-gray-700">Accesibilidad</span>
+        </button>
+
+        <!-- Panel de Opciones de Accesibilidad -->
+        <div 
+            id="acc-menu" 
+            class="panel-box hidden absolute top-16 right-0 bg-white p-6 rounded-3xl border-3 border-gray-100 w-80 max-w-xs sm:max-w-none shadow-2xl transition-all duration-200"
+            role="dialog"
+            aria-label="Herramientas de Accesibilidad para Niños"
+        >
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-gray-800">Ayudas de Voz y Sonido</h2>
+                <button id="close-acc-btn" class="text-gray-400 hover:text-gray-600 font-bold text-2xl p-1" aria-label="Cerrar opciones">&times;</button>
+            </div>
+            
+            <div class="space-y-4">
+                <!-- Botón de Reproducir Instrucciones de voz de la pantalla -->
+                <button 
+                    id="btn-audiodescripcion" 
+                    class="w-full flex items-center justify-center gap-2 bg-amber-100 hover:bg-amber-200 text-amber-950 py-3.5 px-4 rounded-2xl font-bold transition-colors"
+                    aria-label="Escuchar la descripción del mapa de niveles"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-amber-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                    </svg>
+                    <span>Describir Mapa</span>
+                </button>
+
+                <!-- Lector en Voz Alta (Hover/Foco) -->
+                <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 border border-gray-100">
+                    <label for="switch-read-aloud" class="text-sm font-bold text-gray-700 cursor-pointer">Voz al tocar botones</label>
+                    <input 
+                        type="checkbox" 
+                        id="switch-read-aloud" 
+                        class="w-6 h-6 text-[#0081A7] rounded border-gray-300 focus:ring-[#0081A7] cursor-pointer"
+                        checked
+                        aria-label="Activar lectura de botones al pasar el dedo o el ratón"
+                    >
+                </div>
+
+                <!-- Sonidos e Instrumentación -->
+                <div class="flex items-center justify-between p-3 rounded-xl bg-gray-50 border border-gray-100">
+                    <label for="switch-sounds" class="text-sm font-bold text-gray-700 cursor-pointer">Efectos de Sonido</label>
+                    <input 
+                        type="checkbox" 
+                        id="switch-sounds" 
+                        class="w-6 h-6 text-[#0081A7] rounded border-gray-300 focus:ring-[#0081A7] cursor-pointer"
+                        checked
+                        aria-label="Activar efectos sonoros del juego"
+                    >
+                </div>
+
+                <!-- Control de Volumen -->
+                <div class="space-y-1 bg-gray-50 p-3 rounded-xl border border-gray-100">
+                    <div class="flex justify-between text-xs font-bold text-gray-600">
+                        <label for="range-volume">Volumen</label>
+                        <span id="volume-val">80%</span>
+                    </div>
+                    <input 
+                        type="range" 
+                        id="range-volume" 
+                        min="0" 
+                        max="100" 
+                        value="80" 
+                        class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#0081A7]"
+                        aria-label="Cambiar volumen de la voz"
+                    >
+                </div>
+
+                <!-- Control de Velocidad de Voz -->
+                <div class="space-y-1 bg-gray-50 p-3 rounded-xl border border-gray-100">
+                    <div class="flex justify-between text-xs font-bold text-gray-600">
+                        <label for="range-speed">Velocidad</label>
+                        <span id="speed-val">Normal</span>
+                    </div>
+                    <input 
+                        type="range" 
+                        id="range-speed" 
+                        min="5" 
+                        max="15" 
+                        value="10" 
+                        class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#0081A7]"
+                        aria-label="Ajustar velocidad de la voz"
+                    >
+                </div>
+
+                <!-- Modo de Alto Contraste -->
+                <button 
+                    id="btn-high-contrast" 
+                    class="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 py-3 px-4 rounded-xl font-bold transition-colors flex items-center justify-center gap-2"
+                    aria-label="Activar colores de alta visibilidad"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707.707M12 8a4 4 0 110 8 4 4 0 010-8z" />
+                    </svg>
+                    <span>Alto Contraste</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Contenido Principal -->
+    <main class="w-full max-w-5xl mx-auto flex-grow flex flex-col justify-center items-center px-4 my-2 relative">
+        
+        <!-- Título -->
+        <h1 
+            id="main-title"
+            class="text-[#F07167] text-5xl sm:text-6xl md:text-7xl font-black tracking-wider drop-shadow-sm mb-2 text-center transition-all focus:outline-none"
+            tabindex="0"
+            aria-label="Título: El Camino de Zeus"
+        >
+            EL CAMINO DE ZEUS
+        </h1>
+
+        <!-- Subtítulo o Mensaje Solicitado -->
+        <p 
+            id="main-subtitle"
+            class="text-[#0081A7] text-lg sm:text-xl md:text-2xl font-bold mb-8 text-center max-w-2xl transition-all focus:outline-none"
+            tabindex="0"
+            aria-label="Subtítulo: ¡Elige un reto y ayuda a Zeus a llegar a la escuela!"
+        >
+            ¡Elige un reto y ayuda a Zeus a llegar a la escuela!
+        </p>
+
+        <!-- Espacio amplio reservado para el mapa (Sin ilustraciones automáticas) -->
+        <div class="w-full max-w-4xl mb-10 flex justify-center">
+            <div 
+                id="map-space"
+                class="placeholder-border w-full h-48 sm:h-56 md:h-64 flex flex-col justify-center items-center border-4 border-dashed border-[#0081A7] text-[#0081A7] rounded-3xl p-6 bg-white/40 cursor-pointer hover:scale-[1.01] focus:outline-none focus:ring-4 focus:ring-[#F07167] transition-all"
+                tabindex="0"
+                role="img"
+                aria-label="Espacio amplio para colocar la imagen del mapa de niveles"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-14 w-14 mb-3 opacity-80" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                </svg>
+                <!-- Texto exacto solicitado -->
+                <p class="font-black text-xl sm:text-2xl text-center leading-snug">Aquí irá la imagen del mapa</p>
+            </div>
+        </div>
+
+        <!-- Niveles organizados en dos filas con altura mínima reservada y envoltorio seguro -->
+        <div class="w-full max-w-4xl space-y-8 mb-8">
+            
+            <!-- Fila Superior: Niveles 1, 2 y 3 -->
+            <div class="grid grid-cols-3 gap-x-4 sm:gap-x-12">
+                <!-- Nivel 1 -->
+                <div class="flex flex-col items-center justify-start min-h-[160px] sm:min-h-[185px] p-2">
+                    <div class="relative">
+                        <button 
+                            id="lvl-1" 
+                            class="level-circle level-unlocked w-20 h-20 sm:w-24 sm:h-24 rounded-full flex justify-center items-center text-4xl sm:text-5xl font-black flex-shrink-0"
+                            aria-label="Nivel uno."
+                        >
+                            1
+                        </button>
+                        <!-- Contenedor del Candado (Vacío en Nivel 1 por estar desbloqueado) -->
+                        <div id="lock-icon-1" class="absolute -top-1 -right-1 bg-amber-400 p-1.5 rounded-full shadow border-2 border-white hidden">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <!-- Label independiente con el texto exacto solicitado -->
+                    <span id="lbl-lvl-1" class="map-decor mt-3 text-xs sm:text-base font-bold text-gray-500 text-center max-w-[110px] sm:max-w-[160px] break-words whitespace-normal leading-tight">Nombre del Nivel</span>
+                </div>
+
+                <!-- Nivel 2 -->
+                <div class="flex flex-col items-center justify-start min-h-[160px] sm:min-h-[185px] p-2">
+                    <div class="relative">
+                        <button 
+                            id="lvl-2" 
+                            class="level-circle level-locked w-20 h-20 sm:w-24 sm:h-24 rounded-full flex justify-center items-center text-4xl sm:text-5xl font-black flex-shrink-0"
+                            aria-label="Nivel dos. Bloqueado."
+                        >
+                            2
+                        </button>
+                        <!-- Icono de Candado para nivel bloqueado -->
+                        <div id="lock-icon-2" class="absolute -top-1 -right-1 bg-red-500 p-1.5 rounded-full shadow border-2 border-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <span id="lbl-lvl-2" class="map-decor mt-3 text-xs sm:text-base font-bold text-gray-500 text-center max-w-[110px] sm:max-w-[160px] break-words whitespace-normal leading-tight">Nombre del Nivel</span>
+                </div>
+
+                <!-- Nivel 3 -->
+                <div class="flex flex-col items-center justify-start min-h-[160px] sm:min-h-[185px] p-2">
+                    <div class="relative">
+                        <button 
+                            id="lvl-3" 
+                            class="level-circle level-locked w-20 h-20 sm:w-24 sm:h-24 rounded-full flex justify-center items-center text-4xl sm:text-5xl font-black flex-shrink-0"
+                            aria-label="Nivel tres. Bloqueado."
+                        >
+                            3
+                        </button>
+                        <!-- Icono de Candado -->
+                        <div id="lock-icon-3" class="absolute -top-1 -right-1 bg-red-500 p-1.5 rounded-full shadow border-2 border-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <span id="lbl-lvl-3" class="map-decor mt-3 text-xs sm:text-base font-bold text-gray-500 text-center max-w-[110px] sm:max-w-[160px] break-words whitespace-normal leading-tight">Nombre del Nivel</span>
+                </div>
+            </div>
+
+            <!-- Fila Inferior: Niveles 4, 5 y 6 -->
+            <div class="grid grid-cols-3 gap-x-4 sm:gap-x-12">
+                <!-- Nivel 4 -->
+                <div class="flex flex-col items-center justify-start min-h-[160px] sm:min-h-[185px] p-2">
+                    <div class="relative">
+                        <button 
+                            id="lvl-4" 
+                            class="level-circle level-locked w-20 h-20 sm:w-24 sm:h-24 rounded-full flex justify-center items-center text-4xl sm:text-5xl font-black flex-shrink-0"
+                            aria-label="Nivel cuatro. Bloqueado."
+                        >
+                            4
+                        </button>
+                        <!-- Icono de Candado -->
+                        <div id="lock-icon-4" class="absolute -top-1 -right-1 bg-red-500 p-1.5 rounded-full shadow border-2 border-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <span id="lbl-lvl-4" class="map-decor mt-3 text-xs sm:text-base font-bold text-gray-500 text-center max-w-[110px] sm:max-w-[160px] break-words whitespace-normal leading-tight">Nombre del Nivel</span>
+                </div>
+
+                <!-- Nivel 5 -->
+                <div class="flex flex-col items-center justify-start min-h-[160px] sm:min-h-[185px] p-2">
+                    <div class="relative">
+                        <button 
+                            id="lvl-5" 
+                        class="level-circle level-locked w-20 h-20 sm:w-24 sm:h-24 rounded-full flex justify-center items-center text-4xl sm:text-5xl font-black flex-shrink-0"
+                        aria-label="Nivel cinco. Bloqueado."
+                        >
+                            5
+                        </button>
+                        <!-- Icono de Candado -->
+                        <div id="lock-icon-5" class="absolute -top-1 -right-1 bg-red-500 p-1.5 rounded-full shadow border-2 border-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <span id="lbl-lvl-5" class="map-decor mt-3 text-xs sm:text-base font-bold text-gray-500 text-center max-w-[110px] sm:max-w-[160px] break-words whitespace-normal leading-tight">Nombre del Nivel</span>
+                </div>
+
+                <!-- Nivel 6 -->
+                <div class="flex flex-col items-center justify-start min-h-[160px] sm:min-h-[185px] p-2">
+                    <div class="relative">
+                        <button 
+                            id="lvl-6" 
+                            class="level-circle level-locked w-20 h-20 sm:w-24 sm:h-24 rounded-full flex justify-center items-center text-4xl sm:text-5xl font-black flex-shrink-0"
+                            aria-label="Nivel seis. Bloqueado."
+                        >
+                            6
+                        </button>
+                        <!-- Icono de Candado -->
+                        <div id="lock-icon-6" class="absolute -top-1 -right-1 bg-red-500 p-1.5 rounded-full shadow border-2 border-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <span id="lbl-lvl-6" class="map-decor mt-3 text-xs sm:text-base font-bold text-gray-500 text-center max-w-[110px] sm:max-w-[160px] break-words whitespace-normal leading-tight">Nombre del Nivel</span>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Modal de simulación para completar el nivel y desbloquear el siguiente -->
+    <div id="completion-modal" class="fixed inset-0 bg-black/60 z-[100] hidden flex items-center justify-center p-4">
+        <div class="panel-box bg-[#FDFCDC] border-4 border-[#0081A7] p-6 sm:p-8 rounded-3xl max-w-sm w-full text-center shadow-2xl">
+            <span class="text-5xl block mb-3 animate-bounce">🏆</span>
+            <h3 id="modal-title" class="text-2xl font-black text-[#F07167] mb-2">¡Nivel Completado!</h3>
+            <p id="modal-text" class="text-gray-700 font-bold mb-6">¿Quieres ayudar a Zeus a desbloquear el siguiente desafío?</p>
+            <div class="flex flex-col gap-3">
+                <button id="btn-complete-level" class="w-full bg-[#0081A7] text-white font-black py-3 rounded-2xl shadow hover:bg-[#006887] transition-all">
+                    ¡Sí, Desbloquear Siguiente!
+                </button>
+                <button id="btn-close-modal" class="w-full bg-gray-200 text-gray-700 font-bold py-2 rounded-2xl hover:bg-gray-300 transition-all">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pie de Página Fijo -->
+    <footer class="w-full text-center py-2 text-gray-500 font-bold text-xs sm:text-sm">
+        <p>Aventura Accesible - Para Estudiantes de Primaria ❤️</p>
+    </footer>
+
+    <!-- Scripts de Lógica y Accesibilidad Avanzada -->
+    <script>
+        // Estado del juego (Niveles desbloqueados progresivamente)
+        const levelsState = {
+            1: { unlocked: true, labelId: 'lbl-lvl-1' },
+            2: { unlocked: false, labelId: 'lbl-lvl-2' },
+            3: { unlocked: false, labelId: 'lbl-lvl-3' },
+            4: { unlocked: false, labelId: 'lbl-lvl-4' },
+            5: { unlocked: false, labelId: 'lbl-lvl-5' },
+            6: { unlocked: false, labelId: 'lbl-lvl-6' }
+        };
+
+        let selectedLevelToComplete = null;
+
+        // Configuración de estado inicial de accesibilidad
+        let synth = window.speechSynthesis;
+        let readAloudActive = true;
+        let soundEffectsActive = true;
+        let voiceVolume = 0.8;
+        let voiceSpeed = 1.0;
+        let speechUtterance = null;
+
+        // Elementos de la UI
+        const accBtn = document.getElementById('acc-btn');
+        const accMenu = document.getElementById('acc-menu');
+        const closeAccBtn = document.getElementById('close-acc-btn');
+        const mainTitle = document.getElementById('main-title');
+        const mainSubtitle = document.getElementById('main-subtitle');
+        const mapSpace = document.getElementById('map-space');
+        const btnAudiodescripcion = document.getElementById('btn-audiodescripcion');
+        const switchReadAloud = document.getElementById('switch-read-aloud');
+        const switchSounds = document.getElementById('switch-sounds');
+        const rangeVolume = document.getElementById('range-volume');
+        const rangeSpeed = document.getElementById('range-speed');
+        const btnHighContrast = document.getElementById('btn-high-contrast');
+        const volumeVal = document.getElementById('volume-val');
+        const speedVal = document.getElementById('speed-val');
+
+        // Modal de simulación
+        const completionModal = document.getElementById('completion-modal');
+        const btnCompleteLevel = document.getElementById('btn-complete-level');
+        const btnCloseModal = document.getElementById('btn-close-modal');
+        const modalTitle = document.getElementById('modal-title');
+        const modalText = document.getElementById('modal-text');
+
+        // AUDIO SINTETIZADO: Web Audio API para simular efectos de sonido de videojuego
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playBeep(freq, type, duration) {
+            if (!soundEffectsActive) return;
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = type || 'sine';
+                osc.frequency.setValueAtTime(freq || 440, audioCtx.currentTime);
+                gain.gain.setValueAtTime(voiceVolume * 0.2, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch (e) {
+                console.log("Audio no habilitado:", e);
+            }
+        }
+
+        // Sonidos retro de progreso
+        function playUnlockSound() {
+            if (!soundEffectsActive) return;
+            let freqs = [523.25, 659.25, 783.99, 1046.50]; // Do, Mi, Sol, Do (Agudo)
+            freqs.forEach((f, i) => {
+                setTimeout(() => {
+                    playBeep(f, 'triangle', 0.3);
+                }, i * 100);
+            });
+        }
+
+        function playDeniedSound() {
+            if (!soundEffectsActive) return;
+            playBeep(180, 'sawtooth', 0.25);
+        }
+
+        // Síntesis de Voz Activa (TTS)
+        function speak(text) {
+            if (!synth) return;
+            synth.cancel(); // Evitar acumulación de voces activas
+
+            if (!readAloudActive) return;
+
+            speechUtterance = new SpeechSynthesisUtterance(text);
+            speechUtterance.lang = 'es-MX'; // Español neutral de México amigable
+            speechUtterance.volume = voiceVolume;
+            speechUtterance.rate = voiceSpeed;
+
+            const voices = synth.getVoices();
+            const esVoice = voices.find(v => v.lang.includes('es'));
+            if (esVoice) {
+                speechUtterance.voice = esVoice;
+            }
+
+            synth.speak(speechUtterance);
+        }
+
+        // Descripción del Mapa (Audiodescripción de la escena actual)
+        function playMapDescription() {
+            const desc = "Estás en el camino de Zeus. El título dice El camino de Zeus. " +
+                "Justo abajo, el mensaje nos dice: Elige un reto y ayuda a Zeus a llegar a la escuela. " +
+                "En la parte del centro se encuentra un espacio reservado para la imagen de tu mapa de aventura. " +
+                "Y en la parte inferior, se ubican los seis niveles organizados en dos filas de tres círculos cada una. " +
+                "El nivel uno está desbloqueado para jugar. Los niveles del dos al seis muestran candados rojos porque están bloqueados " +
+                "y se activarán cuando completes los retos anteriores.";
+            speak(desc);
+        }
+
+        // Función para obtener dinámicamente el nombre y el estado del nivel
+        function getLevelAccessibilityName(levelNum) {
+            const state = levelsState[levelNum];
+            const labelEl = document.getElementById(state.labelId);
+            let textName = "Nombre del Nivel";
+            
+            if (labelEl) {
+                textName = labelEl.innerText;
+            }
+
+            let responseText = "";
+            if (textName === "Nombre del Nivel") {
+                responseText = "Nivel " + levelNum + ". ";
+            } else {
+                responseText = "Nivel " + levelNum + ": " + textName + ". ";
+            }
+
+            if (state.unlocked) {
+                responseText += "¡Desbloqueado! Pulsa para jugar este reto.";
+            } else {
+                responseText += "Bloqueado. Debes completar el nivel anterior para abrir este desafío.";
+            }
+
+            return responseText;
+        }
+
+        // Actualizar visualmente la interfaz de acuerdo al estado de desbloqueo
+        function updateLevelsUI() {
+            for (let num in levelsState) {
+                const btn = document.getElementById('lvl-' + num);
+                const lockIcon = document.getElementById('lock-icon-' + num);
+                const isUnlocked = levelsState[num].unlocked;
+
+                if (isUnlocked) {
+                    btn.classList.remove('level-locked');
+                    btn.classList.add('level-unlocked');
+                    btn.setAttribute('aria-label', `Nivel ${num}. Desbloqueado.`);
+                    if (lockIcon) {
+                        lockIcon.classList.add('hidden'); // Desaparece el candado
+                    }
+                } else {
+                    btn.classList.remove('level-unlocked');
+                    btn.classList.add('level-locked');
+                    btn.setAttribute('aria-label', `Nivel ${num}. Bloqueado.`);
+                    if (lockIcon) {
+                        lockIcon.classList.remove('hidden'); // Aparece el candado
+                    }
+                }
+            }
+        }
+
+        // Funciones del menú de accesibilidad
+        accBtn.addEventListener('click', () => {
+            const isOpen = !accMenu.classList.contains('hidden');
+            if (isOpen) {
+                accMenu.classList.add('hidden');
+                accBtn.setAttribute('aria-expanded', 'false');
+                speak("Menú cerrado");
+            } else {
+                accMenu.classList.remove('hidden');
+                accBtn.setAttribute('aria-expanded', 'true');
+                accMenu.focus();
+                speak("Menú de accesibilidad abierto. Puedes escuchar la descripción de la pantalla, configurar los sonidos o activar el alto contraste.");
+                playBeep(520, 'sine', 0.1);
+            }
+        });
+
+        closeAccBtn.addEventListener('click', () => {
+            accMenu.classList.add('hidden');
+            accBtn.setAttribute('aria-expanded', 'false');
+            speak("Menú de accesibilidad cerrado");
+            playBeep(350, 'sine', 0.1);
+        });
+
+        // Controles de Configuración
+        switchReadAloud.addEventListener('change', (e) => {
+            readAloudActive = e.target.checked;
+            if (readAloudActive) {
+                speak("Lectura de niveles activada.");
+            } else {
+                synth.cancel();
+            }
+        });
+
+        switchSounds.addEventListener('change', (e) => {
+            soundEffectsActive = e.target.checked;
+            if (soundEffectsActive) {
+                playBeep(600, 'sine', 0.2);
+            }
+        });
+
+        rangeVolume.addEventListener('input', (e) => {
+            voiceVolume = e.target.value / 100;
+            volumeVal.innerText = `${e.target.value}%`;
+            playBeep(440, 'sine', 0.05);
+        });
+
+        rangeSpeed.addEventListener('input', (e) => {
+            voiceSpeed = e.target.value / 10;
+            if (voiceSpeed < 0.8) speedVal.innerText = "Lenta";
+            else if (voiceSpeed <= 1.2) speedVal.innerText = "Normal";
+            else speedVal.innerText = "Rápida";
+        });
+
+        btnAudiodescripcion.addEventListener('click', () => {
+            playMapDescription();
+        });
+
+        // Alternar Alto Contraste
+        btnHighContrast.addEventListener('click', () => {
+            document.body.classList.toggle('high-contrast');
+            const hasHighContrast = document.body.classList.contains('high-contrast');
+            if (hasHighContrast) {
+                speak("Contraste alto activado. Colores de alta visibilidad negro y amarillo.");
+            } else {
+                speak("Colores normales restaurados.");
+            }
+            playBeep(hasHighContrast ? 800 : 400, 'triangle', 0.15);
+        });
+
+        // Registrar lecturas interactivas de botones del menú
+        function addAccessibilityNarrator(element, hoverSpeech, focusSpeech) {
+            element.addEventListener('mouseenter', () => {
+                if (readAloudActive) speak(hoverSpeech);
+            });
+            element.addEventListener('focus', () => {
+                if (readAloudActive) speak(focusSpeech || hoverSpeech);
+            });
+        }
+
+        addAccessibilityNarrator(mainTitle, "Título: El camino de Zeus.", "Has seleccionado el título: El camino de Zeus.");
+        addAccessibilityNarrator(mainSubtitle, "Mensaje: Elige un reto y ayuda a Zeus a llegar a la escuela.", "Has seleccionado el mensaje: Elige un reto y ayuda a Zeus a llegar a la escuela.");
+        addAccessibilityNarrator(mapSpace, "Espacio reservado para la imagen de tu mapa.", "Has seleccionado el espacio del mapa.");
+        addAccessibilityNarrator(accBtn, "Botón de ayuda y accesibilidad.", "Has seleccionado el botón de opciones de accesibilidad.");
+        addAccessibilityNarrator(btnHighContrast, "Botón de alto contraste.", "Has seleccionado el botón para cambiar el contraste.");
+        addAccessibilityNarrator(btnAudiodescripcion, "Botón para escuchar la descripción del mapa de niveles.", "Has seleccionado el botón para escuchar la descripción del mapa.");
+
+        // Configuración y eventos para cada botón de nivel
+        const levelNumbers = [1, 2, 3, 4, 5, 6];
+        levelNumbers.forEach(num => {
+            const btn = document.getElementById('lvl-' + num);
+            if (btn) {
+                // Lectura Hover
+                btn.addEventListener('mouseenter', () => {
+                    const speechText = getLevelAccessibilityName(num);
+                    speak(speechText);
+                });
+                // Lectura Focus
+                btn.addEventListener('focus', () => {
+                    const speechText = getLevelAccessibilityName(num);
+                    speak("Seleccionado " + speechText);
+                });
+                
+                // Acción Click (Interacción con Candados)
+                btn.addEventListener('click', () => {
+                    const state = levelsState[num];
+                    if (state.unlocked) {
+                        // Reproduce sonido alegre y abre simulación de completado
+                        playBeep(440 + (num * 30), 'sine', 0.15);
+                        selectedLevelToComplete = num;
+                        
+                        // Adaptar textos del modal temporalmente
+                        const labelEl = document.getElementById(state.labelId);
+                        const levelNameText = labelEl ? labelEl.innerText : "Nombre del Nivel";
+                        
+                        modalTitle.innerText = `¡Nivel ${num} Completado!`;
+                        if (levelNameText !== "Nombre del Nivel") {
+                            modalText.innerText = `¡Completaste con éxito "${levelNameText}"! ¿Quieres desbloquear el siguiente reto de Zeus?`;
+                        } else {
+                            modalText.innerText = `¡Superaste todos los retos del Nivel ${num}! ¿Deseas liberar el candado del siguiente nivel?`;
+                        }
+                        
+                        completionModal.classList.remove('hidden');
+                        speak(`¡Genial! Has seleccionado jugar el nivel ${num}. En esta demostración, puedes dar clic en el botón para simular completar el reto y desbloquear el siguiente.`);
+                    } else {
+                        // Nivel Bloqueado: Sonido de error y advertencia
+                        playDeniedSound();
+                        speak("Este nivel está cerrado con candado. Debes completar el nivel anterior para poder jugar.");
+                    }
+                });
+            }
+        });
+
+        // Lógica de interacción en el Modal de Simulación
+        btnCompleteLevel.addEventListener('click', () => {
+            const nextLevel = selectedLevelToComplete + 1;
+            
+            if (levelsState[nextLevel]) {
+                levelsState[nextLevel].unlocked = true;
+                updateLevelsUI();
+                completionModal.classList.add('hidden');
+                
+                // Reproduce el alegre arpegio de éxito de desbloqueo
+                playUnlockSound();
+                
+                setTimeout(() => {
+                    const stateNext = levelsState[nextLevel];
+                    const labelEl = document.getElementById(stateNext.labelId);
+                    const nameText = labelEl ? labelEl.innerText : "Nombre del Nivel";
+                    
+                    if (nameText !== "Nombre del Nivel") {
+                        speak(`¡Nivel ${nextLevel} desbloqueado! Se ha liberado con éxito "${nameText}".`);
+                    } else {
+                        speak(`¡Nivel ${nextLevel} desbloqueado! Se ha retirado el candado de forma automática.`);
+                    }
+                }, 500);
+            } else {
+                // Si completaron el nivel 6
+                completionModal.classList.add('hidden');
+                playUnlockSound();
+                speak("¡Felicidades! Completaste todos los desafíos del juego. ¡Zeus llegó sano y salvo a la escuela!");
+            }
+        });
+
+        btnCloseModal.addEventListener('click', () => {
+            completionModal.classList.add('hidden');
+            playBeep(350, 'sine', 0.1);
+        });
+
+        // Inicializar UI al cargar
+        updateLevelsUI();
+
+        // Narración de bienvenida automática al primer clic del usuario
+        window.addEventListener('click', () => {
+            if (!window.hasSpokenWelcome) {
+                speak("El camino de Zeus. Elige el primer nivel para iniciar la aventura. Los demás niveles tienen un candado que se abrirá automáticamente conforme completes cada reto.");
+                window.hasSpokenWelcome = true;
+            }
+        }, { once: true });
+
+        // Inicializar voces
+        if (synth) {
+            synth.onvoiceschanged = () => {
+                synth.getVoices();
+            };
+        }
+    </script>
+</body>
+</html>
