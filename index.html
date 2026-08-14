@@ -60,13 +60,26 @@ background-repeat: no-repeat;
 .game-title {
     font-family: 'Fredoka', sans-serif;
     font-weight: 900;
-    color: #FFFFFF;
-    text-shadow:
-        4px 4px 0 #F07167,
-        7px 7px 0 #0081A7,
-        10px 10px 18px rgba(0, 0, 0, 0.25);
     letter-spacing: 2px;
     line-height: 1.1;
+}
+
+.title-guia {
+    color: #36B7A8;
+    -webkit-text-stroke: 3px white;
+    text-shadow: 4px 4px 0 #168C83, 7px 7px 12px rgba(0,0,0,0.20);
+}
+
+.title-tu {
+    color: #F07167;
+    -webkit-text-stroke: 3px white;
+    text-shadow: 4px 4px 0 #D9574D, 7px 7px 12px rgba(0,0,0,0.20);
+}
+
+.title-camino {
+    color: #9B6DD7;
+    -webkit-text-stroke: 3px white;
+    text-shadow: 4px 4px 0 #7045A8, 7px 7px 12px rgba(0,0,0,0.20);
 }
         .adventure-pulse {
             animation: adventurePulse 2s ease-in-out infinite;
@@ -205,13 +218,16 @@ background-repeat: no-repeat;
         
         <!-- Título del Juego (Sin el número 2) -->
         <h1 
-            id="main-title"
-           class="game-title text-5xl sm:text-6xl md:text-7xl mb-8 transition-all focus:outline-none"
-            tabindex="0"
-            aria-label="Título del videojuego: Guía tu camino"
-        >
-            GUÍA TU CAMINO
-        </h1>
+    id="main-title"
+    class="game-title text-5xl sm:text-6xl md:text-7xl mb-8 transition-all focus:outline-none"
+    tabindex="0"
+    aria-label="Título del videojuego: Guía tu camino"
+>
+    <span class="title-guia">GUÍA</span>
+    <span class="title-tu"> TU </span>
+    <span class="title-camino">CAMINO</span>
+</h1>
+        
 
         <!-- Espacio reservado para el personaje principal (Sin imágenes, ilustraciones ni avatares) -->
         <img src="logozeuss.pnghtml.png" alt="Zeus, personaje principal del juego">
