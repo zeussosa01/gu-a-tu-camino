@@ -53,9 +53,23 @@ background-repeat: no-repeat;
             border: 2px solid #FFFF00 !important;
             color: #FFFFFF !important;
         }
-        .high-contrast .placeholder-border {
+                .high-contrast .placeholder-border {
             border-color: #FFFF00 !important;
             color: #FFFF00 !important;
+        }
+
+        .adventure-pulse {
+            animation: adventurePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes adventurePulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
         }
     </style>
 </head>
@@ -197,7 +211,7 @@ background-repeat: no-repeat;
         <!-- Botón de Inicio: EMPIEZA LA AVENTURA (Fijo, sin efectos de cambio de tamaño) -->
         <button 
             id="start-btn" 
-            class="color-primary-action text-white font-black text-2xl sm:text-3xl py-5 px-10 rounded-3xl shadow-xl transition-colors w-full max-w-md border-b-8 border-[#005a75]"
+            class="color-primary-action text-white font-black text-2xl sm:text-3xl py-5 px-10 rounded-3xl shadow-xl transition-colors w-full max-w-md border-b-8 border-[#005a75] adventure-pulse"
             aria-label="Botón: Empieza la aventura"
         >
             EMPIEZA LA AVENTURA
