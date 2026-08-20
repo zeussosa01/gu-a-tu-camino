@@ -429,20 +429,21 @@ background-repeat: no-repeat;
         addAccessibilityNarrator(btnHighContrast, "Botón de alto contraste.", "Has seleccionado el botón para cambiar el contraste.");
         addAccessibilityNarrator(btnAudiodescripcion, "Botón para escuchar las instrucciones por voz.", "Has seleccionado el botón para escuchar instrucciones.");
 
-        // Acción de clic únicamente visual y sonora (Sin navegación o segunda pantalla)
-        startBtn.addEventListener('click', () => {
-            if (readAloudActive) {
-                speak("¡Has pulsado Empieza la aventura!");
-            }
-            playSelectionSound();
-        });
+        /// Botón Empieza la aventura: ir a la siguiente pantalla
 
-        // Inicializar voces
-        if (synth) {
-            synth.onvoiceschanged = () => {
-                synth.getVoices();
-            };
-        }
+startBtn.addEventListener('click', () => {
+
+    if (readAloudActive) {
+        speak("¡Has pulsado Empieza la aventura!");
+    }
+
+    playSelectionSound();
+
+    setTimeout(() => {
+        window.location.href = "niveles";
+    }, 300);
+
+});
     </script>
 </body>
 </html>
