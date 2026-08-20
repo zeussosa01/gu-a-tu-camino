@@ -1,1999 +1,1197 @@
-no es lo qu ete digo no, lo bueo que guarde el codigo anterior el que te digo qu eme gusta: \<!DOCTYPE html>
-
-\<html lang="es">
-
-\<head>
-
-    \<meta charset="UTF-8">
-
-    \<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    \<title>Guía Tu Camino - Videojuego Educativo\</title>
-
-    \<!-- Tailwind CSS -->
-
-    \<script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)">\</script>
-
-    \<!-- Google Fonts -->
-
-    \<link rel="preconnect" href="[https://fonts.googleapis.com](https://fonts.googleapis.com)">
-
-    \<link rel="preconnect" href="[https://fonts.gstatic.com](https://fonts.gstatic.com)" crossorigin>
-
-    \<link href="[https://fonts.googleapis.com/css2?family=Fredoka\:wght@400;600;700;900&family=Lexend\:wght@400;600;700&display=swap](https://fonts.googleapis.com/css2?family=Fredoka\:wght@400;600;700;900\&family=Lexend\:wght@400;600;700\&display=swap)" rel="stylesheet">
-
-    \<style>
-
-        body {
-
-            font-family: 'Fredoka', 'Lexend', sans-serif;
-
-            background-color: #e0f2fe;
-
-            background-image: linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.15)), url('paisaje.png.html.jpg');
-
-            background-size: cover;
-
-            background-position: center;
-
-            background-repeat: no-repeat;
-
-            overflow-x: hidden;
-
-            touch-action: manipulation;
-
-        }
-
-        .color-primary-action {
-
-            background-color: #0081A7;
-
-        }
-
-        .color-primary-action\:hover {
-
-            background-color: #006887;
-
-        }
-
-        \*:focus-visible {
-
-            outline: 6px solid #F07167;
-
-            outline-offset: 4px;
-
-        }
-
-        /\* High Contrast Mode \*/
-
-        .high-contrast {
-
-            background-image: none !important;
-
-            background-color: #000000 !important;
-
-            color: #FFFFFF !important;
-
-        }
-
-        .high-contrast h1, .high-contrast h2, .high-contrast h3 {
-
-            color: #FFFF00 !important;
-
-        }
-
-        .high-contrast .color-primary-action {
-
-            background-color: #FFFF00 !important;
-
-            color: #000000 !important;
-
-            border: 4px solid #FFFFFF !important;
-
-        }
-
-        .high-contrast .panel-box, .high-contrast .game-card {
-
-            background-color: #1a1a1a !important;
-
-            border: 3px solid #FFFF00 !important;
-
-            color: #FFFFFF !important;
-
-        }
-
-        .game-title {
-
-            font-family: 'Fredoka', sans-serif;
-
-            font-weight: 900;
-
-            letter-spacing: 2px;
-
-            line-height: 1.1;
-
-        }
-
-        .title-guia {
-
-            color: #36B7A8;
-
-            -webkit-text-stroke: 3px white;
-
-            text-shadow: 4px 4px 0 #168C83, 7px 7px 12px rgba(0,0,0,0.20);
-
-        }
-
-        .title-tu {
-
-            color: #F07167;
-
-            -webkit-text-stroke: 3px white;
-
-            text-shadow: 4px 4px 0 #D9574D, 7px 7px 12px rgba(0,0,0,0.20);
-
-        }
-
-        .title-camino {
-
-            color: #9B6DD7;
-
-            -webkit-text-stroke: 3px white;
-
-            text-shadow: 4px 4px 0 #7045A8, 7px 7px 12px rgba(0,0,0,0.20);
-
-        }
-
-        .adventure-pulse {
-
-            animation: adventurePulse 2s ease-in-out infinite;
-
-        }
-
-        @keyframes adventurePulse {
-
-            0%, 100% { transform: scale(1); }
-
-            50% { transform: scale(1.05); }
-
-        }
-
-        canvas {
-
-            display: block;
-
-            margin: 0 auto;
-
-            background: linear-gradient(to bottom, #bae6fd, #e0f2fe);
-
-            border-radius: 1.5rem;
-
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-
-        }
-
-    \</style>
-
-\</head>
-
-\<body class="min-h-screen flex flex-col justify-between p-3 sm\:p-6 transition-colors duration-300">
-
-    \<header class="w-full max-w-5xl mx-auto flex justify-between items-center relative z-50">
-
-        \<div id="header-left" class="flex items-center gap-2">
-
-            \<button 
-
-                id="back-to-menu-btn" 
-
-                class="hidden bg-white/90 hover\:bg-white text-gray-800 font-bold py-2.5 px-4 rounded-2xl shadow-md border-2 border-[#0081A7] transition-all flex items-center gap-2 text-sm sm\:text-base cursor-pointer"
-
-                aria-label="Volver al menú principal"
-
-            >
-
-                \<svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" class="h-5 w-5 text-[#0081A7]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-
-                    \<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-
-                \</svg>
-
-                \<span>Menú / Mapa\</span>
-
-            \</button>
-
-        \</div>
-
-        \<div class="relative">
-
-            \<button 
-
-                id="acc-btn" 
-
-                class="flex items-center gap-2 bg-white text-gray-800 font-bold py-2.5 px-4 sm\:px-5 rounded-full shadow-lg border-2 border-[#0081A7] transition-colors hover\:bg-gray-50 cursor-pointer"
-
-                aria-label="Menú de Accesibilidad y Lectura de Voz"
-
-                title="Opciones de Accesibilidad"
-
-                aria-expanded="false"
-
-                aria-controls="acc-menu"
-
-            >
-
-                \<svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" class="h-7 w-7 text-[#0081A7]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-
-                    \<path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-
-                \</svg>
-
-                \<span class="text-base hidden sm\:inline text-gray-700">Accesibilidad\</span>
-
-            \</button>
-
-            \<div 
-
-                id="acc-menu" 
-
-                class="panel-box hidden absolute top-14 right-0 bg-white p-5 rounded-3xl border-3 border-gray-100 w-80 shadow-2xl transition-all duration-200 z-50 text-left"
-
-                role="dialog"
-
-                aria-label="Herramientas de Accesibilidad"
-
-            >
-
-                \<div class="flex justify-between items-center mb-3">
-
-                    \<h2 class="text-lg font-bold text-gray-800">Ayudas de Voz y Sonido\</h2>
-
-                    \<button id="close-acc-btn" class="text-gray-400 hover\:text-gray-600 font-bold text-2xl p-1 cursor-pointer" aria-label="Cerrar opciones">&times;\</button>
-
-                \</div>
-
-                \<div class="space-y-3">
-
-                    \<button 
-
-                        id="btn-audiodescripcion" 
-
-                        class="w-full flex items-center justify-center gap-2 bg-amber-100 hover\:bg-amber-200 text-amber-950 py-3 px-4 rounded-2xl font-bold transition-colors text-sm cursor-pointer"
-
-                        aria-label="Escuchar instrucciones por voz"
-
-                    >
-
-                        \<svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" class="h-5 w-5 text-amber-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-
-                            \<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
-
-                        \</svg>
-
-                        \<span>Escuchar Instrucciones\</span>
-
-                    \</button>
-
-                    \<div class="flex items-center justify-between p-2.5 rounded-xl bg-gray-50 border border-gray-100">
-
-                        \<label for="switch-read-aloud" class="text-xs font-bold text-gray-700 cursor-pointer">Voz al tocar botones\</label>
-
-                        \<input type="checkbox" id="switch-read-aloud" class="w-5 h-5 text-[#0081A7] rounded border-gray-300 cursor-pointer">
-
-                    \</div>
-
-                    \<div class="flex items-center justify-between p-2.5 rounded-xl bg-gray-50 border border-gray-100">
-
-                        \<label for="switch-sounds" class="text-xs font-bold text-gray-700 cursor-pointer">Efectos de Sonido\</label>
-
-                        \<input type="checkbox" id="switch-sounds" class="w-5 h-5 text-[#0081A7] rounded border-gray-300 cursor-pointer" checked>
-
-                    \</div>
-
-                    \<div class="space-y-1 bg-gray-50 p-2.5 rounded-xl border border-gray-100">
-
-                        \<div class="flex justify-between text-xs font-bold text-gray-600">
-
-                            \<label for="range-volume">Volumen\</label>
-
-                            \<span id="volume-val">80%\</span>
-
-                        \</div>
-
-                        \<input type="range" id="range-volume" min="0" max="100" value="80" class="w-full h-2 bg-gray-200 rounded-lg accent-[#0081A7] cursor-pointer">
-
-                    \</div>
-
-                    \<div class="space-y-1 bg-gray-50 p-2.5 rounded-xl border border-gray-100">
-
-                        \<div class="flex justify-between text-xs font-bold text-gray-600">
-
-                            \<label for="range-speed">Velocidad de Voz\</label>
-
-                            \<span id="speed-val">Normal\</span>
-
-                        \</div>
-
-                        \<input type="range" id="range-speed" min="5" max="15" value="10" class="w-full h-2 bg-gray-200 rounded-lg accent-[#0081A7] cursor-pointer">
-
-                    \</div>
-
-                    \<button id="btn-high-contrast" class="w-full bg-gray-200 hover\:bg-gray-300 text-gray-800 py-2.5 px-3 rounded-xl font-bold transition-colors flex items-center justify-center gap-2 text-xs cursor-pointer">
-
-                        \<svg xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-
-                            \<path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707.707M12 8a4 4 0 110 8 4 4 0 010-8z" />
-
-                        \</svg>
-
-                        \<span>Alto Contraste\</span>
-
-                    \</button>
-
-                \</div>
-
-            \</div>
-
-        \</div>
-
-    \</header>
-
-    \<main id="game-app-container" class="w-full max-w-4xl mx-auto flex-grow flex flex-col justify-center items-center text-center px-4 my-2">
-
-        \<!-- PANTALLA 1: INICIO -->
-
-        \<div id="screen-home" class="view-screen w-full flex flex-col items-center">
-
-            \<h1 id="main-title" class="game-title text-4xl sm\:text-6xl md\:text-7xl mb-4 transition-all focus\:outline-none" tabindex="0">
-
-                \<span class="title-guia">GUÍA\</span>
-
-                \<span class="title-tu"> TU \</span>
-
-                \<span class="title-camino">CAMINO\</span>
-
-            \</h1>
-
-            \<div class="my-3 flex justify-center items-center w-full max-h-60">
-
-                \<img 
-
-                    src="logozeuss.pnghtml.jpg" 
-
-                    alt="Logo de Guía Tu Camino con Zeus y su perro guía" 
-
-                    class="max-h-52 sm\:max-h-60 object-contain drop-shadow-xl transition-transform hover\:scale-105"
-
-                    onerror="this.onerror=null; this.src='[https://placehold.co/240x240/0081A7/FFFFFF?text=Zeus+y+Perro+Guía](https://placehold.co/240x240/0081A7/FFFFFF?text=Zeus+y+Perro+Guía)';"
-
-                >
-
-            \</div>
-
-            \<button 
-
-                id="start-btn" 
-
-                class="color-primary-action text-white font-black text-xl sm\:text-2xl py-4 px-8 sm\:px-10 rounded-3xl shadow-xl transition-colors w-full max-w-md border-b-8 border-[#005a75] adventure-pulse mt-4 cursor-pointer"
-
-                aria-label="Botón: Empieza la aventura"
-
-            >
-
-                EMPIEZA LA AVENTURA
-
-            \</button>
-
-        \</div>
-
-        \<!-- PANTALLA 2: PRESENTACIÓN DE ZEUS -->
-
-        \<div id="screen-intro" class="view-screen hidden w-full flex flex-col items-center bg-white/95 p-6 sm\:p-8 rounded-3xl shadow-2xl border-4 border-[#0081A7]">
-
-            \<h2 class="text-2xl sm\:text-4xl font-black text-[#0081A7] mb-4">¡Hola! Conoce a Zeus\</h2>
-
-            \<div class="my-2 p-4 bg-sky-50 rounded-2xl border-2 border-dashed border-[#0081A7] w-full max-w-xs flex flex-col items-center justify-center">
-
-                \<img 
-
-                    src="logozeuss.pnghtml.jpg" 
-
-                    alt="Zeus y su perro guía" 
-
-                    class="max-h-44 object-contain rounded-xl shadow-md"
-
-                    onerror="this.onerror=null; this.src='[https://placehold.co/200x200/0081A7/FFFFFF?text=ZEUS+Y+PERRO](https://placehold.co/200x200/0081A7/FFFFFF?text=ZEUS+Y+PERRO)';"
-
-                >
-
-            \</div>
-
-            \<div class="text-gray-700 text-base sm\:text-lg font-semibold my-4 max-w-lg leading-relaxed space-y-2">
-
-                \<p>¡Hola! Soy Zeus. Soy un niño con discapacidad visual y mi fiel perro guía me acompaña a todas partes.\</p>
-
-                \<p>Hoy tengo una misión muy importante... \<span class="text-[#F07167] font-bold">¡Llegar a la escuela!\</span> ¿Me ayudas a recorrer el camino?\</p>
-
-            \</div>
-
-            \<button 
-
-                id="intro-next-btn" 
-
-                class="color-primary-action text-white font-black text-xl py-4 px-8 rounded-2xl shadow-lg border-b-6 border-[#005a75] hover\:scale-105 transition-transform cursor-pointer"
-
-            >
-
-                ¡AYÚDAME A LLEGAR!
-
-            \</button>
-
-        \</div>
-
-        \<!-- PANTALLA 3: MAPA DE NIVELES -->
-
-        \<div id="screen-map" class="view-screen hidden w-full flex flex-col items-center bg-white/95 p-6 sm\:p-8 rounded-3xl shadow-2xl border-4 border-[#0081A7]">
-
-            \<h2 class="text-3xl sm\:text-4xl font-black text-[#0081A7] mb-2">🗺️ Mapa de la Aventura\</h2>
-
-            \<p class="text-gray-600 font-semibold mb-6 text-sm sm\:text-base">Selecciona un nivel desbloqueado para continuar:\</p>
-
-            \<div id="levels-container" class="grid grid-cols-1 sm\:grid-cols-2 lg\:grid-cols-3 gap-4 w-full max-w-2xl mb-6">\</div>
-
-            \<div class="flex flex-wrap justify-center gap-3">
-
-                \<button id="view-rewards-btn" class="bg-amber-400 hover\:bg-amber-500 text-amber-950 font-bold py-2.5 px-6 rounded-2xl shadow-md transition-colors text-sm flex items-center gap-2 cursor-pointer">
-
-                    \<span>🏆 Ver Mis Recompensas\</span>
-
-                \</button>
-
-            \</div>
-
-        \</div>
-
-        \<!-- PANTALLA 4: NIVEL 1 (CONOCE A ZEUS - PREGUNTAS) -->
-
-        \<div id="screen-level-1" class="view-screen hidden w-full flex flex-col items-center bg-white/95 p-5 sm\:p-6 rounded-3xl shadow-2xl border-4 border-[#0081A7]">
-
-            \<div class="flex justify-between w-full items-center mb-3">
-
-                \<span class="bg-blue-100 text-[#0081A7] px-3 py-1 rounded-xl font-black text-sm">NIVEL 1\</span>
-
-                \<h3 class="text-lg sm\:text-xl font-black text-gray-800">🏠 Conoce a Zeus y su Entorno\</h3>
-
-                \<span id="l1-score" class="font-bold text-green-600 text-sm">Pregunta 1/5\</span>
-
-            \</div>
-
-            \<div class="w-full bg-sky-50 border-2 border-sky-200 rounded-2xl p-4 sm\:p-6 mb-4 text-center">
-
-                \<div id="l1-dialog" class="text-base sm\:text-lg font-bold text-gray-700 mb-4">\</div>
-
-                \<div id="l1-options" class="grid grid-cols-1 sm\:grid-cols-3 gap-3">\</div>
-
-            \</div>
-
-        \</div>
-
-        \<!-- MINI APRENDIZAJE 1 -->
-
-        \<div id="screen-learning-1" class="view-screen hidden w-full flex flex-col items-center bg-white/95 p-6 sm\:p-8 rounded-3xl shadow-2xl border-4 border-[#0081A7] max-w-lg text-center">
-
-            \<h3 class="text-2xl font-black text-[#0081A7] mb-3">👀 ¿Qué aprendimos?\</h3>
-
-            \<p class="text-gray-700 font-semibold mb-6 text-base leading-relaxed">
-
-                No todas las personas ven de la misma manera. Algunas personas pueden ver poco y otras no pueden ver. Con apoyos y herramientas pueden aprender, jugar, desplazarse y realizar muchas actividades.
-
-            \</p>
-
-            \<button id="next-to-l2-btn" class="color-primary-action text-white font-black py-3 px-8 rounded-2xl shadow-lg cursor-pointer">Continuar al Nivel 2\</button>
-
-        \</div>
-
-        \<!-- PANTALLA 5: NIVEL 2 (BASTONES BLANCOS & PIEDRAS CON IMÁGENES OFICIALES) -->
-
-        \<div id="screen-level-2-intro" class="view-screen hidden w-full flex flex-col items-center bg-white/95 p-6 sm\:p-8 rounded-3xl shadow-2xl border-4 border-[#0081A7]">
-
-            \<h3 class="text-2xl sm\:text-3xl font-black text-[#0081A7] mb-3">🦯 ¡Encuentra los Bastones Blancos!\</h3>
-
-            \<div class="bg-amber-50 border-2 border-amber-200 p-4 rounded-2xl mb-6 text-left max-w-xl text-gray-700 font-semibold space-y-2 text-sm sm\:text-base">
-
-                \<p>El \<strong>bastón blanco\</strong> es una herramienta esencial que utilizan las personas con discapacidad visual para orientarse, detectar obstáculos en el suelo y desplazarse con autonomía.\</p>
-
-                \<p>¡Ayuda a Zeus a recoger \<span class="text-[#0081A7] font-black">7 bastones blancos\</span> en el parque mientras esquivas las piedras!\</p>
-
-            \</div>
-
-            \<button id="l2-start-game-btn" class="color-primary-action text-white font-black text-xl py-4 px-10 rounded-2xl shadow-lg border-b-6 border-[#005a75] hover\:scale-105 transition-transform cursor-pointer">
-
-                ¡JUGAR NIVEL 2!
-
-            \</button>
-
-        \</div>
-
-        \<div id="screen-level-2-game" class="view-screen hidden w-full flex flex-col items-center">
-
-            \<div class="flex justify-between w-full max-w-2xl items-center mb-2 px-2">
-
-                \<span class="bg-amber-100 text-amber-900 px-3 py-1 rounded-xl font-black text-sm">NIVEL 2: Parque\</span>
-
-                \<span id="l2-counter" class="font-black text-[#0081A7] text-lg bg-white px-4 py-1 rounded-full shadow">🦯 Bastones: 0 / 7\</span>
-
-            \</div>
-
-            \<canvas id="canvas-l2" width="600" height="400" class="w-full max-w-2xl h-[320px] sm\:h-[400px]">\</canvas>
-
-            \<div class="mt-3 flex gap-6 text-sm font-bold text-gray-700 bg-white/80 py-1.5 px-4 rounded-full shadow">
-
-                \<span>⬅️ Flecha Izquierda\</span>
-
-                \<span>➡️ Flecha Derecha\</span>
-
-            \</div>
-
-        \</div>
-
-        \<!-- MINI APRENDIZAJE 2 -->
-
-        \<div id="screen-learning-2" class="view-screen hidden w-full flex flex-col items-center bg-white/95 p-6 sm\:p-8 rounded-3xl shadow-2xl border-4 border-[#0081A7] max-w-lg text-center">
-
-            \<h3 class="text-2xl font-black text-[#0081A7] mb-3">🦯 ¿Qué aprendimos?\</h3>
-
-            \<p class="text-gray-700 font-semibold mb-6 text-base leading-relaxed">
-
-                El bastón blanco es una herramienta que ayuda a muchas personas con discapacidad visual a detectar obstáculos y desplazarse con mayor autonomía.
-
-            \</p>
-
-            \<button id="next-to-l3-btn" class="color-primary-action text-white font-black py-3 px-8 rounded-2xl shadow-lg cursor-pointer">Continuar al Nivel 3\</button>
-
-        \</div>
-
-        \<!-- PANTALLA 6: NIVEL 3 (SONIDOS Y SENTIDOS) -->
-
-        \<div id="screen-level-3" class="view-screen hidden w-full flex flex-col items-center bg-white/95 p-5 sm\:p-6 rounded-3xl shadow-2xl border-4 border-[#0081A7]">
-
-            \<div class="flex justify-between w-full items-center mb-3">
-
-                \<span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-xl font-black text-sm">NIVEL 3\</span>
-
-                \<h3 class="text-lg sm\:text-xl font-black text-gray-800">👂🖐️ ¡Usa tus Sentidos!\</h3>
-
-                \<span id="l3-stage" class="font-bold text-purple-600 text-sm">Ronda 1 / 6\</span>
-
-            \</div>
-
-            \<div id="l3-content" class="w-full bg-purple-50 border-2 border-purple-200 rounded-2xl p-4 sm\:p-6 mb-3 text-center">\</div>
-
-        \</div>
-
-        \<!-- MINI APRENDIZAJE 3 -->
-
-        \<div id="screen-learning-3" class="view-screen hidden w-full flex flex-col items-center bg-white/95 p-6 sm\:p-8 rounded-3xl shadow-2xl border-4 border-[#0081A7] max-w-lg text-center">
-
-            \<h3 class="text-2xl font-black text-[#0081A7] mb-3">👂 ¿Qué aprendimos?\</h3>
-
-            \<p class="text-gray-700 font-semibold mb-6 text-base leading-relaxed">
-
-                Las personas con discapacidad visual pueden utilizar la información que reciben mediante el oído y otros sentidos para reconocer y comprender lo que ocurre a su alrededor.
-
-            \</p>
-
-            \<button id="next-to-l4-btn" class="color-primary-action text-white font-black py-3 px-8 rounded-2xl shadow-lg cursor-pointer">Continuar al Nivel 4\</button>
-
-        \</div>
-
-        \<!-- PANTALLA 7: NIVEL 4 (PERRO GUÍA) -->
-
-        \<div id="screen-level-4-intro" class="view-screen hidden w-full flex flex-col items-center bg-white/95 p-6 sm\:p-8 rounded-3xl shadow-2xl border-4 border-[#0081A7]">
-
-            \<h3 class="text-2xl sm\:text-3xl font-black text-[#0081A7] mb-3">🐕 ¡Confía en tu Perro Guía!\</h3>
-
-            \<div class="bg-emerald-50 border-2 border-emerald-200 p-4 rounded-2xl mb-6 text-left max-w-xl text-gray-700 font-semibold space-y-2 text-sm sm\:text-base">
-
-                \<p>En este nivel, Zeus camina acompañado de su perro guía. El perro camina al frente y se detiene ante obstáculos o cruces.\</p>
-
-                \<p>¡Toma la decisión correcta cuando el perro se detenga!\</p>
-
-            \</div>
-
-            \<button id="l4-start-game-btn" class="color-primary-action text-white font-black text-xl py-4 px-10 rounded-2xl shadow-lg cursor-pointer">
-
-                ¡INICIAR MISIÓN CON EL PERRO GUÍA!
-
-            \</button>
-
-        \</div>
-
-        \<div id="screen-level-4" class="view-screen hidden w-full flex flex-col items-center bg-white/95 p-5 sm\:p-6 rounded-3xl shadow-2xl border-4 border-[#0081A7]">
-
-            \<div class="flex justify-between w-full items-center mb-3">
-
-                \<span class="bg-emerald-100 text-emerald-800 px-3 py-1 rounded-xl font-black text-sm">NIVEL 4\</span>
-
-                \<h3 class="text-lg sm\:text-xl font-black text-gray-800">🐕 Situación con Perro Guía\</h3>
-
-                \<span id="l4-progress" class="font-bold text-emerald-600 text-sm">Situación 1/3\</span>
-
-            \</div>
-
-            \<div class="w-full bg-emerald-50 border-2 border-emerald-200 rounded-2xl p-4 sm\:p-6 mb-4 text-center">
-
-                \<div id="l4-scenario" class="text-base sm\:text-lg font-bold text-gray-700 mb-4">\</div>
-
-                \<div id="l4-options" class="grid grid-cols-1 sm\:grid-cols-3 gap-3">\</div>
-
-            \</div>
-
-        \</div>
-
-        \<!-- MINI APRENDIZAJE 4 -->
-
-        \<div id="screen-learning-4" class="view-screen hidden w-full flex flex-col items-center bg-white/95 p-6 sm\:p-8 rounded-3xl shadow-2xl border-4 border-[#0081A7] max-w-lg text-center">
-
-            \<h3 class="text-2xl font-black text-[#0081A7] mb-3">🐕 ¿Qué aprendimos?\</h3>
-
-            \<p class="text-gray-700 font-semibold mb-6 text-base leading-relaxed">
-
-                Los perros guía están entrenados para ayudar a algunas personas con discapacidad visual a desplazarse y evitar obstáculos. Cuando están trabajando, es importante no distraerlos.
-
-            \</p>
-
-            \<button id="next-to-l5-btn" class="color-primary-action text-white font-black py-3 px-8 rounded-2xl shadow-lg cursor-pointer">Continuar al Nivel 5\</button>
-
-        \</div>
-
-        \<!-- PANTALLA 8: NIVEL 5 (MISIÓN FINAL A LA ESCUELA) -->
-
-        \<div id="screen-level-5" class="view-screen hidden w-full flex flex-col items-center bg-white/95 p-5 sm\:p-6 rounded-3xl shadow-2xl border-4 border-[#0081A7]">
-
-            \<div class="flex justify-between w-full items-center mb-2">
-
-                \<span class="bg-rose-100 text-rose-800 px-3 py-1 rounded-xl font-black text-sm">NIVEL 5 FINAL\</span>
-
-                \<h3 class="text-lg sm\:text-xl font-black text-gray-800">🏫 ¡Llegamos a la Escuela!\</h3>
-
-                \<span id="l5-stage-name" class="font-bold text-rose-600 text-sm">Etapa 1/5\</span>
-
-            \</div>
-
-            \<canvas id="canvas-l5" width="600" height="360" class="w-full max-w-2xl h-[300px] sm\:h-[350px] mb-3">\</canvas>
-
-            \<div id="l5-msg" class="text-sm font-bold text-gray-700">¡Sigue las 5 etapas finales para guiar a Zeus hasta su salón!\</div>
-
-        \</div>
-
-        \<!-- PANTALLA 9: VICTORIA FINAL / CELEBRACIÓN -->
-
-        \<div id="screen-victory" class="view-screen hidden w-full flex flex-col items-center bg-gradient-to-b from-amber-100 to-amber-300 p-6 sm\:p-8 rounded-3xl shadow-2xl border-4 border-amber-500 text-center">
-
-            \<h2 class="text-3xl sm\:text-5xl font-black text-amber-900 mb-2">🎉 ¡MISIÓN CUMPLIDA! 🏫\</h2>
-
-            \<p class="text-lg sm\:text-xl font-bold text-amber-800 mb-4">¡Ayudaste a Zeus a llegar con éxito a su salón de clases!\</p>
-
-            \<div class="bg-white/90 p-5 rounded-2xl shadow-lg border-2 border-amber-300 max-w-lg mb-6 text-gray-700 font-semibold text-sm sm\:text-base leading-relaxed space-y-2 text-left">
-
-                \<p>\<strong>💡 ¿Qué aprendimos?\</strong>\</p>
-
-                \<p>Todas las personas pueden aprender, participar y alcanzar sus metas. Algunas personas utilizan herramientas, apoyos y estrategias diferentes para realizar sus actividades.\</p>
-
-                \<p>La inclusión significa respetar las diferencias y crear espacios donde todos puedan participar. ❤️\</p>
-
-            \</div>
-
-            \<div class="flex flex-wrap justify-center gap-3">
-
-                \<button id="restart-game-btn" class="bg-[#0081A7] hover\:bg-[#006887] text-white font-black py-3 px-6 rounded-2xl shadow-lg transition-colors text-base flex items-center gap-2 cursor-pointer">
-
-                    \<span>🔄 Jugar de Nuevo\</span>
-
-                \</button>
-
-                \<button id="victory-map-btn" class="bg-white hover\:bg-gray-100 text-gray-800 font-black py-3 px-6 rounded-2xl shadow-lg border-2 border-[#0081A7] transition-colors text-base cursor-pointer">
-
-                    \<span>🗺️ Ver Niveles\</span>
-
-                \</button>
-
-            \</div>
-
-        \</div>
-
-        \<!-- PANTALLA 10: MODAL RECOMPENSAS -->
-
-        \<div id="modal-rewards" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
-
-            \<div class="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl border-4 border-[#0081A7] text-center">
-
-                \<h3 class="text-2xl font-black text-[#0081A7] mb-3">🏆 Tus Medallas y Recompensas\</h3>
-
-                \<div id="rewards-list" class="space-y-3 mb-6 max-h-64 overflow-y-auto pr-1 text-left">\</div>
-
-                \<button id="close-rewards-btn" class="color-primary-action text-white font-black py-3 px-8 rounded-xl w-full shadow-md cursor-pointer">
-
-                    Cerrar
-
-                \</button>
-
-            \</div>
-
-        \</div>
-
-    \</main>
-
-    \<footer class="w-full text-center py-2 text-gray-600 font-bold text-xs sm\:text-sm">
-
-        \<p>Aventura Accesible - Para Estudiantes de Primaria ❤️\</p>
-
-    \</footer>
-
-    \<script>
-
-        // --- ESTADO GLOBAL Y PROGRESO ---
-
-        let gameState = {
-
-            currentScreen: 'screen-home',
-
-            unlockedLevel: 1,
-
-            rewards: { l1: false, l2: false, l3: false, l4: false, l5: false }
-
-        };
-
-        function loadProgress() {
-
-            const saved = localStorage.getItem('guiaTuCaminoProgress2026');
-
-            if (saved) {
-
-                try {
-
-                    const data = JSON.parse(saved);
-
-                    gameState.unlockedLevel = data.unlockedLevel || 1;
-
-                    gameState.rewards = data.rewards || gameState.rewards;
-
-                } catch(e) { console.error("Error al cargar progreso", e); }
-
-            }
-
-        }
-
-        function saveProgress() {
-
-            localStorage.setItem('guiaTuCaminoProgress2026', JSON.stringify({
-
-                unlockedLevel: gameState.unlockedLevel,
-
-                rewards: gameState.rewards
-
-            }));
-
-        }
-
-        loadProgress();
-
-        // --- SISTEMA DE AUDIO Y SINTETIZADOR ---
-
-        let synth = window\.speechSynthesis;
-
-        let readAloudActive = false;
-
-        let soundEffectsActive = true;
-
-        let voiceVolume = 0.8;
-
-        let voiceSpeed = 1.0;
-
-        let speechUtterance = null;
-
-        let audioCtx = null;
-
-        function getAudioContext() {
-
-            if (!audioCtx) {
-
-                audioCtx = new (window\.AudioContext || window\.webkitAudioContext)();
-
-            }
-
-            if (audioCtx.state === 'suspended') {
-
-                audioCtx.resume();
-
-            }
-
-            return audioCtx;
-
-        }
-
-        function playBeep(freq, type, duration) {
-
-            if (!soundEffectsActive) return;
-
-            try {
-
-                const ctx = getAudioContext();
-
-                const osc = ctx.createOscillator();
-
-                const gain = ctx.createGain();
-
-                osc.type = type || 'sine';
-
-                osc.frequency.setValueAtTime(freq || 440, ctx.currentTime);
-
-                gain.gain.setValueAtTime(voiceVolume \* 0.2, ctx.currentTime);
-
-                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + duration);
-
-                osc.connect(gain);
-
-                gain.connect(ctx.destination);
-
-                osc.start();
-
-                osc.stop(ctx.currentTime + duration);
-
-            } catch (e) { console.log("Audio no habilitado:", e); }
-
-        }
-
-        function playSelectionSound() {
-
-            [392.00, 523.25, 659.25].forEach((f, i) => setTimeout(() => playBeep(f, 'sine', 0.2), i \* 70));
-
-        }
-
-        function playSuccessSound() {
-
-            [523.25, 659.25, 783.99, 1046.50].forEach((f, i) => setTimeout(() => playBeep(f, 'triangle', 0.25), i \* 90));
-
-        }
-
-        function playErrorSound() {
-
-            playBeep(220, 'sawtooth', 0.3);
-
-            setTimeout(() => playBeep(160, 'sawtooth', 0.4), 150);
-
-        }
-
-        function speak(text) {
-
-            if (!synth || !readAloudActive) return;
-
-            synth.cancel();
-
-            speechUtterance = new SpeechSynthesisUtterance(text);
-
-            speechUtterance.lang = 'es-MX';
-
-            speechUtterance.volume = voiceVolume;
-
-            speechUtterance.rate = voiceSpeed;
-
-            const voices = synth.getVoices();
-
-            const esVoice = voices.find(v => v.lang && v.lang.includes('es'));
-
-            if (esVoice) speechUtterance.voice = esVoice;
-
-            synth.speak(speechUtterance);
-
-        }
-
-        // --- NAVEGACIÓN ---
-
-        function showScreen(screenId) {
-
-            document.querySelectorAll('.view-screen').forEach(s => s.classList.add('hidden'));
-
-            const target = document.getElementById(screenId);
-
-            if (target) {
-
-                target.classList.remove('hidden');
-
-                gameState.currentScreen = screenId;
-
-            }
-
-            const backBtn = document.getElementById('back-to-menu-btn');
-
-            if (screenId === 'screen-home') {
-
-                backBtn.classList.add('hidden');
-
-            } else {
-
-                backBtn.classList.remove('hidden');
-
-            }
-
-            if (screenId === 'screen-map') renderMapLevels();
-
-            if (screenId === 'screen-level-1') initLevel1();
-
-            if (screenId === 'screen-level-3') initLevel3();
-
-            if (screenId === 'screen-level-4') initLevel4();
-
-            if (screenId === 'screen-level-5') initLevel5();
-
-            window\.scrollTo({top: 0, behavior: 'smooth'});
-
-        }
-
-        const levelData = [
-
-            { id: 1, title: "Nivel 1: Conoce a Zeus", desc: "Preguntas y aprendizaje sobre discapacidad visual.", icon: "🏠" },
-
-            { id: 2, title: "Nivel 2: Bastones y Piedras", desc: "Recoge 7 bastones blancos esquivando piedras.", icon: "🦯" },
-
-            { id: 3, title: "Nivel 3: Usa tus Sentidos", desc: "Identifica sonidos y texturas del entorno.", icon: "👂" },
-
-            { id: 4, title: "Nivel 4: Perro Guía", desc: "Toma decisiones guiado por tu fiel perrito.", icon: "🐕" },
-
-            { id: 5, title: "Nivel 5: ¡A la Escuela!", desc: "Misión final de recorrido completo.", icon: "🏫" }
-
-        ];
-
-        function renderMapLevels() {
-
-            const container = document.getElementById('levels-container');
-
-            container.innerHTML = '';
-
-            levelData.forEach(lvl => {
-
-                const isUnlocked = lvl.id <= gameState.unlockedLevel;
-
-                const card = document.createElement('div');
-
-                card.className = \`p-4 rounded-2xl border-3 flex flex-col justify-between transition-all ${
-
-                    isUnlocked ? 'bg-sky-50 border-[#0081A7] shadow-lg hover\:scale-102 cursor-pointer' : 'bg-gray-100 border-gray-300 opacity-60 cursor-not-allowed'
-
-                }\`;
-
-                card.innerHTML = \`
-
-                    \<div class="flex items-center justify-between mb-2">
-
-                        \<span class="text-2xl">${lvl.icon}\</span>
-
-                        \<span class="text-xs font-black px-2 py-1 rounded-lg ${isUnlocked ? 'bg-[#0081A7] text-white' : 'bg-gray-400 text-white'}">
-
-                            ${isUnlocked ? (lvl.id < gameState.unlockedLevel ? 'Completado ⭐' : 'Desbloqueado') : '🔒 Bloqueado'}
-
-                        \</span>
-
-                    \</div>
-
-                    \<h3 class="font-black text-gray-800 text-base mb-1 text-left">${lvl.title}\</h3>
-
-                    \<p class="text-xs text-gray-600 text-left mb-3">${lvl.desc}\</p>
-
-                    \<button class="w-full py-2 px-3 rounded-xl font-bold text-sm ${isUnlocked ? 'color-primary-action text-white' : 'bg-gray-300 text-gray-600'}">
-
-                        ${isUnlocked ? 'JUGAR' : 'Bloqueado'}
-
-                    \</button>
-
-                \`;
-
-                if (isUnlocked) {
-
-                    card.addEventListener('click', () => {
-
-                        playSelectionSound();
-
-                        launchLevel(lvl.id);
-
-                    });
-
-                }
-
-                container.appendChild(card);
-
-            });
-
-        }
-
-        function launchLevel(id) {
-
-            if (id === 1) showScreen('screen-level-1');
-
-            if (id === 2) showScreen('screen-level-2-intro');
-
-            if (id === 3) showScreen('screen-level-3');
-
-            if (id === 4) showScreen('screen-level-4-intro');
-
-            if (id === 5) showScreen('screen-level-5');
-
-        }
-
-        // --- NIVEL 1: CONOCE A ZEUS (Preguntas mejoradas, sin marcas previas) ---
-
-        let l1Step = 0;
-
-        const l1Scenarios = [
-
-            {
-
-                dialog: "Zeus está en un lugar que no conoce. ¿Qué puede ayudarlo a saber qué ocurre a su alrededor?",
-
-                options: [
-
-                    "Utilizar su bastón blanco y la información auditiva.",
-
-                    "Cerrar los ojos con fuerza para adivinar.",
-
-                    "Esperar inmóvil sin intentar percibir nada."
-
-                ],
-
-                correct: 0
-
-            },
-
-            {
-
-                dialog: "¿Qué herramienta puede ayudar a una persona con discapacidad visual a detectar obstáculos en el suelo?",
-
-                options: [
-
-                    "Un par de lentes de sol oscuros solamente.",
-
-                    "El bastón blanco con punta deslizante.",
-
-                    "Una linterna pequeña de luz brillante."
-
-                ],
-
-                correct: 1
-
-            },
-
-            {
-
-                dialog: "Si Zeus camina por la calle y escucha un sonido fuerte de vehículo aproximándose, ¿qué debe hacer?",
-
-                options: [
-
-                    "Continuar caminando sin prestar atención.",
-
-                    "Detenerse con seguridad, escuchar y esperar junto a su perro guía.",
-
-                    "Correr hacia la mitad de la calle."
-
-                ],
-
-                correct: 1
-
-            },
-
-            {
-
-                dialog: "¿Cuál es la función principal de un perro guía entrenado?",
-
-                options: [
-
-                    "Jugar en el parque todo el día.",
-
-                    "Acompañar y ayudar a detectar obstáculos durante el desplazamiento.",
-
-                    "Cargar la mochila escolar de Zeus."
-
-                ],
-
-                correct: 1
-
-            },
-
-            {
-
-                dialog: "Cuando nos encontramos con una persona con discapacidad visual que necesita orientación, ¿cómo debemos actuar?",
-
-                options: [
-
-                    "Preguntar amablemente si necesita ayuda antes de actuar.",
-
-                    "Gritarle desde lejos para que se apure.",
-
-                    "Ignorarlo por completo."
-
-                ],
-
-                correct: 0
-
-            }
-
-        ];
-
-        function initLevel1() {
-
-            l1Step = 0;
-
-            renderL1Step();
-
-        }
-
-        function renderL1Step() {
-
-            if (l1Step >= l1Scenarios.length) {
-
-                showScreen('screen-learning-1');
-
-                return;
-
-            }
-
-            document.getElementById('l1-score').innerText = \`Pregunta ${l1Step + 1}/5\`;
-
-            const sc = l1Scenarios[l1Step];
-
-            document.getElementById('l1-dialog').innerText = sc.dialog;
-
-            speak(sc.dialog);
-
-            const optContainer = document.getElementById('l1-options');
-
-            optContainer.innerHTML = '';
-
-            sc.options.forEach((optText, idx) => {
-
-                const btn = document.createElement('button');
-
-                btn.className = 'p-4 bg-white hover\:bg-sky-100 border-2 border-[#0081A7] rounded-2xl font-bold text-gray-800 text-sm sm\:text-base shadow transition-all cursor-pointer text-left';
-
-                btn.innerText = optText;
-
-                btn.addEventListener('click', () => {
-
-                    if (idx === sc.correct) {
-
-                        playSuccessSound();
-
-                        speak("¡Muy bien!");
-
-                        l1Step++;
-
-                        renderL1Step();
-
-                    } else {
-
-                        playErrorSound();
-
-                        speak("Inténtalo de nuevo.");
-
-                        alert("⚠️ Esa no es la mejor opción. ¡Piensa en la seguridad y autonomía de Zeus e inténtalo otra vez!");
-
-                    }
-
-                });
-
-                optContainer.appendChild(btn);
-
-            });
-
-        }
-
-        document.getElementById('next-to-l2-btn').addEventListener('click', () => {
-
-            gameState.rewards.l1 = true;
-
-            if (gameState.unlockedLevel < 2) gameState.unlockedLevel = 2;
-
-            saveProgress();
-
-            playSelectionSound();
-
-            showScreen('screen-map');
-
-        });
-
-        // --- NIVEL 2: BASTONES Y PIEDRAS (Uso exacto de imágenes subidas) ---
-
-        let l2AnimId = null;
-
-        let l2Collected = 0;
-
-        let l2ZeusX = 300;
-
-        let l2Canes = [];
-
-        let l2Obstacles = [];
-
-        let l2Keys = { left: false, right: false };
-
-        const bastonImg = new Image();
-
-        bastonImg.src = 'image\_567548.png';
-
-        const piedraImg = new Image();
-
-        piedraImg.src = 'image\_5678ac.png';
-
-        document.getElementById('l2-start-game-btn').addEventListener('click', () => {
-
-            playSelectionSound();
-
-            showScreen('screen-level-2-game');
-
-            startLevel2Game();
-
-        });
-
-        function startLevel2Game() {
-
-            const canvas = document.getElementById('canvas-l2');
-
-            const ctx = canvas.getContext('2d');
-
-            l2Collected = 0;
-
-            l2ZeusX = canvas.width / 2;
-
-            l2Canes = [];
-
-            for(let i=0; i<7; i++) {
-
-                l2Canes.push({
-
-                    x: Math.random() \* (canvas.width - 80) + 40,
-
-                    y: -140 - (i \* 130),
-
-                    collected: false
-
-                });
-
-            }
-
-            l2Obstacles = [];
-
-            for(let i=0; i<5; i++) {
-
-                l2Obstacles.push({
-
-                    x: Math.random() \* (canvas.width - 90) + 45,
-
-                    y: -200 - (i \* 180)
-
-                });
-
-            }
-
-            if(l2AnimId) cancelAnimationFrame(l2AnimId);
-
-            function updateL2() {
-
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-                ctx.fillStyle = '#86efac';
-
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-                ctx.fillStyle = '#15803d';
-
-                ctx.fillRect(0, 0, 40, canvas.height);
-
-                ctx.fillRect(canvas.width - 40, 0, 40, canvas.height);
-
-                ctx.fillStyle = '#e2e8f0';
-
-                ctx.beginPath();
-
-                ctx.moveTo(120, 0); ctx.lineTo(canvas.width - 120, 0);
-
-                ctx.lineTo(canvas.width - 60, canvas.height); ctx.lineTo(60, canvas.height);
-
-                ctx.fill();
-
-                if(l2Keys.left && l2ZeusX > 70) l2ZeusX -= 4;
-
-                if(l2Keys.right && l2ZeusX < canvas.width - 70) l2ZeusX += 4;
-
-                // Dibujar Bastones con image\_567548.png
-
-                l2Canes.forEach(c => {
-
-                    c.y += 2.2;
-
-                    if(!c.collected) {
-
-                        try {
-
-                            ctx.drawImage(bastonImg, c.x - 20, c.y - 20, 40, 50);
-
-                        } catch(e) {
-
-                            ctx.fillStyle = '#ff0000';
-
-                            ctx.fillRect(c.x-5, c.y, 10, 40);
-
-                        }
-
-                        if(Math.abs(l2ZeusX - c.x) < 35 && Math.abs((canvas.height - 80) - c.y) < 35) {
-
-                            c.collected = true;
-
-                            l2Collected++;
-
-                            playBeep(880, 'sine', 0.15);
-
-                            document.getElementById('l2-counter').innerText = \`🦯 Bastones: ${l2Collected} / 7\`;
-
-                        }
-
-                    }
-
-                });
-
-                // Dibujar Piedras con image\_5678ac.png
-
-                l2Obstacles.forEach(obs => {
-
-                    obs.y += 2.2;
-
-                    try {
-
-                        ctx.drawImage(piedraImg, obs.x - 22, obs.y - 22, 44, 44);
-
-                    } catch(e) {
-
-                        ctx.fillStyle = '#64748b';
-
-                        ctx.beginPath(); ctx.arc(obs.x, obs.y, 18, 0, Math.PI\*2); ctx.fill();
-
-                    }
-
-                    if(Math.abs(l2ZeusX - obs.x) < 28 && Math.abs((canvas.height - 80) - obs.y) < 28) {
-
-                        obs.y = -400;
-
-                        playErrorSound();
-
-                        speak("¡Cuidado con la piedra!");
-
-                    }
-
-                });
-
-                l2Canes.forEach(c => { if(c.y > canvas.height + 50) c.y = -100; });
-
-                l2Obstacles.forEach(o => { if(o.y > canvas.height + 50) o.y = -200; });
-
-                // Zeus
-
-                ctx.fillStyle = '#0d9488';
-
-                ctx.beginPath();
-
-                ctx.arc(l2ZeusX, canvas.height - 80, 22, 0, Math.PI \* 2);
-
-                ctx.fill();
-
-                ctx.fillStyle = '#3b82f6';
-
-                ctx.fillRect(l2ZeusX - 12, canvas.height - 60, 24, 30);
-
-                if(l2Collected >= 7) {
-
-                    cancelAnimationFrame(l2AnimId);
-
-                    showScreen('screen-learning-2');
-
-                    return;
-
-                }
-
-                l2AnimId = requestAnimationFrame(updateL2);
-
-            }
-
-            updateL2();
-
-        }
-
-        document.getElementById('next-to-l3-btn').addEventListener('click', () => {
-
-            gameState.rewards.l2 = true;
-
-            if (gameState.unlockedLevel < 3) gameState.unlockedLevel = 3;
-
-            saveProgress();
-
-            playSelectionSound();
-
-            showScreen('screen-map');
-
-        });
-
-        // --- NIVEL 3: SONIDOS Y SENTIDOS ---
-
-        let l3Round = 1;
-
-        const l3RoundsData = [
-
-            { type: 'sound', title: 'Ronda 1/6: Sonido de Automóvil', freq: 220, wave: 'sawtooth', correctImg: 'car', options: ['car', 'dog', 'bell'] },
-
-            { type: 'sound', title: 'Ronda 2/6: Sonido de Perro Ladrando', freq: 550, wave: 'square', correctImg: 'dog', options: ['bell', 'dog', 'bike'] },
-
-            { type: 'sound', title: 'Ronda 3/6: Sonido de Campana Escolar', freq: 880, wave: 'sine', correctImg: 'bell', options: ['car', 'bell', 'steps'] },
-
-            { type: 'sound', title: 'Ronda 4/6: Sonido de Bicicleta', freq: 620, wave: 'triangle', correctImg: 'bike', options: ['dog', 'bike', 'steps'] },
-
-            { type: 'sound', title: 'Ronda 5/6: Sonido de Pasos', freq: 150, wave: 'sawtooth', correctImg: 'steps', options: ['car', 'bell', 'steps'] },
-
-            { type: 'texture', title: 'Ronda 6/6: Actividad Táctil (Textura Suave)', correctTex: 'soft', options: ['rough', 'soft', 'smooth'] }
-
-        ];
-
-        function initLevel3() {
-
-            l3Round = 1;
-
-            renderL3Round();
-
-        }
-
-        function renderL3Round() {
-
-            const container = document.getElementById('l3-content');
-
-            if (l3Round > l3RoundsData.length) {
-
-                showScreen('screen-learning-3');
-
-                return;
-
-            }
-
-            document.getElementById('l3-stage').innerText = \`Ronda ${l3Round} / 6\`;
-
-            const data = l3RoundsData[l3Round - 1];
-
-            container.innerHTML = '';
-
-            if (data.type === 'sound') {
-
-                container.innerHTML = \`
-
-                    \<h4 class="text-xl font-black text-purple-900 mb-2">👂 Escucha con atención\</h4>
-
-                    \<p class="text-gray-700 font-bold mb-3">Reproduce el sonido tantas veces como necesites antes de elegir:\</p>
-
-                    \<div class="flex justify-center gap-3 mb-4">
-
-                        \<button id="l3-play-btn" class="bg-purple-600 hover\:bg-purple-700 text-white font-bold py-3 px-6 rounded-xl shadow cursor-pointer">🔊 ESCUCHAR\</button>
-
-                        \<button id="l3-replay-btn" class="bg-purple-200 hover\:bg-purple-300 text-purple-900 font-bold py-3 px-5 rounded-xl shadow cursor-pointer">🔁 ESCUCHAR OTRA VEZ\</button>
-
-                    \</div>
-
-                    \<div id="l3-options-box" class="grid grid-cols-3 gap-4 max-w-md mx-auto">\</div>
-
-                \`;
-
-                const playAudioAction = () => {
-
-                    playBeep(data.freq, data.wave, 0.4);
-
-                    setTimeout(() => playBeep(data.freq \* 1.2, data.wave, 0.4), 250);
-
-                    speak("Sonido reproducido.");
-
-                };
-
-                document.getElementById('l3-play-btn').addEventListener('click', playAudioAction);
-
-                document.getElementById('l3-replay-btn').addEventListener('click', playAudioAction);
-
-                const optBox = document.getElementById('l3-options-box');
-
-                const symbols = { car: '🚗', dog: '🐶', bell: '🔔', bike: '🚲', steps: '👣' };
-
-                data.options.forEach(opt => {
-
-                    const btn = document.createElement('button');
-
-                    btn.className = 'p-6 bg-white hover\:bg-purple-100 border-3 border-purple-400 rounded-2xl text-4xl shadow transition-transform hover\:scale-105 cursor-pointer flex items-center justify-center';
-
-                    btn.innerHTML = symbols[opt] || '❓';
-
-                    btn.addEventListener('click', () => {
-
-                        if (opt === data.correctImg) {
-
-                            playSuccessSound();
-
-                            speak("¡Correcto!");
-
-                            l3Round++;
-
-                            renderL3Round();
-
-                        } else {
-
-                            playErrorSound();
-
-                            speak("Incorrecto. Escucha otra vez.");
-
-                            alert("⚠️ No es esa opción. ¡Escucha el sonido de nuevo e inténtalo!");
-
-                        }
-
-                    });
-
-                    optBox.appendChild(btn);
-
-                });
-
-            } else {
-
-                container.innerHTML = \`
-
-                    \<h4 class="text-xl font-black text-purple-900 mb-2">✋ ¿Qué textura es?\</h4>
-
-                    \<p class="text-gray-700 font-bold mb-4">Zeus toca una superficie para reconocerla. ¿Qué objeto tiene una textura \<strong>suave y blandita\</strong>?\</p>
-
-                    \<div class="grid grid-cols-3 gap-3 max-w-md mx-auto">
-
-                        \<button class="l3-tex-btn p-5 bg-white hover\:bg-purple-100 border-3 border-purple-400 rounded-2xl text-3xl shadow cursor-pointer" data-tex="rough">🧱\</button>
-
-                        \<button class="l3-tex-btn p-5 bg-white hover\:bg-purple-100 border-3 border-purple-400 rounded-2xl text-3xl shadow cursor-pointer" data-tex="soft">🧸\</button>
-
-                        \<button class="l3-tex-btn p-5 bg-white hover\:bg-purple-100 border-3 border-purple-400 rounded-2xl text-3xl shadow cursor-pointer" data-tex="smooth">⚽\</button>
-
-                    \</div>
-
-                \`;
-
-                document.querySelectorAll('.l3-tex-btn').forEach(btn => {
-
-                    btn.addEventListener('click', () => {
-
-                        if (btn.dataset.tex === data.correctTex) {
-
-                            playSuccessSound();
-
-                            l3Round++;
-
-                            renderL3Round();
-
-                        } else {
-
-                            playErrorSound();
-
-                            alert("⚠️ Esa textura no es la correcta. ¡Inténtalo de nuevo!");
-
-                        }
-
-                    });
-
-                });
-
-            }
-
-        }
-
-        document.getElementById('next-to-l4-btn').addEventListener('click', () => {
-
-            gameState.rewards.l3 = true;
-
-            if (gameState.unlockedLevel < 4) gameState.unlockedLevel = 4;
-
-            saveProgress();
-
-            playSelectionSound();
-
-            showScreen('screen-map');
-
-        });
-
-        // --- NIVEL 4: PERRO GUÍA (Nueva mecánica dedicada) ---
-
-        let l4Step = 0;
-
-        const l4Scenarios = [
-
-            {
-
-                dialog: "🐕 ¡Tu perro guía se detuvo frente a un gran obstáculo en el camino! ¿Qué debes hacer?",
-
-                options: [
-
-                    "Esperar y seguir las indicaciones del perro para rodear el obstáculo.",
-
-                    "Jalar al perro con fuerza para avanzar rápido.",
-
-                    "Seguir caminando sin detenerse ni prestar atención."
-
-                ],
-
-                correct: 0
-
-            },
-
-            {
-
-                dialog: "🐕 El perro guía se detiene al llegar a la esquina de una calle con mucho tráfico. ¿Cuál es la acción correcta?",
-
-                options: [
-
-                    "Soltar al perro y cruzar corriendo.",
-
-                    "Esperar con calma a que el perro indique que es seguro cruzar.",
-
-                    "Gritar para que los autos se detengan."
-
-                ],
-
-                correct: 1
-
-            },
-
-            {
-
-                dialog: "🐕 Mientras el perro guía está trabajando guiando a Zeus, un amigo se acerca y quiere distraerlo con un juguete. ¿Qué debemos recordar?",
-
-                options: [
-
-                    "Dejar que juegue y soltar el arnés.",
-
-                    "No distraer al perro guía cuando está trabajando porque su atención es vital.",
-
-                    "Regañar al perro."
-
-                ],
-
-                correct: 1
-
-            }
-
-        ];
-
-        document.getElementById('l4-start-game-btn').addEventListener('click', () => {
-
-            playSelectionSound();
-
-            showScreen('screen-level-4');
-
-        });
-
-        function initLevel4() {
-
-            l4Step = 0;
-
-            renderL4Step();
-
-        }
-
-        function renderL4Step() {
-
-            if (l4Step >= l4Scenarios.length) {
-
-                showScreen('screen-learning-4');
-
-                return;
-
-            }
-
-            document.getElementById('l4-progress').innerText = \`Situación ${l4Step + 1}/3\`;
-
-            const sc = l4Scenarios[l4Step];
-
-            document.getElementById('l4-scenario').innerText = sc.dialog;
-
-            speak(sc.dialog);
-
-            const optContainer = document.getElementById('l4-options');
-
-            optContainer.innerHTML = '';
-
-            sc.options.forEach((optText, idx) => {
-
-                const btn = document.createElement('button');
-
-                btn.className = 'p-4 bg-white hover\:bg-emerald-100 border-2 border-emerald-600 rounded-2xl font-bold text-gray-800 text-sm sm\:text-base shadow transition-all cursor-pointer text-left';
-
-                btn.innerText = optText;
-
-                btn.addEventListener('click', () => {
-
-                    if (idx === sc.correct) {
-
-                        playSuccessSound();
-
-                        speak("¡Muy bien!");
-
-                        l4Step++;
-
-                        renderL4Step();
-
-                    } else {
-
-                        playErrorSound();
-
-                        speak("Inténtalo de nuevo.");
-
-                        alert("⚠️ Debemos confiar en el entrenamiento del perro guía y cuidar su labor. ¡Inténtalo otra vez!");
-
-                    }
-
-                });
-
-                optContainer.appendChild(btn);
-
-            });
-
-        }
-
-        document.getElementById('next-to-l5-btn').addEventListener('click', () => {
-
-            gameState.rewards.l4 = true;
-
-            if (gameState.unlockedLevel < 5) gameState.unlockedLevel = 5;
-
-            saveProgress();
-
-            playSelectionSound();
-
-            showScreen('screen-map');
-
-        });
-
-        // --- NIVEL 5: MISIÓN FINAL A LA ESCUELA (5 Etapas combinadas) ---
-
-        let l5Anim = null;
-
-        let l5ZeusX = 300;
-
-        let l5Stage = 1;
-
-        let l5StageProgress = 0;
-
-        let l5Keys = { left: false, right: false };
-
-        function initLevel5() {
-
-            l5Stage = 1;
-
-            l5StageProgress = 0;
-
-            l5ZeusX = 300;
-
-            const canvas = document.getElementById('canvas-l5');
-
-            const ctx = canvas.getContext('2d');
-
-            if (l5Anim) cancelAnimationFrame(l5Anim);
-
-            function updateL5() {
-
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-                let bgColors = ['#bae6fd', '#fed7aa', '#e9d5ff', '#cbd5e1', '#fef08a'];
-
-                ctx.fillStyle = bgColors[l5Stage - 1];
-
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-                if (l5Keys.left && l5ZeusX > 60) l5ZeusX -= 3;
-
-                if (l5Keys.right && l5ZeusX < canvas.width - 60) l5ZeusX += 3;
-
-                l5StageProgress += 0.7;
-
-                if (l5StageProgress >= 100) {
-
-                    if (l5Stage < 5) {
-
-                        l5Stage++;
-
-                        l5StageProgress = 0;
-
-                        playBeep(650, 'triangle', 0.2);
-
-                        document.getElementById('l5-stage-name').innerText = \`Etapa ${l5Stage}/5\`;
-
-                    }
-
-                }
-
-                if (l5Stage === 5) {
-
-                    ctx.fillStyle = '#f59e0b';
-
-                    ctx.fillRect(canvas.width / 2 - 110, 40, 220, 100);
-
-                    ctx.fillStyle = '#ffffff';
-
-                    ctx.font = 'bold 22px Fredoka';
-
-                    ctx.fillText('🏫 ESCUELA', canvas.width / 2 - 65, 100);
-
-                    if (l5StageProgress >= 95) {
-
-                        cancelAnimationFrame(l5Anim);
-
-                        gameState.rewards.l5 = true;
-
-                        saveProgress();
-
-                        playSuccessSound();
-
-                        showScreen('screen-victory');
-
-                        return;
-
-                    }
-
-                }
-
-                // Zeus y perro
-
-                ctx.fillStyle = '#0d9488';
-
-                ctx.beginPath(); ctx.arc(l5ZeusX, canvas.height - 90, 20, 0, Math.PI \* 2); ctx.fill();
-
-                ctx.fillStyle = '#78350f';
-
-                ctx.fillRect(l5ZeusX + 24, canvas.height - 80, 28, 20);
-
-                ctx.fillStyle = '#0f172a';
-
-                ctx.font = 'bold 15px Fredoka';
-
-                const stageDesc = [
-
-                    "1️⃣ Obstáculo inicial",
-
-                    "2️⃣ Reconocer sonido",
-
-                    "3️⃣ Usar bastón blanco",
-
-                    "4️⃣ Guiado por perro",
-
-                    "5️⃣ ¡Llegada a la Escuela!"
-
-                ];
-
-                ctx.fillText(\`${stageDesc[l5Stage - 1]} - ${Math.floor(l5StageProgress)}%\`, 20, 35);
-
-                l5Anim = requestAnimationFrame(updateL5);
-
-            }
-
-            updateL5();
-
-        }
-
-        window\.addEventListener('keydown', e => {
-
-            if(e.key === 'ArrowLeft') { l2Keys.left = true; l5Keys.left = true; }
-
-            if(e.key === 'ArrowRight') { l2Keys.right = true; l5Keys.right = true; }
-
-        });
-
-        window\.addEventListener('keyup', e => {
-
-            if(e.key === 'ArrowLeft') { l2Keys.left = false; l5Keys.left = false; }
-
-            if(e.key === 'ArrowRight') { l2Keys.right = false; l5Keys.right = false; }
-
-        });
-
-        // --- EVENTOS UI Y ACCESIBILIDAD ---
-
-        document.getElementById('start-btn').addEventListener('click', () => { playSelectionSound(); showScreen('screen-intro'); });
-
-        document.getElementById('intro-next-btn').addEventListener('click', () => { playSelectionSound(); showScreen('screen-map'); });
-
-        document.getElementById('back-to-menu-btn').addEventListener('click', () => { playSelectionSound(); showScreen('screen-map'); });
-
-        document.getElementById('restart-game-btn').addEventListener('click', () => { playSelectionSound(); showScreen('screen-home'); });
-
-        document.getElementById('victory-map-btn').addEventListener('click', () => { playSelectionSound(); showScreen('screen-map'); });
-
-        document.getElementById('view-rewards-btn').addEventListener('click', () => {
-
-            playSelectionSound();
-
-            const list = document.getElementById('rewards-list');
-
-            list.innerHTML = \`
-
-                \<div class="p-3 rounded-xl ${gameState.rewards.l1 ? 'bg-green-100 text-green-900' : 'bg-gray-100 text-gray-400'} font-bold text-sm">${gameState.rewards.l1 ? '⭐ Nivel 1: Conoce a Zeus' : '🔒 Nivel 1 pendiente'}\</div>
-
-                \<div class="p-3 rounded-xl ${gameState.rewards.l2 ? 'bg-green-100 text-green-900' : 'bg-gray-100 text-gray-400'} font-bold text-sm">${gameState.rewards.l2 ? '⭐ Nivel 2: Bastones y Piedras' : '🔒 Nivel 2 pendiente'}\</div>
-
-                \<div class="p-3 rounded-xl ${gameState.rewards.l3 ? 'bg-green-100 text-green-900' : 'bg-gray-100 text-gray-400'} font-bold text-sm">${gameState.rewards.l3 ? '⭐ Nivel 3: Usa tus Sentidos' : '🔒 Nivel 3 pendiente'}\</div>
-
-                \<div class="p-3 rounded-xl ${gameState.rewards.l4 ? 'bg-green-100 text-green-900' : 'bg-gray-100 text-gray-400'} font-bold text-sm">${gameState.rewards.l4 ? '⭐ Nivel 4: Perro Guía' : '🔒 Nivel 4 pendiente'}\</div>
-
-                \<div class="p-3 rounded-xl ${gameState.rewards.l5 ? 'bg-amber-100 text-amber-900' : 'bg-gray-100 text-gray-400'} font-bold text-sm">${gameState.rewards.l5 ? '🏆 Nivel 5: ¡Misión Cumplida!' : '🔒 Nivel 5 pendiente'}\</div>
-
-            \`;
-
-            document.getElementById('modal-rewards').classList.remove('hidden');
-
-        });
-
-        document.getElementById('close-rewards-btn').addEventListener('click', () => { document.getElementById('modal-rewards').classList.add('hidden'); });
-
-        const accBtn = document.getElementById('acc-btn');
-
-        const accMenu = document.getElementById('acc-menu');
-
-        const closeAccBtn = document.getElementById('close-acc-btn');
-
-        accBtn.addEventListener('click', () => {
-
-            accMenu.classList.toggle('hidden');
-
-            if(!accMenu.classList.contains('hidden')) playBeep(520, 'sine', 0.1);
-
-        });
-
-        closeAccBtn.addEventListener('click', () => accMenu.classList.add('hidden'));
-
-        document.getElementById('switch-read-aloud').addEventListener('change', e => {
-
-            readAloudActive = e.target.checked;
-
-            if(readAloudActive) speak("Lectura de voz activada.");
-
-        });
-
-        document.getElementById('switch-sounds').addEventListener('change', e => { soundEffectsActive = e.target.checked; });
-
-        document.getElementById('range-volume').addEventListener('input', e => {
-
-            voiceVolume = e.target.value / 100;
-
-            document.getElementById('volume-val').innerText = \`${e.target.value}%\`;
-
-        });
-
-        document.getElementById('range-speed').addEventListener('input', e => {
-
-            voiceSpeed = e.target.value / 10;
-
-            document.getElementById('speed-val').innerText = voiceSpeed < 0.9 ? 'Lenta' : (voiceSpeed <= 1.2 ? 'Normal' : 'Rápida');
-
-        });
-
-        document.getElementById('btn-audiodescripcion').addEventListener('click', () => {
-
-            speak("Estás en Guía Tu Camino. Ayuda a Zeus a llegar a la escuela superando los 5 niveles educativos.");
-
-        });
-
-        document.getElementById('btn-high-contrast').addEventListener('click', () => {
-
-            document.body.classList.toggle('high-contrast');
-
-        });
-
-        if(synth && synth.onvoiceschanged !== undefined) {
-
-            synth.onvoiceschanged = () => synth.getVoices();
-
-        }
-
-    \</script>
-
-\</body>
-
-\</html> 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía Tu Camino - Videojuego Educativo</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700;900&family=Lexend:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Fredoka', 'Lexend', sans-serif;
+            background-color: #e0f2fe;
+            background-image: linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.15)), url('paisaje.png.html.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            overflow-x: hidden;
+            touch-action: manipulation;
+        }
+        .color-primary-action {
+            background-color: #0081A7;
+        }
+        .color-primary-action:hover {
+            background-color: #006887;
+        }
+        *:focus-visible {
+            outline: 6px solid #F07167;
+            outline-offset: 4px;
+        }
+        /* High Contrast Mode */
+        .high-contrast {
+            background-image: none !important;
+            background-color: #000000 !important;
+            color: #FFFFFF !important;
+        }
+        .high-contrast h1, .high-contrast h2, .high-contrast h3 {
+            color: #FFFF00 !important;
+        }
+        .high-contrast .color-primary-action {
+            background-color: #FFFF00 !important;
+            color: #000000 !important;
+            border: 4px solid #FFFFFF !important;
+        }
+        .high-contrast .panel-box, .high-contrast .game-card {
+            background-color: #1a1a1a !important;
+            border: 3px solid #FFFF00 !important;
+            color: #FFFFFF !important;
+        }
+        .game-title {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 900;
+            letter-spacing: 2px;
+            line-height: 1.1;
+        }
+        .title-guia {
+            color: #36B7A8;
+            -webkit-text-stroke: 3px white;
+            text-shadow: 4px 4px 0 #168C83, 7px 7px 12px rgba(0,0,0,0.20);
+        }
+        .title-tu {
+            color: #F07167;
+            -webkit-text-stroke: 3px white;
+            text-shadow: 4px 4px 0 #D9574D, 7px 7px 12px rgba(0,0,0,0.20);
+        }
+        .title-camino {
+            color: #9B6DD7;
+            -webkit-text-stroke: 3px white;
+            text-shadow: 4px 4px 0 #7045A8, 7px 7px 12px rgba(0,0,0,0.20);
+        }
+        .adventure-pulse {
+            animation: adventurePulse 2s ease-in-out infinite;
+        }
+        @keyframes adventurePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        canvas {
+            display: block;
+            margin: 0 auto;
+            background: linear-gradient(to bottom, #bae6fd, #e0f2fe);
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between p-3 sm:p-6 transition-colors duration-300">
+    <header class="w-full max-w-5xl mx-auto flex justify-between items-center relative z-50">
+        <div id="header-left" class="flex items-center gap-2">
+            <button 
+                id="back-to-menu-btn" 
+                class="hidden bg-white/95 hover:bg-white text-gray-800 font-bold py-2.5 px-4 rounded-2xl shadow-md border-2 border-[#0081A7] transition-all flex items-center gap-2 text-sm sm:text-base cursor-pointer"
+                aria-label="Volver al menú principal"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#0081A7]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                <span>Menú / Mapa</span>
+            </button>
+        </div>
+        <div class="relative">
+            <button 
+                id="acc-btn" 
+                class="flex items-center gap-2 bg-white text-gray-800 font-bold py-2.5 px-4 sm:px-5 rounded-full shadow-lg border-2 border-[#0081A7] transition-colors hover:bg-gray-50 cursor-pointer"
+                aria-label="Menú de Accesibilidad y Lectura de Voz"
+                title="Opciones de Accesibilidad"
+                aria-expanded="false"
+                aria-controls="acc-menu"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-[#0081A7]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+                <span class="text-base hidden sm:inline text-gray-700">Accesibilidad</span>
+            </button>
+            <div 
+                id="acc-menu" 
+                class="panel-box hidden absolute top-14 right-0 bg-white p-5 rounded-3xl border-3 border-gray-100 w-80 shadow-2xl transition-all duration-200 z-50 text-left"
+                role="dialog"
+                aria-label="Herramientas de Accesibilidad"
+            >
+                <div class="flex justify-between items-center mb-3">
+                    <h2 class="text-lg font-bold text-gray-800">Ayudas de Voz y Sonido</h2>
+                    <button id="close-acc-btn" class="text-gray-400 hover:text-gray-600 font-bold text-2xl p-1 cursor-pointer" aria-label="Cerrar opciones">&times;</button>
+                </div>
+                <div class="space-y-3">
+                    <button 
+                        id="btn-audiodescripcion" 
+                        class="w-full flex items-center justify-center gap-2 bg-amber-100 hover:bg-amber-200 text-amber-950 py-3 px-4 rounded-2xl font-bold transition-colors text-sm cursor-pointer"
+                        aria-label="Escuchar instrucciones por voz"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-amber-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                        </svg>
+                        <span>Escuchar Instrucciones</span>
+                    </button>
+                    <div class="flex items-center justify-between p-2.5 rounded-xl bg-gray-50 border border-gray-100">
+                        <label for="switch-read-aloud" class="text-xs font-bold text-gray-700 cursor-pointer">Voz al tocar botones</label>
+                        <input type="checkbox" id="switch-read-aloud" class="w-5 h-5 text-[#0081A7] rounded border-gray-300 cursor-pointer">
+                    </div>
+                    <div class="flex items-center justify-between p-2.5 rounded-xl bg-gray-50 border border-gray-100">
+                        <label for="switch-sounds" class="text-xs font-bold text-gray-700 cursor-pointer">Efectos de Sonido</label>
+                        <input type="checkbox" id="switch-sounds" class="w-5 h-5 text-[#0081A7] rounded border-gray-300 cursor-pointer" checked>
+                    </div>
+                    <div class="space-y-1 bg-gray-50 p-2.5 rounded-xl border border-gray-100">
+                        <div class="flex justify-between text-xs font-bold text-gray-600">
+                            <label for="range-volume">Volumen</label>
+                            <span id="volume-val">80%</span>
+                        </div>
+                        <input type="range" id="range-volume" min="0" max="100" value="80" class="w-full h-2 bg-gray-200 rounded-lg accent-[#0081A7] cursor-pointer">
+                    </div>
+                    <div class="space-y-1 bg-gray-50 p-2.5 rounded-xl border border-gray-100">
+                        <div class="flex justify-between text-xs font-bold text-gray-600">
+                            <label for="range-speed">Velocidad de Voz</label>
+                            <span id="speed-val">Normal</span>
+                        </div>
+                        <input type="range" id="range-speed" min="5" max="15" value="10" class="w-full h-2 bg-gray-200 rounded-lg accent-[#0081A7] cursor-pointer">
+                    </div>
+                    <button id="btn-high-contrast" class="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 py-2.5 px-3 rounded-xl font-bold transition-colors flex items-center justify-center gap-2 text-xs cursor-pointer">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707.707M12 8a4 4 0 110 8 4 4 0 010-8z" />
+                        </svg>
+                        <span>Alto Contraste</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main id="game-app-container" class="w-full max-w-4xl mx-auto flex-grow flex flex-col justify-center items-center text-center px-4 my-2">
+        <!-- PANTALLA 1: INICIO -->
+        <div id="screen-home" class="view-screen w-full flex flex-col items-center">
+            <h1 id="main-title" class="game-title text-4xl sm:text-6xl md:text-7xl mb-4 transition-all focus:outline-none" tabindex="0">
+                <span class="title-guia">GUÍA</span>
+                <span class="title-tu"> TU </span>
+                <span class="title-camino">CAMINO</span>
+            </h1>
+            <div class="my-3 flex justify-center items-center w-full max-h-60">
+                <img 
+                    src="logozeuss.pnghtml.jpg" 
+                    alt="Logo de Guía Tu Camino con Zeus y su perro guía" 
+                    class="max-h-52 sm:max-h-60 object-contain drop-shadow-xl transition-transform hover:scale-105"
+                    onerror="this.onerror=null; this.src='https://placehold.co/240x240/0081A7/FFFFFF?text=Zeus+y+Perro+Guía';"
+                >
+            </div>
+            <button 
+                id="start-btn" 
+                class="color-primary-action text-white font-black text-xl sm:text-2xl py-4 px-8 sm:px-10 rounded-3xl shadow-xl transition-colors w-full max-w-md border-b-8 border-[#005a75] adventure-pulse mt-4 cursor-pointer"
+                aria-label="Botón: Empieza la aventura"
+            >
+                EMPIEZA LA AVENTURA
+            </button>
+        </div>
+
+        <!-- PANTALLA 2: PRESENTACIÓN DE ZEUS -->
+        <div id="screen-intro" class="view-screen hidden w-full flex flex-col items-center bg-white/95 p-6 sm:p-8 rounded-3xl shadow-2xl border-4 border-[#0081A7]">
+            <h2 class="text-2xl sm:text-4xl font-black text-[#0081A7] mb-4">¡Hola! Conoce a Zeus</h2>
+            <div class="my-2 p-4 bg-sky-50 rounded-2xl border-2 border-dashed border-[#0081A7] w-full max-w-xs flex flex-col items-center justify-center">
+                <img 
+                    src="logozeuss.pnghtml.jpg" 
+                    alt="Zeus y su perro guía" 
+                    class="max-h-44 object-contain rounded-xl shadow-md"
+                    onerror="this.onerror=null; this.src='https://placehold.co/200x200/0081A7/FFFFFF?text=ZEUS+Y+PERRO';"
+                />
+            </div>
+            <div class="text-gray-700 text-base sm:text-lg font-semibold my-4 max-w-lg leading-relaxed space-y-2">
+                <p>¡Hola! Soy Zeus. Soy un niño con discapacidad visual y mi fiel perro guía me acompaña a todas partes.</p>
+                <p>Hoy tengo una misión muy importante... <span class="text-[#F07167] font-bold">¡Llegar a la escuela!</span> ¿Me ayudas a recorrer el camino?</p>
+            </div>
+            <button 
+                id="intro-next-btn" 
+                class="color-primary-action text-white font-black text-xl py-4 px-8 rounded-2xl shadow-lg border-b-6 border-[#005a75] hover:scale-105 transition-transform cursor-pointer"
+            >
+                ¡AYÚDAME A LLEGAR!
+            </button>
+        </div>
+
+        <!-- PANTALLA 3: MAPA DE NIVELES -->
+        <div id="screen-map" class="view-screen hidden w-full flex flex-col items-center bg-white/95 p-6 sm:p-8 rounded-3xl shadow-2xl border-4 border-[#0081A7]">
+            <h2 class="text-3xl sm:text-4xl font-black text-[#0081A7] mb-2">🗺️ Mapa de la Aventura</h2>
+            <p class="text-gray-600 font-semibold mb-6 text-sm sm:text-base">Selecciona un nivel desbloqueado para continuar:</p>
+            <div id="levels-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-2xl mb-6"></div>
+            <div class="flex flex-wrap justify-center gap-3">
+                <button id="view-rewards-btn" class="bg-amber-400 hover:bg-amber-500 text-amber-950 font-bold py-2.5 px-6 rounded-2xl shadow-md transition-colors text-sm flex items-center gap-2 cursor-pointer">
+                    <span>🏆 Ver Mis Recompensas</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- PANTALLA 4: NIVEL 1 (CONOCE A ZEUS - PREGUNTAS) -->
+        <div id="screen-level-1" class="view-screen hidden w-full flex flex-col items-center bg-white/95 p-5 sm:p-6 rounded-3xl shadow-2xl border-4 border-[#0081A7]">
+            <div class="flex justify-between w-full items-center mb-3">
+                <span class="bg-blue-100 text-[#0081A7] px-3 py-1 rounded-xl font-black text-sm">NIVEL 1</span>
+                <h3 class="text-lg sm:text-xl font-black text-gray-800">🏠 Conoce a Zeus y su Entorno</h3>
+                <span id="l1-score" class="font-bold text-green-600 text-sm">Pregunta 1/5</span>
+            </div>
+            <div class="w-full bg-sky-50 border-2 border-sky-200 rounded-2xl p-4 sm:p-6 mb-4 text-center">
+                <div id="l1-dialog" class="text-base sm:text-lg font-bold text-gray-700 mb-4"></div>
+                <div id="l1-options" class="grid grid-cols-1 sm:grid-cols-3 gap-3"></div>
+            </div>
+        </div>
+
+        <!-- MINI APRENDIZAJE 1 -->
+        <div id="screen-learning-1" class="view-screen hidden w-full flex flex-col items-center bg-white/95 p-6 sm:p-8 rounded-3xl shadow-2xl border-4 border-[#0081A7] max-w-lg text-center">
+            <h3 class="text-2xl font-black text-[#0081A7] mb-3">👀 ¿Qué aprendimos?</h3>
+            <p class="text-gray-700 font-semibold mb-6 text-base leading-relaxed">
+                No todas las personas ven de la misma manera. Algunas personas pueden ver poco y otras no pueden ver. Con apoyos y herramientas pueden aprender, jugar, desplazarse y realizar muchas actividades.
+            </p>
+            <button id="next-to-l2-btn" class="color-primary-action text-white font-black py-3 px-8 rounded-2xl shadow-lg cursor-pointer">Continuar al Nivel 2</button>
+        </div>
+
+        <!-- PANTALLA 5: NIVEL 2 (BASTONES BLANCOS) -->
+        <div id="screen-level-2-intro" class="view-screen hidden w-full flex flex-col items-center bg-white/95 p-6 sm:p-8 rounded-3xl shadow-2xl border-4 border-[#0081A7]">
+            <h3 class="text-2xl sm:text-3xl font-black text-[#0081A7] mb-3">🦯 ¡Encuentra los Bastones Blancos!</h3>
+            <div class="bg-amber-50 border-2 border-amber-200 p-4 rounded-2xl mb-6 text-left max-w-xl text-gray-700 font-semibold space-y-2 text-sm sm:text-base">
+                <p>El <strong>bastón blanco</strong> es una herramienta esencial que utilizan las personas con discapacidad visual para orientarse, detectar obstáculos en el suelo y desplazarse con autonomía.</p>
+                <p>¡Ayuda a Zeus a recoger <span class="text-[#0081A7] font-black">7 bastones blancos</span> en el parque mientras esquivas las piedras!</p>
+            </div>
+            <button id="l2-start-game-btn" class="color-primary-action text-white font-black text-xl py-4 px-10 rounded-2xl shadow-lg border-b-6 border-[#005a75] hover:scale-105 transition-transform cursor-pointer">
+                ¡JUGAR NIVEL 2!
+            </button>
+        </div>
+
+        <div id="screen-level-2-game" class="view-screen hidden w-full flex flex-col items-center">
+            <div class="flex justify-between w-full max-w-2xl items-center mb-2 px-2">
+                <span class="bg-amber-100 text-amber-900 px-3 py-1 rounded-xl font-black text-sm">NIVEL 2: Parque</span>
+                <span id="l2-counter" class="font-black text-[#0081A7] text-lg bg-white px-4 py-1 rounded-full shadow">🦯 Bastones: 0 / 7</span>
+            </div>
+            <canvas id="canvas-l2" width="600" height="400" class="w-full max-w-2xl h-[320px] sm:h-[400px]"></canvas>
+            <div class="mt-3 flex gap-6 text-sm font-bold text-gray-700 bg-white/80 py-1.5 px-4 rounded-full shadow">
+                <span>⬅️ Flecha Izquierda</span>
+                <span>➡️ Flecha Derecha</span>
+            </div>
+        </div>
+
+        <!-- MINI APRENDIZAJE 2 -->
+        <div id="screen-learning-2" class="view-screen hidden w-full flex flex-col items-center bg-white/95 p-6 sm:p-8 rounded-3xl shadow-2xl border-4 border-[#0081A7] max-w-lg text-center">
+            <h3 class="text-2xl font-black text-[#0081A7] mb-3">🦯 ¿Qué aprendimos?</h3>
+            <p class="text-gray-700 font-semibold mb-6 text-base leading-relaxed">
+                El bastón blanco es una herramienta que ayuda a muchas personas con discapacidad visual a detectar obstáculos y desplazarse con mayor autonomía.
+            </p>
+            <button id="next-to-l3-btn" class="color-primary-action text-white font-black py-3 px-8 rounded-2xl shadow-lg cursor-pointer">Continuar al Nivel 3</button>
+        </div>
+
+        <!-- PANTALLA 6: NIVEL 3 (ESCUCHA Y DESCUBRE - SONIDOS REALES) -->
+        <div id="screen-level-3" class="view-screen hidden w-full flex flex-col items-center bg-white/95 p-6 sm:p-8 rounded-3xl shadow-2xl border-4 border-[#0081A7]">
+            <div class="flex justify-between w-full items-center mb-3">
+                <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-xl font-black text-sm">NIVEL 3</span>
+                <h3 class="text-xl sm:text-2xl font-black text-[#0081A7]">🎧 ¡Escucha y Descubre!</h3>
+                <span id="l3-round-indicator" class="font-bold text-purple-600 text-sm">Ronda 1 / 5</span>
+            </div>
+            <div class="w-full bg-purple-50 border-2 border-purple-200 rounded-3xl p-6 mb-4 text-center flex flex-col items-center">
+                <p id="l3-instruction" class="text-base sm:text-lg font-bold text-gray-700 mb-4">Presiona el botón para escuchar el sonido ambiental:</p>
+                <button 
+                    id="l3-play-sound-btn" 
+                    class="bg-purple-600 hover:bg-purple-700 text-white font-black py-4 px-8 rounded-full shadow-lg text-xl flex items-center gap-3 transition-transform hover:scale-105 cursor-pointer mb-6"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                    </svg>
+                    <span>🔊 ESCUCHAR SONIDO</span>
+                </button>
+                <p class="text-sm font-bold text-gray-600 mb-4">Elige la opción correcta:</p>
+                <div id="l3-options-container" class="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-xl"></div>
+            </div>
+        </div>
+
+        <!-- PANTALLA APRENDIZAJE 3 -->
+        <div id="screen-learning-3" class="view-screen hidden w-full flex flex-col items-center bg-white/95 p-6 sm:p-8 rounded-3xl shadow-2xl border-4 border-[#0081A7] max-w-lg text-center">
+            <h3 class="text-2xl font-black text-[#0081A7] mb-3">💡 Dato Interesante</h3>
+            <p class="text-gray-700 font-semibold mb-6 text-base leading-relaxed">
+                "Las personas con discapacidad visual pueden utilizar los sonidos del entorno para orientarse y reconocer lo que ocurre a su alrededor."
+            </p>
+            <button id="next-to-l4-btn" class="color-primary-action text-white font-black py-3 px-8 rounded-2xl shadow-lg cursor-pointer">Continuar al Nivel 4</button>
+        </div>
+
+        <!-- PANTALLA 7: NIVEL 4 (¡CORRE, PERRITO! - FLAPPY DOG) -->
+        <div id="screen-level-4-intro" class="view-screen hidden w-full flex flex-col items-center bg-white/95 p-6 sm:p-8 rounded-3xl shadow-2xl border-4 border-[#0081A7]">
+            <h3 class="text-2xl sm:text-3xl font-black text-[#0081A7] mb-3">🐕 ¡Corre, Perrito!</h3>
+            <div class="bg-emerald-50 border-2 border-emerald-200 p-4 rounded-2xl mb-6 text-left max-w-xl text-gray-700 font-semibold space-y-2 text-sm sm:text-base">
+                <p>Ayuda al perro guía a avanzar en su camino volando o saltando con suavidad sobre los obstáculos del recorrido.</p>
+                <p>Usa la <strong>Barra Espaciadora</strong>, haz clic o toca la pantalla para saltar y superar 10 obstáculos.</p>
+            </div>
+            <button id="l4-start-game-btn" class="color-primary-action text-white font-black text-xl py-4 px-10 rounded-2xl shadow-lg cursor-pointer">
+                ¡INICIAR NIVEL 4!
+            </button>
+        </div>
+
+        <div id="screen-level-4-game" class="view-screen hidden w-full flex flex-col items-center">
+            <div class="flex justify-between w-full max-w-2xl items-center mb-2 px-2">
+                <span class="bg-emerald-100 text-emerald-900 px-3 py-1 rounded-xl font-black text-sm">NIVEL 4: Perro Guía</span>
+                <div class="flex gap-4 items-center">
+                    <span id="l4-score-display" class="font-black text-[#0081A7] text-base bg-white px-3 py-1 rounded-full shadow">⭐ Puntos: 0 / 10</span>
+                    <span id="l4-lives-display" class="font-black text-rose-600 text-base bg-white px-3 py-1 rounded-full shadow">❤️❤️❤️ Vidas</span>
+                </div>
+            </div>
+            <canvas id="canvas-l4" width="600" height="380" class="w-full max-w-2xl h-[300px] sm:h-[380px] cursor-pointer"></canvas>
+            <div class="mt-3 text-xs font-bold text-gray-600 bg-white/90 py-1.5 px-4 rounded-full shadow">
+                Presiona ESPACIO o Toca la pantalla para saltar
+            </div>
+        </div>
+
+        <!-- PANTALLA APRENDIZAJE 4 -->
+        <div id="screen-learning-4" class="view-screen hidden w-full flex flex-col items-center bg-white/95 p-6 sm:p-8 rounded-3xl shadow-2xl border-4 border-[#0081A7] max-w-lg text-center">
+            <h3 class="text-2xl font-black text-[#0081A7] mb-3">💡 Dato Interesante</h3>
+            <p class="text-gray-700 font-semibold mb-6 text-base leading-relaxed">
+                "Los perros guía reciben entrenamiento especializado para ayudar a algunas personas con discapacidad visual a desplazarse con mayor seguridad y autonomía."
+            </p>
+            <button id="next-to-l5-btn" class="color-primary-action text-white font-black py-3 px-8 rounded-2xl shadow-lg cursor-pointer">Continuar al Nivel 5</button>
+        </div>
+
+        <!-- PANTALLA 8: NIVEL 5 (¡CAMINO A LA ESCUELA! - PLATAFORMAS) -->
+        <div id="screen-level-5-intro" class="view-screen hidden w-full flex flex-col items-center bg-white/95 p-6 sm:p-8 rounded-3xl shadow-2xl border-4 border-[#0081A7]">
+            <h3 class="text-2xl sm:text-3xl font-black text-[#0081A7] mb-3">🏫 ¡Camino a la Escuela!</h3>
+            <div class="bg-rose-50 border-2 border-rose-200 p-4 rounded-2xl mb-6 text-left max-w-xl text-gray-700 font-semibold space-y-2 text-sm sm:text-base">
+                <p>¡Misión final! Acompaña a Zeus y su perro guía en un recorrido por 5 etapas rumbo a la escuela.</p>
+                <p>Salta obstáculos cotidianos y recoge estrellas para llegar a la meta.</p>
+            </div>
+            <button id="l5-start-game-btn" class="color-primary-action text-white font-black text-xl py-4 px-10 rounded-2xl shadow-lg cursor-pointer">
+                ¡INICIAR MISIÓN FINAL!
+            </button>
+        </div>
+
+        <div id="screen-level-5-game" class="view-screen hidden w-full flex flex-col items-center">
+            <div class="flex justify-between w-full max-w-2xl items-center mb-2 px-2">
+                <span id="l5-stage-name" class="bg-rose-100 text-rose-900 px-3 py-1 rounded-xl font-black text-sm">Etapa 1: Casa</span>
+                <span id="l5-score-display" class="font-black text-[#0081A7] text-base bg-white px-3 py-1 rounded-full shadow">⭐ Estrellas: 0</span>
+            </div>
+            <canvas id="canvas-l5" width="600" height="360" class="w-full max-w-2xl h-[300px] sm:h-[350px] mb-3"></canvas>
+            <div class="flex gap-3 w-full max-w-2xl justify-center">
+                <button id="l5-btn-left" class="bg-white hover:bg-gray-100 border-2 border-[#0081A7] text-[#0081A7] font-black py-2.5 px-6 rounded-2xl shadow">⬅️ Izquierda</button>
+                <button id="l5-btn-jump" class="color-primary-action text-white font-black py-2.5 px-8 rounded-2xl shadow">⬆️ Saltar</button>
+                <button id="l5-btn-right" class="bg-white hover:bg-gray-100 border-2 border-[#0081A7] text-[#0081A7] font-black py-2.5 px-6 rounded-2xl shadow">Derecha ➡️</button>
+            </div>
+        </div>
+
+        <!-- PANTALLA 9: VICTORIA FINAL / CELEBRACIÓN -->
+        <div id="screen-victory" class="view-screen hidden w-full flex flex-col items-center bg-gradient-to-b from-amber-100 to-amber-300 p-6 sm:p-8 rounded-3xl shadow-2xl border-4 border-amber-500 text-center">
+            <h2 class="text-3xl sm:text-5xl font-black text-amber-900 mb-2">🎉 ¡MISIÓN CUMPLIDA! 🏫</h2>
+            <p class="text-lg sm:text-xl font-bold text-amber-800 mb-4">¡Ayudaste a Zeus a llegar con éxito a su salón de clases!</p>
+            <div class="bg-white/90 p-5 rounded-2xl shadow-lg border-2 border-amber-300 max-w-lg mb-6 text-gray-700 font-semibold text-sm sm:text-base leading-relaxed space-y-2 text-left">
+                <p><strong>💡 ¿Qué aprendimos?</strong></p>
+                <p>Todas las personas pueden aprender, participar y alcanzar sus metas. Algunas personas utilizan herramientas, apoyos y estrategias diferentes para realizar sus actividades.</p>
+                <p>La inclusión significa respetar las diferencias y crear espacios donde todos puedan participar. ❤️</p>
+            </div>
+            <div class="flex flex-wrap justify-center gap-3">
+                <button id="restart-game-btn" class="bg-[#0081A7] hover:bg-[#006887] text-white font-black py-3 px-6 rounded-2xl shadow-lg transition-colors text-base flex items-center gap-2 cursor-pointer">
+                    <span>🔄 Jugar de Nuevo</span>
+                </button>
+                <button id="victory-map-btn" class="bg-white hover:bg-gray-100 text-gray-800 font-black py-3 px-6 rounded-2xl shadow-lg border-2 border-[#0081A7] transition-colors text-base cursor-pointer">
+                    <span>🗺️ Ver Niveles</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- PANTALLA 10: MODAL RECOMPENSAS -->
+        <div id="modal-rewards" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+            <div class="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl border-4 border-[#0081A7] text-center">
+                <h3 class="text-2xl font-black text-[#0081A7] mb-3">🏆 Tus Medallas y Recompensas</h3>
+                <div id="rewards-list" class="space-y-3 mb-6 max-h-64 overflow-y-auto pr-1 text-left"></div>
+                <button id="close-rewards-btn" class="color-primary-action text-white font-black py-3 px-8 rounded-xl w-full shadow-md cursor-pointer">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <footer class="w-full text-center py-2 text-gray-600 font-bold text-xs sm:text-sm">
+        <p>Aventura Accesible - Para Estudiantes de Primaria ❤️</p>
+    </footer>
+
+    <script>
+        // --- ESTADO GLOBAL Y PROGRESO ---
+        let gameState = {
+            currentScreen: 'screen-home',
+            unlockedLevel: 1,
+            rewards: { l1: false, l2: false, l3: false, l4: false, l5: false }
+        };
+
+        function loadProgress() {
+            const saved = localStorage.getItem('guiaTuCaminoProgress2026');
+            if (saved) {
+                try {
+                    const data = JSON.parse(saved);
+                    gameState.unlockedLevel = data.unlockedLevel || 1;
+                    gameState.rewards = data.rewards || gameState.rewards;
+                } catch(e) { console.error("Error al cargar progreso", e); }
+            }
+        }
+        function saveProgress() {
+            localStorage.setItem('guiaTuCaminoProgress2026', JSON.stringify({
+                unlockedLevel: gameState.unlockedLevel,
+                rewards: gameState.rewards
+            }));
+        }
+        loadProgress();
+
+        // --- SISTEMA DE AUDIO Y SINTETIZADOR ---
+        let synth = window.speechSynthesis;
+        let readAloudActive = false;
+        let soundEffectsActive = true;
+        let voiceVolume = 0.8;
+        let voiceSpeed = 1.0;
+        let speechUtterance = null;
+        let audioCtx = null;
+
+        function getAudioContext() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            return audioCtx;
+        }
+
+        function playBeep(freq, type, duration) {
+            if (!soundEffectsActive) return;
+            try {
+                const ctx = getAudioContext();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = type || 'sine';
+                osc.frequency.setValueAtTime(freq || 440, ctx.currentTime);
+                gain.gain.setValueAtTime(voiceVolume * 0.2, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + duration);
+            } catch (e) { console.log("Audio no habilitado:", e); }
+        }
+
+        function playSelectionSound() {
+            [392.00, 523.25, 659.25].forEach((f, i) => setTimeout(() => playBeep(f, 'sine', 0.2), i * 70));
+        }
+        function playSuccessSound() {
+            [523.25, 659.25, 783.99, 1046.50].forEach((f, i) => setTimeout(() => playBeep(f, 'triangle', 0.25), i * 90));
+        }
+        function playErrorSound() {
+            playBeep(220, 'sawtooth', 0.3);
+            setTimeout(() => playBeep(160, 'sawtooth', 0.4), 150);
+        }
+
+        function speak(text) {
+            if (!synth || !readAloudActive) return;
+            synth.cancel();
+            speechUtterance = new SpeechSynthesisUtterance(text);
+            speechUtterance.lang = 'es-MX';
+            speechUtterance.volume = voiceVolume;
+            speechUtterance.rate = voiceSpeed;
+            const voices = synth.getVoices();
+            const esVoice = voices.find(v => v.lang && v.lang.includes('es'));
+            if (esVoice) speechUtterance.voice = esVoice;
+            synth.speak(speechUtterance);
+        }
+
+        // --- NAVEGACIÓN ---
+        function showScreen(screenId) {
+            document.querySelectorAll('.view-screen').forEach(s => s.classList.add('hidden'));
+            const target = document.getElementById(screenId);
+            if (target) {
+                target.classList.remove('hidden');
+                gameState.currentScreen = screenId;
+            }
+            const backBtn = document.getElementById('back-to-menu-btn');
+            if (screenId === 'screen-home') {
+                backBtn.classList.add('hidden');
+            } else {
+                backBtn.classList.remove('hidden');
+            }
+            if (screenId === 'screen-map') renderMapLevels();
+            if (screenId === 'screen-level-1') initLevel1();
+            if (screenId === 'screen-level-3') initLevel3();
+            if (screenId === 'screen-level-4-game') initLevel4Game();
+            if (screenId === 'screen-level-5-game') initLevel5Game();
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+
+        const levelData = [
+            { id: 1, title: "Nivel 1: Conoce a Zeus", desc: "Preguntas y aprendizaje sobre discapacidad visual", screen: "screen-level-1" },
+            { id: 2, title: "Nivel 2: Bastón Blanco", desc: "Ayuda a Zeus a recoger bastones en el parque", screen: "screen-level-2-intro" },
+            { id: 3, title: "Nivel 3: Escucha y Descubre", desc: "Identifica sonidos reales del entorno", screen: "screen-level-3" },
+            { id: 4, title: "Nivel 4: ¡Corre, Perrito!", desc: "Aventura dinámica con el perro guía", screen: "screen-level-4-intro" },
+            { id: 5, title: "Nivel 5: Camino a la Escuela", desc: "Juego de plataformas final", screen: "screen-level-5-intro" }
+        ];
+
+        function renderMapLevels() {
+            const container = document.getElementById('levels-container');
+            container.innerHTML = '';
+            levelData.forEach(lvl => {
+                const unlocked = lvl.id <= gameState.unlockedLevel;
+                const completed = gameState.rewards['l' + lvl.id];
+                const card = document.createElement('div');
+                card.className = `p-4 rounded-2xl border-3 flex flex-col justify-between transition-all ${unlocked ? 'bg-sky-50 border-[#0081A7] shadow-md cursor-pointer hover:scale-102' : 'bg-gray-100 border-gray-300 opacity-60 cursor-not-allowed'}`;
+                
+                card.innerHTML = `
+                    <div>
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="font-black text-[#0081A7] text-sm">NIVEL ${lvl.id}</span>
+                            <span>${completed ? '⭐ Completado' : (unlocked ? '🔓 Disponible' : '🔒 Bloqueado')}</span>
+                        </div>
+                        <h4 class="font-bold text-gray-800 text-base mb-1">${lvl.title}</h4>
+                        <p class="text-xs text-gray-600">${lvl.desc}</p>
+                    </div>
+                    <button class="mt-3 py-2 px-4 rounded-xl font-bold text-xs ${unlocked ? 'color-primary-action text-white' : 'bg-gray-300 text-gray-500'}">
+                        ${unlocked ? 'Jugar' : 'Bloqueado'}
+                    </button>
+                `;
+                if (unlocked) {
+                    card.onclick = () => {
+                        playSelectionSound();
+                        if (lvl.id === 1) showScreen('screen-level-1');
+                        if (lvl.id === 2) showScreen('screen-level-2-intro');
+                        if (lvl.id === 3) showScreen('screen-level-3');
+                        if (lvl.id === 4) showScreen('screen-level-4-intro');
+                        if (lvl.id === 5) showScreen('screen-level-5-intro');
+                    };
+                }
+                container.appendChild(card);
+            });
+        }
+
+        // --- NIVEL 1 ---
+        const l1Questions = [
+            { q: "¿Cómo se llama nuestro protagonista en esta aventura?", options: ["Mateo", "Zeus", "Lucas"], correct: 1 },
+            { q: "¿Qué condición visual tiene Zeus?", options: ["Usa lentes oscuros por moda", "Discapacidad visual", "No le gusta la luz"], correct: 1 },
+            { q: "¿Quién acompaña a Zeus a todas partes para ayudarle?", options: ["Un gato curioso", "Su perro guía", "Un robot inteligente"], correct: 1 },
+            { q: "¿Cuál es la misión principal de Zeus hoy?", options: ["Ir al parque de diversiones", "Llegar a la escuela", "Comprar juguetes"], correct: 1 },
+            { q: "¿Qué herramienta usa Zeus en el suelo para detectar obstáculos?", options: ["Un bastón blanco", "Una varita mágica", "Un paraguas"], correct: 0 }
+        ];
+        let l1Index = 0;
+
+        function initLevel1() {
+            l1Index = 0;
+            loadL1Question();
+        }
+        function loadL1Question() {
+            if (l1Index >= l1Questions.length) {
+                gameState.rewards.l1 = true;
+                if (gameState.unlockedLevel < 2) gameState.unlockedLevel = 2;
+                saveProgress();
+                playSuccessSound();
+                showScreen('screen-learning-1');
+                return;
+            }
+            document.getElementById('l1-score').innerText = `Pregunta ${l1Index + 1}/5`;
+            const item = l1Questions[l1Index];
+            document.getElementById('l1-dialog').innerText = item.q;
+            speak(item.q);
+            const optContainer = document.getElementById('l1-options');
+            optContainer.innerHTML = '';
+            item.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "bg-white hover:bg-sky-100 text-gray-800 font-bold py-3 px-4 rounded-xl border-2 border-[#0081A7] shadow transition-all cursor-pointer";
+                btn.innerText = opt;
+                btn.onclick = () => {
+                    if (idx === item.correct) {
+                        playSuccessSound();
+                        l1Index++;
+                        loadL1Question();
+                    } else {
+                        playErrorSound();
+                        btn.classList.add('bg-rose-100', 'border-rose-400');
+                        setTimeout(() => loadL1Question(), 600);
+                    }
+                };
+                optContainer.appendChild(btn);
+            });
+        }
+
+        // --- NIVEL 2: JUEGO DE BASTONES BLANCOS ---
+        let l2Interval = null;
+        let l2Running = false;
+        let l2Canvas, l2Ctx;
+        let l2Zeus = { x: 270, y: 320, width: 60, height: 60, speed: 7 };
+        let l2Items = [];
+        let l2SticksCollected = 0;
+        let l2Keys = { left: false, right: false };
+
+        function initLevel2Game() {
+            showScreen('screen-level-2-game');
+            l2Canvas = document.getElementById('canvas-l2');
+            l2Ctx = l2Canvas.getContext('2d');
+            l2SticksCollected = 0;
+            l2Items = [];
+            l2Zeus.x = l2Canvas.width / 2 - 30;
+            l2Running = true;
+            document.getElementById('l2-counter').innerText = `🦯 Bastones: 0 / 7`;
+
+            for(let i=0; i<7; i++) {
+                l2Items.push({
+                    x: Math.random() * (l2Canvas.width - 40),
+                    y: -100 - (i * 140),
+                    type: 'stick',
+                    size: 35
+                });
+            }
+            for(let i=0; i<6; i++) {
+                l2Items.push({
+                    x: Math.random() * (l2Canvas.width - 40),
+                    y: -80 - (i * 160),
+                    type: 'stone',
+                    size: 35
+                });
+            }
+
+            if (l2Interval) clearInterval(l2Interval);
+            l2Interval = setInterval(updateL2, 1000/60);
+        }
+
+        function updateL2() {
+            if (!l2Running) return;
+            if (l2Keys.left) l2Zeus.x -= l2Zeus.speed;
+            if (l2Keys.right) l2Zeus.x += l2Zeus.speed;
+            if (l2Zeus.x < 0) l2Zeus.x = 0;
+            if (l2Zeus.x > l2Canvas.width - l2Zeus.width) l2Zeus.x = l2Canvas.width - l2Zeus.width;
+
+            l2Items.forEach(item => {
+                item.y += 2.5;
+                if (item.y > l2Canvas.height + 50) {
+                    item.y = -50;
+                    item.x = Math.random() * (l2Canvas.width - 40);
+                }
+
+                if (
+                    l2Zeus.x < item.x + item.size &&
+                    l2Zeus.x + l2Zeus.width > item.x &&
+                    l2Zeus.y < item.y + item.size &&
+                    l2Zeus.y + l2Zeus.height > item.y
+                ) {
+                    if (item.type === 'stick') {
+                        playSuccessSound();
+                        l2SticksCollected++;
+                        document.getElementById('l2-counter').innerText = `🦯 Bastones: ${l2SticksCollected} / 7`;
+                        item.y = -200;
+                        item.x = Math.random() * (l2Canvas.width - 40);
+
+                        if (l2SticksCollected >= 7) {
+                            l2Running = false;
+                            clearInterval(l2Interval);
+                            gameState.rewards.l2 = true;
+                            if (gameState.unlockedLevel < 3) gameState.unlockedLevel = 3;
+                            saveProgress();
+                            setTimeout(() => showScreen('screen-learning-2'), 400);
+                        }
+                    } else if (item.type === 'stone') {
+                        playErrorSound();
+                        item.y = -200;
+                        l2SticksCollected = Math.max(0, l2SticksCollected - 1);
+                        document.getElementById('l2-counter').innerText = `🦯 Bastones: ${l2SticksCollected} / 7`;
+                    }
+                }
+            });
+
+            drawL2();
+        }
+
+        function drawL2() {
+            l2Ctx.clearRect(0, 0, l2Canvas.width, l2Canvas.height);
+            l2Ctx.fillStyle = "#bae6fd";
+            l2Ctx.fillRect(0, 0, l2Canvas.width, l2Canvas.height);
+
+            l2Ctx.fillStyle = "#0081A7";
+            l2Ctx.fillRect(l2Zeus.x + 15, l2Zeus.y + 20, 30, 40);
+            l2Ctx.fillStyle = "#F07167";
+            l2Ctx.beginPath();
+            l2Ctx.arc(l2Zeus.x + 30, l2Zeus.y + 15, 15, 0, Math.PI * 2);
+            l2Ctx.fill();
+
+            l2Ctx.strokeStyle = "#FFFFFF";
+            l2Ctx.lineWidth = 4;
+            l2Ctx.beginPath();
+            l2Ctx.moveTo(l2Zeus.x + 45, l2Zeus.y + 35);
+            l2Ctx.lineTo(l2Zeus.x + 65, l2Zeus.y + 60);
+            l2Ctx.stroke();
+
+            l2Items.forEach(item => {
+                if (item.type === 'stick') {
+                    l2Ctx.fillStyle = "#FFFFFF";
+                    l2Ctx.strokeStyle = "#0081A7";
+                    l2Ctx.lineWidth = 3;
+                    l2Ctx.beginPath();
+                    l2Ctx.roundRect(item.x + 12, item.y, 10, item.size, 5);
+                    l2Ctx.fill();
+                    l2Ctx.stroke();
+                } else {
+                    l2Ctx.fillStyle = "#6b7280";
+                    l2Ctx.beginPath();
+                    l2Ctx.arc(item.x + 15, item.y + 15, 16, 0, Math.PI * 2);
+                    l2Ctx.fill();
+                }
+            });
+        }
+
+        window.addEventListener('keydown', e => {
+            if (e.key === 'ArrowLeft') l2Keys.left = true;
+            if (e.key === 'ArrowRight') l2Keys.right = true;
+        });
+        window.addEventListener('keyup', e => {
+            if (e.key === 'ArrowLeft') l2Keys.left = false;
+            if (e.key === 'ArrowRight') l2Keys.right = false;
+        });
+
+        // --- NIVEL 3: ESCUCHA Y DESCUBRE (SONIDOS REALES MP3) ---
+        const l3RoundsData = [
+            { soundFile: 'sonido-carro.mp3', correctKey: 'carro', options: [ {key:'carro', label:'🚗 Carro', desc:'Automóvil'}, {key:'perro', label:'🐶 Perro', desc:'Perro'}, {key:'campana', label:'🔔 Campana', desc:'Campana'} ] },
+            { soundFile: 'sonido-perro.mp3', correctKey: 'perro', options: [ {key:'perro', label:'🐶 Perro', desc:'Perro'}, {key:'carro', label:'🚗 Carro', desc:'Automóvil'}, {key:'lluvia', label:'🌧️ Lluvia', desc:'Lluvia'} ] },
+            { soundFile: 'sonido-campana.mp3', correctKey: 'campana', options: [ {key:'campana', label:'🔔 Campana', desc:'Campana'}, {key:'semaforo', label:'🚦 Semáforo', desc:'Semáforo'}, {key:'perro', label:'🐶 Perro', desc:'Perro'} ] },
+            { soundFile: 'sonido-semaforo.mp3', correctKey: 'semaforo', options: [ {key:'semaforo', label:'🚦 Semáforo', desc:'Semáforo'}, {key:'carro', label:'🚗 Carro', desc:'Automóvil'}, {key:'campana', label:'🔔 Campana', desc:'Campana'} ] },
+            { soundFile: 'sonido-lluvia.mp3', correctKey: 'lluvia', options: [ {key:'lluvia', label:'🌧️ Lluvia', desc:'Lluvia'}, {key:'perro', label:'🐶 Perro', desc:'Perro'}, {key:'carro', label:'🚗 Carro', desc:'Automóvil'} ] }
+        ];
+        let l3CurrentRound = 0;
+        let activeAudio = null;
+
+        function initLevel3() {
+            l3CurrentRound = 0;
+            loadL3Round();
+        }
+
+        function loadL3Round() {
+            if (l3CurrentRound >= l3RoundsData.length) {
+                gameState.rewards.l3 = true;
+                if (gameState.unlockedLevel < 4) gameState.unlockedLevel = 4;
+                saveProgress();
+                playSuccessSound();
+                showScreen('screen-learning-3');
+                return;
+            }
+            document.getElementById('l3-round-indicator').innerText = `Ronda ${l3CurrentRound + 1} / 5`;
+            const round = l3RoundsData[l3CurrentRound];
+            
+            if (activeAudio) {
+                activeAudio.pause();
+                activeAudio = null;
+            }
+            activeAudio = new Audio(round.soundFile);
+            activeAudio.volume = voiceVolume;
+
+            const btnListen = document.getElementById('l3-play-sound-btn');
+            btnListen.onclick = () => {
+                if (activeAudio) {
+                    activeAudio.currentTime = 0;
+                    activeAudio.play().catch(e => {
+                        console.log("Audio file not found yet or blocked, playing fallback notification.", e);
+                        playBeep(440, 'sine', 0.5);
+                    });
+                }
+            };
+
+            const container = document.getElementById('l3-options-container');
+            container.innerHTML = '';
+            round.options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = "bg-white hover:bg-purple-100 text-gray-800 font-black py-4 px-6 rounded-2xl border-4 border-purple-300 shadow-lg text-lg flex flex-col items-center justify-center transition-transform hover:scale-105 cursor-pointer";
+                btn.innerHTML = `<span class="text-3xl mb-1">${opt.label.split(' ')[0]}</span><span>${opt.label.split(' ').slice(1).join(' ')}</span>`;
+                btn.onclick = () => {
+                    if (opt.key === round.correctKey) {
+                        playSuccessSound();
+                        if (activeAudio) activeAudio.pause();
+                        l3CurrentRound++;
+                        setTimeout(() => loadL3Round(), 500);
+                    } else {
+                        playErrorSound();
+                        btn.classList.add('bg-rose-100', 'border-rose-400');
+                        setTimeout(() => btn.classList.remove('bg-rose-100', 'border-rose-400'), 600);
+                    }
+                };
+                container.appendChild(btn);
+            });
+        }
+
+        // --- NIVEL 4: ¡CORRE, PERRITO! (FLAPPY DOG) ---
+        let l4Interval = null;
+        let l4Running = false;
+        let l4Canvas, l4Ctx;
+        let l4Dog = { x: 80, y: 180, vy: 0, gravity: 0.5, lift: -8, size: 40 };
+        let l4Obstacles = [];
+        let l4Score = 0;
+        let l4Lives = 3;
+        let l4FrameCount = 0;
+
+        function initLevel4Game() {
+            showScreen('screen-level-4-game');
+            l4Canvas = document.getElementById('canvas-l4');
+            l4Ctx = l4Canvas.getContext('2d');
+            l4Score = 0;
+            l4Lives = 3;
+            l4Dog.y = 180;
+            l4Dog.vy = 0;
+            l4Obstacles = [];
+            l4FrameCount = 0;
+            l4Running = true;
+            updateL4UI();
+
+            if (l4Interval) clearInterval(l4Interval);
+            l4Interval = setInterval(updateL4, 1000/60);
+
+            l4Canvas.onmousedown = () => triggerL4Jump();
+            l4Canvas.ontouchstart = (e) => { e.preventDefault(); triggerL4Jump(); };
+        }
+
+        window.addEventListener('keydown', e => {
+            if (e.code === 'Space' && gameState.currentScreen === 'screen-level-4-game') {
+                e.preventDefault();
+                triggerL4Jump();
+            }
+        });
+
+        function triggerL4Jump() {
+            if (!l4Running) return;
+            l4Dog.vy = l4Dog.lift;
+            playBeep(600, 'sine', 0.1);
+        }
+
+        function updateL4UI() {
+            document.getElementById('l4-score-display').innerText = `⭐ Puntos: ${l4Score} / 10`;
+            document.getElementById('l4-lives-display').innerText = `${'❤️'.repeat(l4Lives)} Vidas`;
+        }
+
+        function updateL4() {
+            if (!l4Running) return;
+            l4FrameCount++;
+            l4Dog.vy += l4Dog.gravity;
+            l4Dog.y += l4Dog.vy;
+
+            if (l4Dog.y < 0) { l4Dog.y = 0; l4Dog.vy = 0; }
+            if (l4Dog.y > l4Canvas.height - l4Dog.size) {
+                l4Dog.y = l4Canvas.height - l4Dog.size;
+                l4Dog.vy = l4Dog.lift;
+            }
+
+            if (l4FrameCount % 100 === 0) {
+                let gapHeight = 130;
+                let topH = Math.floor(Math.random() * (l4Canvas.height - gapHeight - 100)) + 50;
+                l4Obstacles.push({
+                    x: l4Canvas.width,
+                    top: topH,
+                    bottom: l4Canvas.height - topH - gapHeight,
+                    width: 50,
+                    passed: false
+                });
+            }
+
+            l4Obstacles.forEach(obs => {
+                obs.x -= 3;
+                if (
+                    l4Dog.x < obs.x + obs.width &&
+                    l4Dog.x + l4Dog.size > obs.x &&
+                    (l4Dog.y < obs.top || l4Dog.y + l4Dog.size > l4Canvas.height - obs.bottom)
+                ) {
+                    playErrorSound();
+                    l4Lives--;
+                    obs.x = -100;
+                    updateL4UI();
+                    if (l4Lives <= 0) {
+                        l4Running = false;
+                        if (l4Interval) clearInterval(l4Interval);
+                        setTimeout(() => showScreen('screen-level-4-intro'), 200);
+                    }
+                }
+
+                if (!obs.passed && obs.x + obs.width < l4Dog.x) {
+                    obs.passed = true;
+                    l4Score++;
+                    playSuccessSound();
+                    updateL4UI();
+                    if (l4Score >= 10) {
+                        l4Running = false;
+                        if (l4Interval) clearInterval(l4Interval);
+                        gameState.rewards.l4 = true;
+                        if (gameState.unlockedLevel < 5) gameState.unlockedLevel = 5;
+                        saveProgress();
+                        setTimeout(() => showScreen('screen-learning-4'), 400);
+                    }
+                }
+            });
+
+            l4Obstacles = l4Obstacles.filter(obs => obs.x > -60);
+            drawL4();
+        }
+
+        function drawL4() {
+            if (!l4Ctx) return;
+            l4Ctx.clearRect(0, 0, l4Canvas.width, l4Canvas.height);
+            l4Ctx.fillStyle = "#ecfdf5";
+            l4Ctx.fillRect(0, 0, l4Canvas.width, l4Canvas.height);
+
+            l4Ctx.fillStyle = "#059669";
+            l4Obstacles.forEach(obs => {
+                l4Ctx.fillRect(obs.x, 0, obs.width, obs.top);
+                l4Ctx.fillRect(obs.x, l4Canvas.height - obs.bottom, obs.width, obs.bottom);
+            });
+
+            l4Ctx.fillStyle = "#d97706";
+            l4Ctx.fillRect(l4Dog.x, l4Dog.y, l4Dog.size, l4Dog.size - 10);
+            l4Ctx.fillStyle = "#b45309";
+            l4Ctx.beginPath();
+            l4Ctx.arc(l4Dog.x + l4Dog.size - 5, l4Dog.y + 15, 14, 0, Math.PI * 2);
+            l4Ctx.fill();
+        }
+
+        // --- NIVEL 5: CAMINO A LA ESCUELA (PLATAFORMAS) ---
+        let l5Interval = null;
+        let l5Running = false;
+        let l5Canvas, l5Ctx;
+        let l5Player = { x: 50, y: 260, width: 36, height: 50, vx: 0, vy: 0, isJumping: false };
+        let l5Keys = { left: false, right: false, jump: false };
+        let l5Stars = [];
+        let l5Obstacles = [];
+        let l5Score = 0;
+        let l5StageProgress = 1;
+
+        function initLevel5Game() {
+            showScreen('screen-level-5-game');
+            l5Canvas = document.getElementById('canvas-l5');
+            l5Ctx = l5Canvas.getContext('2d');
+            l5Score = 0;
+            l5StageProgress = 1;
+            l5Player.x = 50;
+            l5Player.y = 260;
+            l5Player.vx = 0;
+            l5Player.vy = 0;
+            l5Running = true;
+
+            l5Stars = [
+                {x: 200, y: 220, collected: false},
+                {x: 350, y: 200, collected: false},
+                {x: 500, y: 220, collected: false}
+            ];
+            l5Obstacles = [
+                {x: 280, y: 270, width: 30, height: 40}
+            ];
+
+            updateL5UI();
+            if (l5Interval) clearInterval(l5Interval);
+            l5Interval = setInterval(updateL5, 1000/60);
+        }
+
+        function updateL5UI() {
+            const stages = ["Casa", "Calle", "Cruce", "Transporte", "Escuela"];
+            document.getElementById('l5-stage-name').innerText = `Etapa ${l5StageProgress}: ${stages[l5StageProgress - 1]}`;
+            document.getElementById('l5-score-display').innerText = `⭐ Estrellas: ${l5Score}`;
+        }
+
+        function updateL5() {
+            if (!l5Running) return;
+            if (l5Keys.left) l5Player.vx = -3;
+            else if (l5Keys.right) l5Player.vx = 3;
+            else l5Player.vx = 0;
+
+            l5Player.x += l5Player.vx;
+            if (l5Player.x < 0) l5Player.x = 0;
+            if (l5Player.x > l5Canvas.width - l5Player.width) {
+                l5Player.x = 50;
+                l5StageProgress++;
+                playSuccessSound();
+                if (l5StageProgress > 5) {
+                    l5Running = false;
+                    clearInterval(l5Interval);
+                    gameState.rewards.l5 = true;
+                    saveProgress();
+                    setTimeout(() => showScreen('screen-victory'), 400);
+                    return;
+                }
+                updateL5UI();
+            }
+
+            if (l5Keys.jump && !l5Player.isJumping) {
+                l5Player.vy = -10;
+                l5Player.isJumping = true;
+                playBeep(500, 'sine', 0.1);
+            }
+
+            l5Player.vy += 0.5;
+            l5Player.y += l5Player.vy;
+            if (l5Player.y > 260) {
+                l5Player.y = 260;
+                l5Player.vy = 0;
+                l5Player.isJumping = false;
+            }
+
+            // Recoger estrellas
+            l5Stars.forEach(s => {
+                if (!s.collected && Math.abs(l5Player.x - s.x) < 30 && Math.abs(l5Player.y - s.y) < 30) {
+                    s.collected = true;
+                    l5Score += 10;
+                    playSuccessSound();
+                    updateL5UI();
+                }
+            });
+
+            drawL5();
+        }
+
+        function drawL5() {
+            l5Ctx.clearRect(0, 0, l5Canvas.width, l5Canvas.height);
+            l5Ctx.fillStyle = l5StageProgress % 2 === 0 ? "#fef08a" : "#bae6fd";
+            l5Ctx.fillRect(0, 0, l5Canvas.width, l5Canvas.height);
+
+            // Suelo
+            l5Ctx.fillStyle = "#64748b";
+            l5Ctx.fillRect(0, 310, l5Canvas.width, 50);
+
+            // Estrellas
+            l5Ctx.fillStyle = "#eab308";
+            l5Stars.forEach(s => {
+                if (!s.collected) {
+                    l5Ctx.beginPath();
+                    l5Ctx.arc(s.x, s.y, 12, 0, Math.PI * 2);
+                    l5Ctx.fill();
+                }
+            });
+
+            // Obstáculos
+            l5Ctx.fillStyle = "#ef4444";
+            l5Obstacles.forEach(o => {
+                l5Ctx.fillRect(o.x, o.y, o.width, o.height);
+            });
+
+            // Personaje y Perro Guía
+            l5Ctx.fillStyle = "#0081A7";
+            l5Ctx.fillRect(l5Player.x, l5Player.y, l5Player.width, l5Player.height);
+            l5Ctx.fillStyle = "#F07167";
+            l5Ctx.beginPath();
+            l5Ctx.arc(l5Player.x + 18, l5Player.y - 10, 12, 0, Math.PI * 2);
+            l5Ctx.fill();
+
+            // Perro guía acompañante
+            l5Ctx.fillStyle = "#d97706";
+            l5Ctx.fillRect(l5Player.x + 40, l5Player.y + 15, 30, 35);
+        }
+
+        // Controles Táctiles Nivel 5
+        document.getElementById('l5-btn-left').onmousedown = () => l5Keys.left = true;
+        document.getElementById('l5-btn-left').onmouseup = () => l5Keys.left = false;
+        document.getElementById('l5-btn-right').onmousedown = () => l5Keys.right = true;
+        document.getElementById('l5-btn-right').onmouseup = () => l5Keys.right = false;
+        document.getElementById('l5-btn-jump').onmousedown = () => l5Keys.jump = true;
+        document.getElementById('l5-btn-jump').onmouseup = () => l5Keys.jump = false;
+
+        // --- MODAL RECOMPENSAS ---
+        function renderRewards() {
+            const container = document.getElementById('rewards-list');
+            container.innerHTML = '';
+            for(let i=1; i<=5; i++) {
+                const earned = gameState.rewards['l' + i];
+                const row = document.createElement('div');
+                row.className = `p-3 rounded-2xl flex items-center justify-between border-2 ${earned ? 'bg-amber-50 border-amber-300' : 'bg-gray-50 border-gray-200'}`;
+                row.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <span class="text-2xl">${earned ? '🏆' : '🔒'}</span>
+                        <div>
+                            <h4 class="font-bold text-gray-800 text-sm">Medalla Nivel ${i}</h4>
+                            <p class="text-xs text-gray-500">${earned ? 'Conseguida con éxito' : 'Aún por desbloquear'}</p>
+                        </div>
+                    </div>
+                    <span class="font-black text-xs ${earned ? 'text-amber-600' : 'text-gray-400'}">${earned ? '¡GANADA!' : 'PENDIENTE'}</span>
+                `;
+                container.appendChild(row);
+            }
+        }
+
+        // --- ASIGNACIÓN DE EVENTOS UI ---
+        document.getElementById('start-btn').onclick = () => {
+            playSelectionSound();
+            showScreen('screen-intro');
+        };
+        document.getElementById('intro-next-btn').onclick = () => {
+            playSelectionSound();
+            showScreen('screen-map');
+        };
+        document.getElementById('back-to-menu-btn').onclick = () => {
+            playSelectionSound();
+            l2Running = false;
+            l4Running = false;
+            l5Running = false;
+            if (l2Interval) clearInterval(l2Interval);
+            if (l4Interval) clearInterval(l4Interval);
+            if (l5Interval) clearInterval(l5Interval);
+            showScreen('screen-map');
+        };
+        document.getElementById('view-rewards-btn').onclick = () => {
+            playSelectionSound();
+            renderRewards();
+            document.getElementById('modal-rewards').classList.remove('hidden');
+        };
+        document.getElementById('close-rewards-btn').onclick = () => {
+            playSelectionSound();
+            document.getElementById('modal-rewards').classList.add('hidden');
+        };
+        document.getElementById('next-to-l2-btn').onclick = () => { showScreen('screen-map'); };
+        document.getElementById('l2-start-game-btn').onclick = () => { initLevel2Game(); };
+        document.getElementById('next-to-l3-btn').onclick = () => { showScreen('screen-map'); };
+        document.getElementById('next-to-l4-btn').onclick = () => { showScreen('screen-map'); };
+        document.getElementById('l4-start-game-btn').onclick = () => { initLevel4Game(); };
+        document.getElementById('next-to-l5-btn').onclick = () => { showScreen('screen-map'); };
+        document.getElementById('l5-start-game-btn').onclick = () => { initLevel5Game(); };
+        document.getElementById('restart-game-btn').onclick = () => { showScreen('screen-home'); };
+        document.getElementById('victory-map-btn').onclick = () => { showScreen('screen-map'); };
+
+        const accBtn = document.getElementById('acc-btn');
+        const accMenu = document.getElementById('acc-menu');
+        accBtn.onclick = () => {
+            const isHidden = accMenu.classList.contains('hidden');
+            if (isHidden) {
+                accMenu.classList.remove('hidden');
+                accBtn.setAttribute('aria-expanded', 'true');
+            } else {
+                accMenu.classList.add('hidden');
+                accBtn.setAttribute('aria-expanded', 'false');
+            }
+        };
+        document.getElementById('close-acc-btn').onclick = () => {
+            accMenu.classList.add('hidden');
+            accBtn.setAttribute('aria-expanded', 'false');
+        };
+
+        const switchReadAloud = document.getElementById('switch-read-aloud');
+        switchReadAloud.onchange = () => { readAloudActive = switchReadAloud.checked; };
+
+        const switchSounds = document.getElementById('switch-sounds');
+        switchSounds.onchange = () => { soundEffectsActive = switchSounds.checked; };
+
+        const rangeVolume = document.getElementById('range-volume');
+        rangeVolume.oninput = () => {
+            voiceVolume = rangeVolume.value / 100;
+            document.getElementById('volume-val').innerText = rangeVolume.value + '%';
+        };
+
+        const rangeSpeed = document.getElementById('range-speed');
+        rangeSpeed.oninput = () => {
+            voiceSpeed = rangeSpeed.value / 10;
+            const labels = { '5': 'Muy Lenta', '10': 'Normal', '15': 'Rápida' };
+            document.getElementById('speed-val').innerText = labels[rangeSpeed.value] || (voiceSpeed + 'x');
+        };
+
+        document.getElementById('btn-audiodescripcion').onclick = () => {
+            readAloudActive = true;
+            switchReadAloud.checked = true;
+            speak("Bienvenido a Guía Tu Camino. Selecciona un nivel o presiona empieza la aventura para acompañar a Zeus.");
+        };
+
+        let highContrastActive = false;
+        document.getElementById('btn-high-contrast').onclick = () => {
+            highContrastActive = !highContrastActive;
+            if (highContrastActive) {
+                document.body.classList.add('high-contrast');
+            } else {
+                document.body.classList.remove('high-contrast');
+            }
+        };
+    </script>
+</body>
+</html>
