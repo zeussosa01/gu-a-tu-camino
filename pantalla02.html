@@ -389,6 +389,12 @@
 
         // --- STREAMING_CHUNK:Implementing screen navigation helper ---
         function goToScreen(screenId) {
+                // Detener el sonido del Nivel 4 al cambiar de pantalla
+    if (currentAudio) {
+        currentAudio.pause();
+        currentAudio.currentTime = 0;
+        currentAudio = null;
+    }
             document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
             document.getElementById(screenId).classList.remove('hidden');
             window.scrollTo(0, 0);
@@ -695,17 +701,26 @@ let currentAudio = null;
             document.getElementById('audio-hint').innerText = "Haz clic para escuchar el sonido actual";
         }
 
-       function playCurrentAudio() {
-    const audio = new Audio(
+    function playCurrentAudio() {
+
+    // Detener cualquier sonido anterior
+    if (currentAudio) {
+        currentAudio.pause();
+        currentAudio.currentTime = 0;
+    }
+
+    currentAudio = new Audio(
         currentAudioTarget === 'ambulancia'
             ? 'ambulancia mp3.mp3'
             : 'lluvia.mp3.mp3'
     );
 
-    audio.volume = 0.8;
-    audio.play();
-}
+    currentAudio.volume = 0.8;
 
+    currentAudio.play().catch(error => {
+        console.log("No se pudo reproducir el audio:", error);
+    });
+}
         function checkAudioAnswer(answer) {
             const feedback = document.getElementById('l4-feedback');
             if (answer === currentAudioTarget) {
