@@ -1,684 +1,682 @@
 <!DOCTYPE html>
-<html lang="es" class="h-full">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guía Tu Camino</title>
-    <!-- Tailwind CSS for modern, responsive arcade styling -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>Guía Tu Camino - Videojuego Educativo</title>
+    <!-- Tailwind CSS for modern responsive styling -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Google Fonts: Fredoka for a friendly, childish, modern look -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Fredoka', cursive, sans-serif;
-            touch-action: manipulation;
+            font-family: 'Fredoka', sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
         }
-        /* Custom arcade animations & bounce effects */
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
+        /* Custom magical forest path background styling */
+        .magical-bg {
+            background: linear-gradient(135deg, #e0f2fe 0%, #ede9fe 50%, #dcfce7 100%);
+            position: relative;
+            overflow-x: hidden;
         }
-        .animate-float {
-            animation: float 3s ease-in-out infinite;
+        /* Floating nature decoration animations */
+        @keyframes floatCloud {
+            0% { transform: translateX(-100px); }
+            100% { transform: translateX(calc(100vw + 100px)); }
         }
-        @keyframes pulse-glow {
-            0%, 100% { box-shadow: 0 0 15px rgba(59, 130, 246, 0.5); }
-            50% { box-shadow: 0 0 25px rgba(147, 51, 234, 0.8); }
+        .cloud-1 { animation: floatCloud 35s linear infinite; }
+        .cloud-2 { animation: floatCloud 25s linear infinite; animation-delay: -10s; }
+        
+        @keyframes swayTree {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(2deg); }
         }
-        .arcade-glow {
-            animation: pulse-glow 2s infinite;
+        .sway { animation: swayTree 4s ease-in-out infinite; transform-origin: bottom center; }
+
+        /* Glassmorphism panel for readability over background */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(10px);
+            border: 3px solid rgba(167, 139, 250, 0.3);
+            box-shadow: 0 10px 30px -5px rgba(109, 40, 217, 0.15);
         }
     </style>
 </head>
-<body class="h-full bg-gradient-to-br from-blue-50 via-purple-50 to-white text-slate-800 overflow-x-hidden select-none">
+<body class="magical-bg min-h-screen text-slate-700 flex flex-col justify-between relative">
 
-    <!-- Floating Accessibility Button (Always present on all screens) -->
-    <div class="fixed top-4 right-4 z-50">
-        <button id="accessibility-btn" onclick="toggleAccessibilityMenu()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-4 py-3 rounded-2xl shadow-xl flex items-center space-x-2 border-4 border-white transition transform hover:scale-105 active:scale-95 text-lg">
-            <span>♿</span>
-            <span class="hidden sm:inline">ACCESIBILIDAD</span>
+    <!-- Floating clouds in the sky -->
+    <div class="fixed top-10 left-0 text-white text-5xl opacity-80 pointer-events-none cloud-1 z-0">☁️</div>
+    <div class="fixed top-24 left-0 text-white text-4xl opacity-70 pointer-events-none cloud-2 z-0">☁️</div>
+
+    <!-- Background path & nature elements -->
+    <div class="fixed inset-0 pointer-events-none z-0 flex flex-col justify-between overflow-hidden opacity-30">
+        <div class="flex justify-between p-6">
+            <span class="text-6xl sway">🌲</span>
+            <span class="text-5xl sway" style="animation-delay: -1s;">🌳</span>
+            <span class="text-6xl sway" style="animation-delay: -2s;">🌲</span>
+        </div>
+        <div class="w-full h-32 bg-amber-100 rounded-t-full opacity-40 self-center"></div>
+        <div class="flex justify-between p-6">
+            <span class="text-5xl sway" style="animation-delay: -1.5s;">🌼</span>
+            <span class="text-6xl sway">🌿</span>
+            <span class="text-5xl sway" style="animation-delay: -0.5s;">🌻</span>
+        </div>
+    </div>
+
+    <!-- ACCESSIBILITY BAR (Fixed Top Right) -->
+    <div class="absolute top-4 right-4 z-50 flex items-center gap-2">
+        <button id="accessibility-btn" onclick="toggleAccessibility()" class="bg-purple-600 hover:bg-purple-700 text-white font-bold px-4 py-2 rounded-full shadow-lg transition transform hover:scale-105 flex items-center gap-2 border-2 border-white cursor-pointer">
+            <span id="accessibility-icon">♿</span> 
+            <span id="accessibility-text">ACCESIBILIDAD (OFF)</span>
         </button>
     </div>
 
-    <!-- Accessibility Modal -->
-    <div id="accessibility-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white text-slate-900 rounded-3xl p-6 max-w-md w-full shadow-2xl border-4 border-blue-500 relative animate-float">
-            <h3 class="text-2xl font-bold text-blue-700 mb-4 flex items-center gap-2">
-                <span>♿</span> Menú de Accesibilidad
-            </h3>
-            <p class="text-slate-600 mb-6">Personaliza tu experiencia de juego para que sea cómoda y divertida.</p>
-            
-            <div class="space-y-4 mb-6">
-                <div class="flex items-center justify-between bg-blue-50 p-4 rounded-2xl border-2 border-blue-200">
-                    <span class="font-semibold text-blue-900">🔊 Activar lectura por voz</span>
-                    <button id="speech-toggle-btn" onclick="toggleSpeech()" class="bg-slate-300 text-slate-700 px-4 py-2 rounded-xl font-bold transition">
-                        Desactivado 🔇
-                    </button>
+    <main class="container mx-auto px-4 py-8 max-w-4xl z-10 flex-grow flex flex-col justify-center items-center">
+
+        <!-- ================= PANTALLA 1: PRESENTACIÓN DE ZEUS ================= -->
+        <section id="screen-welcome" class="screen w-full">
+            <div class="glass-panel rounded-3xl p-8 md:p-12 text-center max-w-2xl mx-auto transform transition animate-fade-in">
+                <div class="inline-block bg-purple-100 text-purple-700 font-bold px-4 py-1.5 rounded-full text-sm mb-4 shadow-sm">
+                    ✨ GUÍA TU CAMINO ✨
                 </div>
-                <div class="flex items-center justify-between bg-blue-50 p-4 rounded-2xl border-2 border-blue-200">
-                    <span class="font-semibold text-blue-900">🔤 Tamaño de Letra Grande</span>
-                    <button onclick="toggleLargeFont()" class="bg-blue-600 text-white px-4 py-2 rounded-xl font-bold transition hover:bg-blue-700">
-                        Cambiar Tamaño
-                    </button>
-                </div>
-            </div>
-
-            <button onclick="toggleAccessibilityMenu()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-2xl shadow-lg transition">
-                Cerrar Menú
-            </button>
-        </div>
-    </div>
-
-    <!-- Main Container -->
-    <main id="app-container" class="min-h-full flex flex-col items-center justify-center p-4 sm:p-6 max-w-4xl mx-auto relative">
-
-        <!-- Note: Bridge container removed. Starting directly with Zeus Presentation upon external trigger -->
-        <div id="screen-zeus-pres" class="w-full text-center py-6 animate-fadeIn">
-            <div class="bg-white/95 text-slate-900 p-6 sm:p-10 rounded-3xl shadow-2xl border-4 border-blue-400 max-w-2xl mx-auto">
                 
-                <!-- ESPACIO PARA MI IMAGEN ORIGINAL DE LOS PERSONAJES -->
-                <div id="zeus-characters-image" class="w-full h-64 bg-blue-50 border-4 border-dashed border-blue-300 rounded-2xl mb-6 flex items-center justify-center text-blue-600 font-bold text-center p-4">
-                    [ ESPACIO PARA MI IMAGEN ORIGINAL DE LOS PERSONAJES ]
+                <!-- ESPACIO PARA IMAGEN ORIGINAL DE ZEUS Y SU PERRO GUÍA -->
+                <div id="image-placeholder-zeus" class="my-6 border-4 border-dashed border-purple-300 rounded-2xl p-8 bg-purple-50/50 flex flex-col items-center justify-center text-center">
+                    <span class="text-6xl mb-2">👦🦮</span>
+                    <p class="text-sm font-semibold text-purple-600 italic">
+                        [ AQUÍ COLOCARÉ MI IMAGEN ORIGINAL DE ZEUS Y SU PERRO GUÍA ]
+                    </p>
                 </div>
 
-                <h2 class="text-3xl sm:text-4xl font-extrabold text-blue-800 mb-4 speakable">👋 ¡Hola! Soy Zeus</h2>
-                
-                <p class="text-lg sm:text-xl text-slate-700 mb-8 leading-relaxed speakable">
-                    “Soy un niño ciego. No puedo ver, pero puedo aprender, jugar y vivir muchas aventuras. ¡Acompáñame!”
+                <h1 class="text-3xl md:text-4xl font-bold text-slate-800 mb-4 speech-target">
+                    ¡Hola! Soy Zeus.
+                </h1>
+                <p class="text-lg md:text-xl text-slate-600 mb-8 leading-relaxed speech-target">
+                    Soy un niño ciego. No puedo ver, pero puedo aprender, jugar y vivir muchas aventuras. ¡Acompáñame!
                 </p>
 
-                <button onclick="goToMap()" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white text-xl font-extrabold py-4 px-6 rounded-2xl shadow-xl border-4 border-white transform hover:scale-105 active:scale-95 transition arcade-glow speakable">
-                    🗺️ ¡VAMOS A LA AVENTURA!
+                <button onclick="goToScreen('screen-map')" class="speech-target w-full md:w-auto bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold text-xl px-8 py-4 rounded-2xl shadow-xl transition transform hover:scale-105 flex items-center justify-center gap-3 mx-auto cursor-pointer">
+                    <span>🗺️ VAMOS A LA AVENTURA</span>
                 </button>
             </div>
-        </div>
+        </section>
 
-        <div id="screen-map" class="hidden w-full text-center py-6">
-            <div class="bg-white/95 text-slate-900 p-6 sm:p-10 rounded-3xl shadow-2xl border-4 border-purple-400 max-w-2xl mx-auto">
-                <h2 class="text-3xl sm:text-4xl font-extrabold text-purple-800 mb-2 speakable">🗺️ Mapa de Niveles</h2>
-                <p class="text-slate-600 mb-8 speakable">¡Elige un nivel desbloqueado para continuar tu aventura!</p>
-
-                <div class="space-y-4">
-                    <!-- Level 1 -->
-                    <button id="btn-lvl-1" onclick="startLevel(1)" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold p-4 rounded-2xl shadow-lg flex items-center justify-between text-lg sm:text-xl border-2 border-white transition transform hover:scale-102 speakable">
-                        <span>🔓 NIVEL 1 — Conoce a Zeus</span>
-                        <span class="bg-white/20 px-3 py-1 rounded-xl text-sm">¡Listo!</span>
-                    </button>
-
-                    <!-- Level 2 -->
-                    <button id="btn-lvl-2" onclick="startLevel(2)" class="w-full bg-slate-200 text-slate-400 font-bold p-4 rounded-2xl shadow-md flex items-center justify-between text-lg sm:text-xl border-2 border-slate-300 transition speakable" disabled>
-                        <span>🔒 NIVEL 2 — El perro guía</span>
-                        <span class="bg-slate-100 px-3 py-1 rounded-xl text-sm text-slate-500">Bloqueado</span>
-                    </button>
-
-                    <!-- Level 3 -->
-                    <button id="btn-lvl-3" onclick="startLevel(3)" class="w-full bg-slate-200 text-slate-400 font-bold p-4 rounded-2xl shadow-md flex items-center justify-between text-lg sm:text-xl border-2 border-slate-300 transition speakable" disabled>
-                        <span>🔒 NIVEL 3 — Encuentra las parejas</span>
-                        <span class="bg-slate-100 px-3 py-1 rounded-xl text-sm text-slate-500">Bloqueado</span>
-                    </button>
-
-                    <!-- Level 4 -->
-                    <button id="btn-lvl-4" onclick="startLevel(4)" class="w-full bg-slate-200 text-slate-400 font-bold p-4 rounded-2xl shadow-md flex items-center justify-between text-lg sm:text-xl border-2 border-slate-300 transition speakable" disabled>
-                        <span>🔒 NIVEL 4 — Escucha con atención</span>
-                        <span class="bg-slate-100 px-3 py-1 rounded-xl text-sm text-slate-500">Bloqueado</span>
-                    </button>
-
-                    <!-- Level 5 -->
-                    <button id="btn-lvl-5" onclick="startLevel(5)" class="w-full bg-slate-200 text-slate-400 font-bold p-4 rounded-2xl shadow-md flex items-center justify-between text-lg sm:text-xl border-2 border-slate-300 transition speakable" disabled>
-                        <span>🔒 NIVEL 5 — Aventura final</span>
-                        <span class="bg-slate-100 px-3 py-1 rounded-xl text-sm text-slate-500">Bloqueado</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <div id="screen-level-1" class="hidden w-full max-w-2xl mx-auto py-6">
-            <div class="bg-white/95 text-slate-900 p-6 sm:p-10 rounded-3xl shadow-2xl border-4 border-blue-400">
-                <div class="flex justify-between items-center mb-6">
-                    <span class="bg-blue-100 text-blue-800 px-4 py-2 rounded-xl font-bold speakable" id="l1-progress">Pregunta 1 de 5</span>
-                    <button onclick="goToMap()" class="text-sm bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl font-bold transition shadow speakable">⬅️ Regresar al mapa</button>
+        <!-- ================= PANTALLA 2: MAPA DE NIVELES ================= -->
+        <section id="screen-map" class="screen hidden w-full">
+            <div class="glass-panel rounded-3xl p-6 md:p-10 max-w-3xl mx-auto">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-slate-800 speech-target">🗺️ Mapa del Camino a la Escuela</h2>
+                    <p class="text-slate-600 mt-2 speech-target">Elige un nivel desbloqueado para continuar tu aventura</p>
                 </div>
 
-                <h3 id="l1-question" class="text-2xl sm:text-3xl font-extrabold text-blue-900 mb-6 speakable"></h3>
-
-                <div id="l1-options" class="space-y-4 mb-6">
-                    <!-- Dynamic options injected via JS -->
-                </div>
-
-                <div id="l1-feedback" class="text-center font-bold text-xl hidden"></div>
-            </div>
-        </div>
-
-        <div id="screen-learning-1" class="hidden w-full max-w-2xl mx-auto py-6 text-center">
-            <div class="bg-white/95 text-slate-900 p-6 sm:p-10 rounded-3xl shadow-2xl border-4 border-blue-400">
-                <h2 class="text-3xl sm:text-4xl font-extrabold text-blue-600 mb-4 speakable">💡 ¿SABÍAS QUE...?</h2>
-                <p class="text-lg sm:text-xl text-slate-700 mb-6 leading-relaxed speakable">
-                    “Las personas ciegas pueden aprender, jugar, estudiar y realizar muchas actividades utilizando diferentes apoyos y herramientas.”
-                </p>
-                <div class="text-2xl font-bold text-blue-600 mb-8 speakable">⭐ ¡Muy bien!</div>
-                <button onclick="unlockLevelAndReturn(2)" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white text-xl font-extrabold py-4 px-6 rounded-2xl shadow-xl border-4 border-white transition speakable">
-                    🗺️ VOLVER AL MAPA
-                </button>
-            </div>
-        </div>
-
-        <div id="screen-level-2" class="hidden w-full max-w-2xl mx-auto py-6">
-            <div class="bg-white/95 text-slate-900 p-6 sm:p-10 rounded-3xl shadow-2xl border-4 border-purple-400">
-                <div class="flex justify-between items-center mb-6">
-                    <span class="bg-purple-100 text-purple-800 px-4 py-2 rounded-xl font-bold speakable" id="l2-progress">Pregunta 1 de 4</span>
-                    <button onclick="goToMap()" class="text-sm bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl font-bold transition shadow speakable">⬅️ Regresar al mapa</button>
-                </div>
-
-                <h3 id="l2-question" class="text-2xl sm:text-3xl font-extrabold text-purple-900 mb-6 speakable"></h3>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-                    <button onclick="answerLevel2('VERDADERO')" class="bg-blue-600 hover:bg-blue-500 text-white text-2xl font-extrabold py-6 px-4 rounded-2xl shadow-xl border-4 border-white transition transform hover:scale-105 active:scale-95 speakable">
-                        VERDADERO ✅
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                    <!-- Nivel 1 -->
+                    <button onclick="startLevel(1)" class="speech-target bg-blue-500 hover:bg-blue-600 text-white p-5 rounded-2xl shadow-lg flex items-center justify-between transition transform hover:scale-102 cursor-pointer">
+                        <div class="flex items-center gap-4">
+                            <span class="text-3xl bg-blue-400/50 p-3 rounded-xl">⭐</span>
+                            <div class="text-left">
+                                <span class="text-xs uppercase tracking-wider font-semibold opacity-80">Nivel 1</span>
+                                <h3 class="text-xl font-bold">Conoce a Zeus</h3>
+                            </div>
+                        </div>
+                        <span id="badge-level-1" class="text-2xl">🔓</span>
                     </button>
-                    <button onclick="answerLevel2('FALSO')" class="bg-purple-600 hover:bg-purple-500 text-white text-2xl font-extrabold py-6 px-4 rounded-2xl shadow-xl border-4 border-white transition transform hover:scale-105 active:scale-95 speakable">
-                        FALSO ❌
+
+                    <!-- Nivel 2 -->
+                    <button id="btn-level-2" onclick="startLevel(2)" class="speech-target bg-purple-500 hover:bg-purple-600 text-white p-5 rounded-2xl shadow-lg flex items-center justify-between transition transform hover:scale-102 cursor-pointer opacity-75">
+                        <div class="flex items-center gap-4">
+                            <span class="text-3xl bg-purple-400/50 p-3 rounded-xl">🦮</span>
+                            <div class="text-left">
+                                <span class="text-xs uppercase tracking-wider font-semibold opacity-80">Nivel 2</span>
+                                <h3 class="text-xl font-bold">El perro guía</h3>
+                            </div>
+                        </div>
+                        <span id="badge-level-2" class="text-2xl">🔒</span>
+                    </button>
+
+                    <!-- Nivel 3 -->
+                    <button id="btn-level-3" onclick="startLevel(3)" class="speech-target bg-emerald-500 hover:bg-emerald-600 text-white p-5 rounded-2xl shadow-lg flex items-center justify-between transition transform hover:scale-102 cursor-pointer opacity-75">
+                        <div class="flex items-center gap-4">
+                            <span class="text-3xl bg-emerald-400/50 p-3 rounded-xl">🧠</span>
+                            <div class="text-left">
+                                <span class="text-xs uppercase tracking-wider font-semibold opacity-80">Nivel 3</span>
+                                <h3 class="text-xl font-bold">Encuentra las parejas</h3>
+                            </div>
+                        </div>
+                        <span id="badge-level-3" class="text-2xl">🔒</span>
+                    </button>
+
+                    <!-- Nivel 4 -->
+                    <button id="btn-level-4" onclick="startLevel(4)" class="speech-target bg-amber-500 hover:bg-amber-600 text-white p-5 rounded-2xl shadow-lg flex items-center justify-between transition transform hover:scale-102 cursor-pointer opacity-75">
+                        <div class="flex items-center gap-4">
+                            <span class="text-3xl bg-amber-400/50 p-3 rounded-xl">👂</span>
+                            <div class="text-left">
+                                <span class="text-xs uppercase tracking-wider font-semibold opacity-80">Nivel 4</span>
+                                <h3 class="text-xl font-bold">Escucha con atención</h3>
+                            </div>
+                        </div>
+                        <span id="badge-level-4" class="text-2xl">🔒</span>
                     </button>
                 </div>
 
-                <div id="l2-feedback" class="text-center font-bold text-xl hidden"></div>
-            </div>
-        </div>
-
-        <div id="screen-learning-2" class="hidden w-full max-w-2xl mx-auto py-6 text-center">
-            <div class="bg-white/95 text-slate-900 p-6 sm:p-10 rounded-3xl shadow-2xl border-4 border-purple-400">
-                
-                <!-- guide-dog-image container -->
-                <div id="guide-dog-image" class="w-full h-56 bg-purple-50 border-4 border-dashed border-purple-300 rounded-2xl mb-6 flex items-center justify-center text-purple-600 font-bold text-center p-4">
-                    [ guide-dog-image - Fotografía real de un perro guía amarillo ]
-                </div>
-
-                <h2 class="text-3xl sm:text-4xl font-extrabold text-purple-800 mb-4 speakable">🦮 ¿SABÍAS QUE...?</h2>
-                <p class="text-lg sm:text-xl text-slate-700 mb-6 leading-relaxed speakable">
-                    “Los perros guía están entrenados para ayudar a sus personas. Cuando están trabajando no debemos distraerlos, acariciarlos ni darles comida. Si queremos acercarnos, primero debemos pedir permiso.”
-                </p>
-                <button onclick="unlockLevelAndReturn(3)" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 text-white text-xl font-extrabold py-4 px-6 rounded-2xl shadow-xl border-4 border-white transition speakable">
-                    🗺️ VOLVER AL MAPA
-                </button>
-            </div>
-        </div>
-
-        <div id="screen-level-3" class="hidden w-full max-w-2xl mx-auto py-6 text-center">
-            <div class="bg-white/95 text-slate-900 p-6 sm:p-8 rounded-3xl shadow-2xl border-4 border-blue-400">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-2xl font-extrabold text-blue-700 speakable">🧠 Encuentra las 4 Parejas</h3>
-                    <button onclick="goToMap()" class="text-sm bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl font-bold transition shadow speakable">⬅️ Regresar al mapa</button>
-                </div>
-                <p class="text-slate-600 mb-6 speakable">Toca las tarjetas para descubrirlas y emparejarlas.</p>
-
-                <!-- Grid of 8 cards (4 pairs) optimized for mobile & touch -->
-                <div id="memorama-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
-                    <!-- Injected via JS -->
-                </div>
-
-                <div id="memorama-message" class="text-lg font-bold text-blue-600 min-h-[30px] speakable"></div>
-            </div>
-        </div>
-
-        <div id="screen-level-4" class="hidden w-full max-w-2xl mx-auto py-6 text-center">
-            <div class="bg-white/95 text-slate-900 p-6 sm:p-10 rounded-3xl shadow-2xl border-4 border-purple-400">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-2xl font-extrabold text-purple-800 speakable">👂 ¿Qué escuchaste?</h3>
-                    <button onclick="goToMap()" class="text-sm bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl font-bold transition shadow speakable">⬅️ Regresar al mapa</button>
-                </div>
-                <p class="text-slate-600 mb-6 speakable">Escucha el sonido secreto y elige la respuesta correcta.</p>
-
+                <!-- Nivel 5 (Destacado) -->
                 <div class="mb-6">
-                    <button onclick="playTargetSound()" class="bg-blue-600 hover:bg-blue-500 text-white font-extrabold text-xl py-4 px-8 rounded-2xl shadow-xl border-4 border-white transition transform hover:scale-105 active:scale-95 speakable">
-                        🔊 Escuchar otra vez
+                    <button id="btn-level-5" onclick="startLevel(5)" class="speech-target w-full bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-600 hover:to-rose-700 text-white p-5 rounded-2xl shadow-xl flex items-center justify-between transition transform hover:scale-102 cursor-pointer opacity-75">
+                        <div class="flex items-center gap-4">
+                            <span class="text-3xl bg-pink-400/50 p-3 rounded-xl">🎮</span>
+                            <div class="text-left">
+                                <span class="text-xs uppercase tracking-wider font-semibold opacity-80">Nivel 5</span>
+                                <h3 class="text-xl font-bold">Aventura final: Guía el Camino</h3>
+                            </div>
+                        </div>
+                        <span id="badge-level-5" class="text-2xl">🔒</span>
                     </button>
                 </div>
 
-                <!-- ========================================= -->
-                <!-- ESPACIO PARA AGREGAR MIS BOTONES Y AUDIOS -->
-                <!-- ========================================= -->
-                <div id="custom-sounds-container" class="mb-6">
-                    <!-- AQUÍ COLOCARÉ MIS BOTONES Y AUDIOS PERSONALIZADOS -->
-                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
-                        <button onclick="checkSoundAnswer('car')" class="bg-blue-500 hover:bg-blue-600 text-white p-4 rounded-2xl font-bold text-lg shadow-md transition speakable">🚗 Carro</button>
-                        <button onclick="checkSoundAnswer('bell')" class="bg-purple-500 hover:bg-purple-600 text-white p-4 rounded-2xl font-bold text-lg shadow-md transition speakable">🔔 Campana</button>
-                        <button onclick="checkSoundAnswer('dog')" class="bg-blue-600 hover:bg-blue-700 text-white p-4 rounded-2xl font-bold text-lg shadow-md transition speakable">🐶 Perro</button>
-                        <button onclick="checkSoundAnswer('ambulance')" class="bg-purple-600 hover:bg-purple-700 text-white p-4 rounded-2xl font-bold text-lg shadow-md transition speakable">🚑 Ambulancia</button>
-                        <button onclick="checkSoundAnswer('rain')" class="bg-blue-700 hover:bg-blue-800 text-white p-4 rounded-2xl font-bold text-lg shadow-md transition speakable">🌧️ Lluvia</button>
-                        <button onclick="checkSoundAnswer('extra')" class="bg-purple-700 hover:bg-purple-800 text-white p-4 rounded-2xl font-bold text-lg shadow-md transition speakable">🔊 Sonido Extra</button>
-                    </div>
-                </div>
-
-                <!-- Required audio elements as specified -->
-                <audio id="audio-car"></audio>
-                <audio id="audio-bell"></audio>
-                <audio id="audio-dog"></audio>
-                <audio id="audio-ambulance"></audio>
-                <audio id="audio-rain"></audio>
-                <audio id="audio-extra"></audio>
-
-                <div id="sound-feedback" class="text-xl font-bold mt-4 speakable"></div>
-            </div>
-        </div>
-
-        <div id="screen-level-5" class="hidden w-full max-w-2xl mx-auto py-6 text-center">
-            <div class="bg-white/95 text-slate-900 p-6 sm:p-10 rounded-3xl shadow-2xl border-4 border-blue-500">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-2xl font-extrabold text-blue-900 speakable">👦 Recoge Bastones y Evita Piedras 🪨</h3>
-                    <button onclick="goToMap()" class="text-sm bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl font-bold transition shadow speakable">⬅️ Regresar al mapa</button>
-                </div>
-                <p class="text-slate-600 mb-2 speakable">Usa los botones o flechas para mover al niño 👦 y recoger 3 bastones blancos 🦯 evitando piedras 🪨.</p>
-                <p id="score-display" class="font-bold text-blue-700 mb-4 text-lg speakable">Bastones recogidos: 0 / 3</p>
-
-                <!-- Game Canvas container responsive -->
-                <div class="relative bg-slate-900 rounded-2xl overflow-hidden border-4 border-blue-300 mb-6 aspect-video flex items-center justify-center">
-                    <canvas id="game-canvas" class="w-full h-full block"></canvas>
-                    <div id="game-overlay" class="absolute inset-0 bg-slate-950/80 flex flex-col items-center justify-center text-white p-4">
-                        <h4 class="text-2xl font-bold mb-2 speakable">¡Aventura en el camino!</h4>
-                        <p class="mb-4 text-sm speakable">Recoge 3 bastones blancos y esquiva las piedras.</p>
-                        <button onclick="startLevel5Game()" class="bg-blue-600 hover:bg-blue-500 text-white font-extrabold px-6 py-3 rounded-2xl text-lg shadow-lg speakable">
-                            ¡Comenzar Juego! 🚀
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Large Touch Controls for Mobile & Computer -->
-                <div class="grid grid-cols-4 gap-2 max-w-sm mx-auto">
-                    <button onclick="moveZeus('left')" class="bg-blue-600 hover:bg-blue-500 text-white font-extrabold py-4 rounded-2xl text-xl shadow-md speakable">
-                        ⬅️
-                    </button>
-                    <button onclick="moveZeus('right')" class="bg-blue-600 hover:bg-blue-500 text-white font-extrabold py-4 rounded-2xl text-xl shadow-md speakable">
-                        ➡️
-                    </button>
-                    <button onclick="moveZeus('up')" class="bg-purple-600 hover:bg-purple-500 text-white font-extrabold py-4 rounded-2xl text-xl shadow-md speakable">
-                        ⬆️
-                    </button>
-                    <button onclick="moveZeus('down')" class="bg-purple-600 hover:bg-purple-500 text-white font-extrabold py-4 rounded-2xl text-xl shadow-md speakable">
-                        ⬇️
+                <div class="text-center">
+                    <button onclick="goToScreen('screen-welcome')" class="speech-target text-slate-500 hover:text-slate-700 font-bold px-6 py-2 rounded-xl transition cursor-pointer">
+                        ⬅️ Volver a la presentación
                     </button>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <div id="screen-final" class="hidden w-full max-w-2xl mx-auto py-6 text-center">
-            <div class="bg-white/95 text-slate-900 p-6 sm:p-10 rounded-3xl shadow-2xl border-4 border-blue-400">
-                
-                <!-- final-zeus-school-image container -->
-                <div id="final-zeus-school-image" class="w-full h-64 bg-blue-50 border-4 border-dashed border-blue-300 rounded-2xl mb-6 flex items-center justify-center text-blue-700 font-bold text-center p-4">
-                    [ final-zeus-school-image - Imagen de Zeus llegando a la escuela ]
+        <!-- ================= PANTALLA NIVEL 1: CONOCE A ZEUS ================= -->
+        <section id="screen-level-1" class="screen hidden w-full">
+            <div class="glass-panel rounded-3xl p-6 md:p-10 max-w-2xl mx-auto">
+                <div class="flex justify-between items-center mb-6">
+                    <button onclick="goToScreen('screen-map')" class="speech-target bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold px-4 py-2 rounded-xl text-sm transition cursor-pointer flex items-center gap-1">
+                        ⬅️ Regresar al mapa
+                    </button>
+                    <span id="l1-progress" class="text-sm font-bold bg-blue-100 text-blue-700 px-3 py-1 rounded-full">Pregunta 1 de 5</span>
                 </div>
 
-                <h2 class="text-3xl sm:text-4xl font-extrabold text-blue-800 mb-4 speakable">🎉 ¡LO LOGRAMOS!</h2>
-                
-                <div class="space-y-3 text-lg text-slate-700 mb-6 leading-relaxed">
-                    <p class="speakable">“¡Mira, Zeus llegó a la escuela!”</p>
-                    <p class="speakable">“Gracias por ayudarme en esta aventura.”</p>
-                    <p class="speakable">“Tal vez yo no pueda ver como tú, pero puedo aprender, jugar y cumplir mis sueños.”</p>
-                    <p class="font-bold text-blue-900 speakable">“Todos somos diferentes y todos tenemos algo especial. 💙”</p>
+                <div id="l1-container">
+                    <!-- Dinámico por JS -->
                 </div>
+                <div id="l1-feedback" class="mt-4 text-center font-bold text-lg h-8"></div>
+            </div>
+        </section>
 
-                <div class="bg-blue-100 border-2 border-blue-300 text-blue-900 font-bold p-4 rounded-2xl mb-6 text-xl speakable">
-                    🌟 ¡Gracias por ser mi amigo!
-                </div>
-
-                <div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white font-extrabold text-2xl py-4 px-6 rounded-2xl shadow-xl border-4 border-white mb-6 speakable">
-                    🏆 ¡AVENTURA COMPLETADA!
-                </div>
-
-                <button onclick="goToMap()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-6 rounded-2xl shadow-lg speakable">
-                    Volver al Mapa de Niveles 🗺️
+        <!-- ================= PANTALLA APRENDIZAJE NIVEL 1 ================= -->
+        <section id="screen-learn-1" class="screen hidden w-full">
+            <div class="glass-panel rounded-3xl p-8 md:p-12 text-center max-w-2xl mx-auto">
+                <span class="text-6xl mb-4 block">💡</span>
+                <h2 class="text-3xl font-bold text-slate-800 mb-6 speech-target">¿SABÍAS QUE...?</h2>
+                <p class="text-xl text-slate-600 mb-8 leading-relaxed speech-target">
+                    "Las personas ciegas pueden aprender, jugar, estudiar y realizar muchas actividades utilizando diferentes apoyos y herramientas."
+                </p>
+                <button onclick="completeLevel(1)" class="speech-target bg-blue-600 hover:bg-blue-700 text-white font-bold text-lg px-8 py-4 rounded-2xl shadow-lg transition transform hover:scale-105 cursor-pointer">
+                    🗺️ VOLVER AL MAPA
                 </button>
             </div>
-        </div>
+        </section>
+
+        <!-- ================= PANTALLA NIVEL 2: PERRO GUÍA ================= -->
+        <section id="screen-level-2" class="screen hidden w-full">
+            <div class="glass-panel rounded-3xl p-6 md:p-10 max-w-2xl mx-auto">
+                <div class="flex justify-between items-center mb-6">
+                    <button onclick="goToScreen('screen-map')" class="speech-target bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold px-4 py-2 rounded-xl text-sm transition cursor-pointer flex items-center gap-1">
+                        ⬅️ Regresar al mapa
+                    </button>
+                    <span id="l2-progress" class="text-sm font-bold bg-purple-100 text-purple-700 px-3 py-1 rounded-full">Pregunta 1 de 4</span>
+                </div>
+
+                <div id="l2-container">
+                    <!-- Dinámico por JS -->
+                </div>
+                <div id="l2-feedback" class="mt-4 text-center font-bold text-lg h-8"></div>
+            </div>
+        </section>
+
+        <!-- ================= PANTALLA APRENDIZAJE NIVEL 2 ================= -->
+        <section id="screen-learn-2" class="screen hidden w-full">
+            <div class="glass-panel rounded-3xl p-8 md:p-12 text-center max-w-2xl mx-auto">
+                <span class="text-6xl mb-4 block">🦮</span>
+                
+                <!-- ESPACIO PARA FOTOGRAFÍA REAL DE UN PERRO GUÍA AMARILLO -->
+                <div id="image-placeholder-dog" class="my-4 border-4 border-dashed border-purple-300 rounded-2xl p-6 bg-purple-50/50 flex flex-col items-center justify-center text-center">
+                    <span class="text-5xl mb-1">🦮🦺</span>
+                    <p class="text-xs font-semibold text-purple-600 italic">
+                        [ AQUÍ COLOCARÉ UNA FOTOGRAFÍA REAL DE UN PERRO GUÍA AMARILLO ]
+                    </p>
+                </div>
+
+                <h2 class="text-3xl font-bold text-slate-800 mb-4 speech-target">🦮 ¿SABÍAS QUE...?</h2>
+                <p class="text-lg text-slate-600 mb-8 leading-relaxed speech-target">
+                    "Los perros guía están entrenados para ayudar a sus personas. Cuando están trabajando no debemos distraerlos, acariciarlos ni darles comida. Si queremos acercarnos, primero debemos pedir permiso."
+                </p>
+                <button onclick="completeLevel(2)" class="speech-target bg-purple-600 hover:bg-purple-700 text-white font-bold text-lg px-8 py-4 rounded-2xl shadow-lg transition transform hover:scale-105 cursor-pointer">
+                    🗺️ VOLVER AL MAPA
+                </button>
+            </div>
+        </section>
+
+        <!-- ================= PANTALLA NIVEL 3: MEMORAMA ================= -->
+        <section id="screen-level-3" class="screen hidden w-full">
+            <div class="glass-panel rounded-3xl p-6 md:p-10 max-w-2xl mx-auto text-center">
+                <div class="flex justify-between items-center mb-6">
+                    <button onclick="goToScreen('screen-map')" class="speech-target bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold px-4 py-2 rounded-xl text-sm transition cursor-pointer flex items-center gap-1">
+                        ⬅️ Regresar al mapa
+                    </button>
+                    <span class="text-sm font-bold bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full speech-target">Encuentra las 4 parejas</span>
+                </div>
+
+                <h2 class="text-2xl font-bold text-slate-800 mb-2 speech-target">🧠 Memorama Inclusivo</h2>
+                <p class="text-slate-600 mb-6 text-sm speech-target">Toca dos tarjetas para relacionar los elementos</p>
+
+                <div id="memory-grid" class="grid grid-cols-4 gap-3 md:gap-4 max-w-lg mx-auto mb-6">
+                    <!-- Generado dinámicamente -->
+                </div>
+                <div id="memory-status" class="font-bold text-emerald-600 text-lg h-8 speech-target"></div>
+            </div>
+        </section>
+
+        <!-- ================= PANTALLA NIVEL 4: ESCUCHA CON ATENCIÓN ================= -->
+        <section id="screen-level-4" class="screen hidden w-full">
+            <div class="glass-panel rounded-3xl p-6 md:p-10 max-w-2xl mx-auto text-center">
+                <div class="flex justify-between items-center mb-6">
+                    <button onclick="goToScreen('screen-map')" class="speech-target bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold px-4 py-2 rounded-xl text-sm transition cursor-pointer flex items-center gap-1">
+                        ⬅️ Regresar al mapa
+                    </button>
+                    <span class="text-sm font-bold bg-amber-100 text-amber-700 px-3 py-1 rounded-full speech-target">Nivel 4: Sonidos</span>
+                </div>
+
+                <h2 class="text-2xl font-bold text-slate-800 mb-2 speech-target">👂 Escucha con atención</h2>
+                <p class="text-slate-600 mb-6 speech-target">Reproduce el sonido y descubre de qué se trata</p>
+
+                <!-- BOTÓN REPRODUCIR SONIDO -->
+                <div class="mb-8">
+                    <button onclick="playCurrentAudio()" class="speech-target bg-amber-500 hover:bg-amber-600 text-white font-bold text-xl px-8 py-5 rounded-2xl shadow-xl transition transform hover:scale-105 inline-flex items-center gap-3 cursor-pointer">
+                        <span class="text-3xl">🔊</span>
+                        <span>ESCUCHAR SONIDO</span>
+                    </button>
+                    <div id="audio-hint" class="mt-2 text-xs text-slate-500 italic">Haz clic para escuchar el sonido actual</div>
+                </div>
+
+                <!-- ESPACIOS CLAROS PARA LOS ARCHIVOS DE AUDIO DEL USUARIO -->
+                <!-- 
+                    // AQUÍ COLOCARÉ EL AUDIO DE LA AMBULANCIA
+                    // AQUÍ COLOCARÉ EL AUDIO DE LA LLUVIA
+                -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <button onclick="checkAudioAnswer('ambulancia')" class="speech-target bg-white hover:bg-blue-50 border-3 border-blue-400 text-blue-700 font-bold p-6 rounded-2xl shadow-md transition transform hover:scale-105 flex flex-col items-center gap-2 cursor-pointer">
+                        <span class="text-4xl">🚑</span>
+                        <span class="text-xl">AMBULANCIA</span>
+                    </button>
+                    <button onclick="checkAudioAnswer('lluvia')" class="speech-target bg-white hover:bg-sky-50 border-3 border-sky-400 text-sky-700 font-bold p-6 rounded-2xl shadow-md transition transform hover:scale-105 flex flex-col items-center gap-2 cursor-pointer">
+                        <span class="text-4xl">🌧️</span>
+                        <span class="text-xl">LLUVIA</span>
+                    </button>
+                </div>
+
+                <div id="l4-feedback" class="font-bold text-lg h-8 speech-target"></div>
+            </div>
+        </section>
+
+        <!-- ================= PANTALLA NIVEL 5: AVENTURA FINAL (MINIJUEGO) ================= -->
+        <section id="screen-level-5" class="screen hidden w-full">
+            <div class="glass-panel rounded-3xl p-4 md:p-6 max-w-2xl mx-auto">
+                <div class="flex justify-between items-center mb-4">
+                    <button onclick="goToScreen('screen-map')" class="speech-target bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold px-3 py-1.5 rounded-xl text-xs transition cursor-pointer flex items-center gap-1">
+                        ⬅️ Regresar al mapa
+                    </button>
+                    <div class="text-sm font-bold bg-pink-100 text-pink-700 px-3 py-1 rounded-full speech-target" id="l5-counter">
+                        Bastones encontrados: 0/3
+                    </div>
+                </div>
+
+                <div class="text-center mb-2">
+                    <h2 class="text-xl font-bold text-slate-800 speech-target">🎮 Aventura en el Camino a la Escuela</h2>
+                    <p class="text-xs text-slate-600 speech-target">Recoge todos los bastones blancos 🦯, evita las piedras 🪨 y llega a la Escuela 🏫</p>
+                </div>
+
+                <!-- CANVAS DEL MINIJUEGO -->
+                <div class="relative w-full flex justify-center mb-4">
+                    <canvas id="gameCanvas" width="400" height="300" class="bg-emerald-50 rounded-2xl border-4 border-pink-300 shadow-inner w-full max-w-[400px] h-[300px] touch-none"></canvas>
+                </div>
+
+                <!-- CONTROLES TÁCTILES GRANDES PARA CELULAR Y COMPUTADORA -->
+                <div class="grid grid-cols-3 gap-2 max-w-[280px] mx-auto">
+                    <div></div>
+                    <button ontouchstart="setMove('up')" onmousedown="setMove('up')" class="speech-target bg-pink-500 hover:bg-pink-600 active:bg-pink-700 text-white font-bold p-4 rounded-2xl shadow-md text-2xl flex items-center justify-center cursor-pointer">⬆️</button>
+                    <div></div>
+                    <button ontouchstart="setMove('left')" onmousedown="setMove('left')" class="speech-target bg-pink-500 hover:bg-pink-600 active:bg-pink-700 text-white font-bold p-4 rounded-2xl shadow-md text-2xl flex items-center justify-center cursor-pointer">⬅️</button>
+                    <button ontouchstart="setMove('down')" onmousedown="setMove('down')" class="speech-target bg-pink-500 hover:bg-pink-600 active:bg-pink-700 text-white font-bold p-4 rounded-2xl shadow-md text-2xl flex items-center justify-center cursor-pointer">⬇️</button>
+                    <button ontouchstart="setMove('right')" onmousedown="setMove('right')" class="speech-target bg-pink-500 hover:bg-pink-600 active:bg-pink-700 text-white font-bold p-4 rounded-2xl shadow-md text-2xl flex items-center justify-center cursor-pointer">➡️</button>
+                </div>
+
+                <div id="l5-feedback" class="text-center font-bold text-sm h-6 mt-2 text-rose-600 speech-target"></div>
+            </div>
+        </section>
+
+        <!-- ================= PANTALLA FINAL ================= -->
+        <section id="screen-final" class="screen hidden w-full">
+            <div class="glass-panel rounded-3xl p-8 md:p-12 text-center max-w-2xl mx-auto">
+                <span class="text-6xl mb-4 block">🎉</span>
+                
+                <!-- ESPACIO PARA IMAGEN DE ZEUS LLEGANDO A LA ESCUELA -->
+                <div id="image-placeholder-final" class="my-4 border-4 border-dashed border-purple-300 rounded-2xl p-6 bg-purple-50/50 flex flex-col items-center justify-center text-center">
+                    <span class="text-5xl mb-1">🏫👦🦮</span>
+                    <p class="text-xs font-semibold text-purple-600 italic">
+                        [ AQUÍ COLOCARÉ LA IMAGEN DE ZEUS LLEGANDO A LA ESCUELA ]
+                    </p>
+                </div>
+
+                <h2 class="text-3xl font-bold text-slate-800 mb-3 speech-target">🎉 ¡LO LOGRAMOS!</h2>
+                <h3 class="text-xl font-bold text-purple-700 mb-4 speech-target">¡Mira, Zeus llegó a la escuela!</h3>
+                <p class="text-slate-600 mb-4 leading-relaxed speech-target">
+                    "¡Gracias por ayudarme en esta aventura!"<br>
+                    "Tal vez yo no pueda ver como tú, pero puedo aprender, jugar y cumplir mis sueños."<br>
+                    "Todos somos diferentes y todos tenemos algo especial. 💙"
+                </p>
+                <div class="font-bold text-lg text-pink-600 mb-6 speech-target">
+                    🌟 ¡Gracias por ser mi amigo! <br> 🏆 ¡AVENTURA COMPLETADA!
+                </div>
+                <button onclick="goToScreen('screen-map')" class="speech-target bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold text-lg px-8 py-4 rounded-2xl shadow-lg transition transform hover:scale-105 cursor-pointer">
+                    🗺️ VOLVER AL MAPA DE NIVELES
+                </button>
+            </div>
+        </section>
 
     </main>
 
+    <footer class="text-center py-4 text-xs text-slate-500 z-10">
+        GUÍA TU CAMINO &copy; 2026 — Videojuego Educativo Inclusivo
+    </footer>
+
     <script>
-        // --- SPEECH SYNTHESIS & ACCESSIBILITY LOGIC (MUTED BY DEFAULT) ---
-        let speechActive = false;
-        let largeFontActive = false;
+        // --- STREAMING_CHUNK:Defining global state variables ---
+        let unlockedLevel = 1;
+        let accessibilityActive = false;
 
-        function toggleAccessibilityMenu() {
-            const modal = document.getElementById('accessibility-modal');
-            modal.classList.toggle('hidden');
-            if(!modal.classList.contains('hidden') && speechActive) {
-                speakText("Menú de accesibilidad abierto");
+        // --- STREAMING_CHUNK:Implementing screen navigation helper ---
+        function goToScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
+            document.getElementById(screenId).classList.remove('hidden');
+            window.scrollTo(0, 0);
+
+            // Special initializations per screen
+            if (screenId === 'screen-map') {
+                updateMapBadges();
+            } else if (screenId === 'screen-level-1') {
+                initLevel1();
+            } else if (screenId === 'screen-level-2') {
+                initLevel2();
+            } else if (screenId === 'screen-level-3') {
+                initLevel3();
+            } else if (screenId === 'screen-level-4') {
+                initLevel4();
+            } else if (screenId === 'screen-level-5') {
+                initLevel5();
             }
+            speakCurrentScreen();
         }
 
-        function toggleSpeech() {
-            speechActive = !speechActive;
-            const btn = document.getElementById('speech-toggle-btn');
-            if(speechActive) {
-                btn.textContent = "Activado 🔊";
-                btn.classList.remove('bg-slate-300', 'text-slate-700');
-                btn.classList.add('bg-blue-600', 'text-white');
-                speakText("Lectura por voz activada");
+        // --- STREAMING_CHUNK:Implementing accessibility voice synthesis ---
+        function toggleAccessibility() {
+            accessibilityActive = !accessibilityActive;
+            const btnText = document.getElementById('accessibility-text');
+            const icon = document.getElementById('accessibility-icon');
+            if (accessibilityActive) {
+                btnText.innerText = "ACCESIBILIDAD (ON)";
+                icon.style.filter = "drop-shadow(0 0 4px gold)";
+                speakText("Lectura por voz activada.");
             } else {
-                btn.textContent = "Desactivado 🔇";
-                btn.classList.remove('bg-blue-600', 'text-white');
-                btn.classList.add('bg-slate-300', 'text-slate-700');
-                if('speechSynthesis' in window) {
-                    window.speechSynthesis.cancel();
-                }
+                window.speechSynthesis.cancel();
+                btnText.innerText = "ACCESIBILIDAD (OFF)";
+                icon.style.filter = "none";
             }
-        }
-
-        function toggleLargeFont() {
-            largeFontActive = !largeFontActive;
-            document.body.classList.toggle('text-lg', largeFontActive);
-            if(speechActive) speakText("Tamaño de letra modificado");
         }
 
         function speakText(text) {
-            if (!speechActive || !('speechSynthesis' in window)) return;
-            window.speechSynthesis.cancel(); // Stop previous utterance
+            if (!accessibilityActive) return;
+            window.speechSynthesis.cancel();
             const utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = 'es-ES';
             utterance.rate = 1.0;
             window.speechSynthesis.speak(utterance);
         }
 
-        // Attach global click listener for accessibility narration when active
+        function speakCurrentScreen() {
+            if (!accessibilityActive) return;
+            setTimeout(() => {
+                const activeScreen = document.querySelector('.screen:not(.hidden)');
+                if (!activeScreen) return;
+                const targets = activeScreen.querySelectorAll('.speech-target');
+                let combinedText = "";
+                targets.forEach(t => { combinedText += t.innerText + ". "; });
+                if (combinedText) speakText(combinedText);
+            }, 300);
+        }
+
+        // Event listener for touch/click accessibility readout
         document.addEventListener('click', (e) => {
-            if (!speechActive) return;
-            const target = e.target.closest('.speakable, button, h1, h2, h3, p, span');
+            if (!accessibilityActive) return;
+            const target = e.target.closest('.speech-target, button, h1, h2, h3, p');
             if (target && target.innerText) {
                 speakText(target.innerText);
             }
         });
 
-        // --- NAVIGATION MANAGER ---
-        function hideAllScreens() {
-            const screens = ['screen-zeus-pres', 'screen-map', 'screen-level-1', 'screen-learning-1', 'screen-level-2', 'screen-learning-2', 'screen-level-3', 'screen-level-4', 'screen-level-5', 'screen-final'];
-            screens.forEach(id => {
-                document.getElementById(id).classList.add('hidden');
-            });
-        }
-
-        function goToZeusPresentation() {
-            hideAllScreens();
-            document.getElementById('screen-zeus-pres').classList.remove('hidden');
-            speakText("Presentación de Zeus");
-        }
-
-        function goToMap() {
-            hideAllScreens();
-            document.getElementById('screen-map').classList.remove('hidden');
-            speakText("Mapa de niveles");
-        }
-
-        let unlockedLevel = 1;
-
-        function unlockLevelAndReturn(nextLevelNum) {
-            unlockedLevel = Math.max(unlockedLevel, nextLevelNum);
-            
-            // Update UI buttons in Map
+        // --- STREAMING_CHUNK:Updating map unlock states ---
+        function updateMapBadges() {
             for (let i = 2; i <= 5; i++) {
-                const btn = document.getElementById(`btn-lvl-${i}`);
+                const btn = document.getElementById(`btn-level-${i}`);
+                const badge = document.getElementById(`badge-level-${i}`);
                 if (i <= unlockedLevel) {
-                    btn.disabled = false;
-                    btn.className = "w-full bg-blue-600 hover:bg-blue-500 text-white font-bold p-4 rounded-2xl shadow-lg flex items-center justify-between text-lg sm:text-xl border-2 border-white transition transform hover:scale-102 speakable";
-                    btn.querySelector('span:last-child').textContent = "¡Listo!";
-                    btn.querySelector('span:last-child').className = "bg-white/20 px-3 py-1 rounded-xl text-sm";
+                    btn.classList.remove('opacity-75');
+                    badge.innerText = "🔓";
+                } else {
+                    btn.classList.add('opacity-75');
+                    badge.innerText = "🔒";
                 }
             }
-            goToMap();
-            speakText("Nivel desbloqueado. Volviendo al mapa.");
         }
 
         function startLevel(levelNum) {
-            if (levelNum > unlockedLevel) return;
-            hideAllScreens();
-            if (levelNum === 1) {
-                initLevel1();
-            } else if (levelNum === 2) {
-                initLevel2();
-            } else if (levelNum === 3) {
-                initLevel3();
-            } else if (levelNum === 4) {
-                initLevel4();
-            } else if (levelNum === 5) {
-                initLevel5();
+            if (levelNum > unlockedLevel) {
+                speakText("Este nivel está bloqueado. Completa el nivel anterior primero.");
+                alert("¡Completa el nivel anterior para desbloquear este nivel!");
+                return;
             }
+            if (levelNum === 1) goToScreen('screen-level-1');
+            if (levelNum === 2) goToScreen('screen-level-2');
+            if (levelNum === 3) goToScreen('screen-level-3');
+            if (levelNum === 4) goToScreen('screen-level-4');
+            if (levelNum === 5) goToScreen('screen-level-5');
         }
 
-        // --- LEVEL 1 LOGIC (5 Questions, Auto-advance) ---
-        const level1Data = [
-            {
-                q: "¿Cómo se llama el personaje principal?",
-                options: ["Zeus", "Mateo", "Leo"],
-                correct: "Zeus"
-            },
-            {
-                q: "¿Qué discapacidad tiene Zeus?",
-                options: ["Discapacidad visual", "Discapacidad auditiva", "Discapacidad motriz"],
-                correct: "Discapacidad visual"
-            },
-            {
-                q: "¿Quién acompaña a Zeus en sus aventuras?",
-                options: ["Un gato", "Su perro guía", "Un conejo"],
-                correct: "Su perro guía"
-            },
-            {
-                q: "¿Qué herramienta puede utilizar Zeus para desplazarse?",
-                options: ["Un bastón blanco", "Un paraguas", "Una pelota"],
-                correct: "Un bastón blanco"
-            },
-            {
-                q: "¿Qué puede hacer Zeus aunque no pueda ver?",
-                options: ["Aprender, jugar y vivir aventuras", "Nada", "Solo quedarse en casa"],
-                correct: "Aprender, jugar y vivir aventuras"
+        function completeLevel(levelNum) {
+            if (levelNum >= unlockedLevel && unlockedLevel < 5) {
+                unlockedLevel = levelNum + 1;
             }
-        ];
+            goToScreen('screen-map');
+        }
 
-        let currentL1Index = 0;
+        // --- STREAMING_CHUNK:Level 1 Logic (Conoce a Zeus) ---
+        const l1Questions = [
+            { q: "¿Cómo se llama el personaje principal?", options: ["Zeus", "Mateo", "Lucas"], correct: 0 },
+            { q: "¿Qué discapacidad tiene Zeus?", options: ["Discapacidad auditiva", "Discapacidad visual", "Discapacidad motriz"], correct: 1 },
+            { q: "¿Quién acompaña a Zeus en sus aventuras?", options: ["Un gato", "Su perro guía", "Un pájaro"], correct: 1 },
+            { q: "¿Qué herramienta puede utilizar Zeus para desplazarse?", options: ["Un bastón blanco", "Una patineta", "Un paraguas"], correct: 0 },
+            { q: "¿Qué puede hacer Zeus aunque no pueda ver?", options: ["Dormir todo el día", "Aprender, jugar y vivir aventuras", "Ver televisión"], correct: 1 }
+        ];
+        let l1Current = 0;
 
         function initLevel1() {
-            currentL1Index = 0;
-            document.getElementById('screen-level-1').classList.remove('hidden');
-            loadLevel1Question();
+            l1Current = 0;
+            renderL1Question();
         }
 
-        function loadLevel1Question() {
-            const data = level1Data[currentL1Index];
-            document.getElementById('l1-progress').textContent = `Pregunta ${currentL1Index + 1} de 5`;
-            document.getElementById('l1-question').textContent = data.q;
-            
-            const feedbackEl = document.getElementById('l1-feedback');
-            feedbackEl.classList.add('hidden');
-            feedbackEl.textContent = "";
+        function renderL1Question() {
+            const container = document.getElementById('l1-container');
+            const progress = document.getElementById('l1-progress');
+            document.getElementById('l1-feedback').innerText = "";
 
-            const optContainer = document.getElementById('l1-options');
-            optContainer.innerHTML = '';
-
-            data.options.forEach(opt => {
-                const btn = document.createElement('button');
-                btn.className = "w-full bg-blue-600 hover:bg-blue-500 text-white font-bold p-4 rounded-2xl shadow-md text-xl transition transform hover:scale-102 speakable";
-                btn.textContent = opt;
-                btn.onclick = () => checkLevel1Answer(opt, data.correct);
-                optContainer.appendChild(btn);
-            });
-            speakText(data.q);
-        }
-
-        function checkLevel1Answer(selected, correct) {
-            const feedbackEl = document.getElementById('l1-feedback');
-            feedbackEl.classList.remove('hidden');
-
-            if (selected === correct) {
-                feedbackEl.textContent = "⭐ ¡Correcto!";
-                feedbackEl.className = "text-center font-bold text-2xl text-blue-600 speakable";
-                speakText("¡Correcto!");
-                
-                setTimeout(() => {
-                    currentL1Index++;
-                    if (currentL1Index < level1Data.length) {
-                        loadLevel1Question();
-                    } else {
-                        hideAllScreens();
-                        document.getElementById('screen-learning-1').classList.remove('hidden');
-                        speakText("¡Sabías que...?");
-                    }
-                }, 1000);
-            } else {
-                feedbackEl.textContent = "❌ Inténtalo de nuevo";
-                feedbackEl.className = "text-center font-bold text-xl text-rose-600 speakable";
-                speakText("Inténtalo de nuevo");
-            }
-        }
-
-        // --- LEVEL 2 LOGIC (True/False, 4 Questions, Auto-advance) ---
-        const level2Data = [
-            {
-                q: "Un perro guía ayuda a una persona ciega a desplazarse.",
-                correct: "VERDADERO"
-            },
-            {
-                q: "Podemos acariciar a un perro guía mientras está trabajando sin pedir permiso.",
-                correct: "FALSO"
-            },
-            {
-                q: "Un perro guía está entrenado para ayudar a su persona.",
-                correct: "VERDADERO"
-            },
-            {
-                q: "Debemos distraer a un perro guía mientras está trabajando.",
-                correct: "FALSO"
-            }
-        ];
-
-        let currentL2Index = 0;
-
-        function initLevel2() {
-            currentL2Index = 0;
-            document.getElementById('screen-level-2').classList.remove('hidden');
-            loadLevel2Question();
-        }
-
-        function loadLevel2Question() {
-            const data = level2Data[currentL2Index];
-            document.getElementById('l2-progress').textContent = `Pregunta ${currentL2Index + 1} de 4`;
-            document.getElementById('l2-question').textContent = data.q;
-            
-            const feedbackEl = document.getElementById('l2-feedback');
-            feedbackEl.classList.add('hidden');
-            speakText(data.q);
-        }
-
-        function answerLevel2(selected) {
-            const data = level2Data[currentL2Index];
-            const feedbackEl = document.getElementById('l2-feedback');
-            feedbackEl.classList.remove('hidden');
-
-            if (selected === data.correct) {
-                feedbackEl.textContent = "⭐ ¡Correcto!";
-                feedbackEl.className = "text-center font-bold text-2xl text-blue-600 speakable";
-                speakText("¡Correcto!");
-
-                setTimeout(() => {
-                    currentL2Index++;
-                    if (currentL2Index < level2Data.length) {
-                        loadLevel2Question();
-                    } else {
-                        hideAllScreens();
-                        document.getElementById('screen-learning-2').classList.remove('hidden');
-                        speakText("Aprendizaje del perro guía");
-                    }
-                }, 1000);
-            } else {
-                feedbackEl.textContent = "❌ Inténtalo de nuevo";
-                feedbackEl.className = "text-center font-bold text-xl text-rose-600 speakable";
-                speakText("Inténtalo de nuevo");
-            }
-        }
-
-        // --- LEVEL 3 LOGIC (Memorama: 4 pairs = 8 cards) ---
-        const memoramaItems = [
-            { id: 1, name: "🦮 Perro guía", pairId: 1 },
-            { id: 2, name: "🦮 Perro guía", pairId: 1 },
-            { id: 3, name: "👀 Ojos", pairId: 2 },
-            { id: 4, name: "👀 Ojos", pairId: 2 },
-            { id: 5, name: "🦯 Bastón blanco", pairId: 3 },
-            { id: 6, name: "🦯 Bastón blanco", pairId: 3 },
-            { id: 7, name: "🕶️ Lentes oscuros", pairId: 4 },
-            { id: 8, name: "🕶️ Lentes oscuros", pairId: 4 },
-        ];
-
-        let firstCard = null;
-        let secondCard = null;
-        let lockBoard = false;
-        let matchedPairsCount = 0;
-
-        function initLevel3() {
-            hideAllScreens();
-            document.getElementById('screen-level-3').classList.remove('hidden');
-            matchedPairsCount = 0;
-            firstCard = null;
-            secondCard = null;
-            lockBoard = false;
-            document.getElementById('memorama-message').textContent = "";
-
-            const shuffled = [...memoramaItems].sort(() => Math.random() - 0.5);
-            const grid = document.getElementById('memorama-grid');
-            grid.innerHTML = '';
-
-            shuffled.forEach((item, idx) => {
-                const card = document.createElement('div');
-                card.className = "h-28 sm:h-32 bg-blue-600 hover:bg-blue-500 rounded-2xl shadow-lg flex items-center justify-center text-3xl sm:text-4xl cursor-pointer transition transform hover:scale-105 border-4 border-white select-none speakable";
-                card.dataset.pair = item.pairId;
-                card.dataset.name = item.name;
-                card.textContent = "❓";
-                card.onclick = () => flipCard(card);
-                grid.appendChild(card);
-            });
-            speakText("Memorama. Encuentra las cuatro parejas.");
-        }
-
-        function flipCard(card) {
-            if (lockBoard) return;
-            if (card === firstCard) return;
-            if (card.classList.contains('matched')) return;
-
-            card.textContent = card.dataset.name;
-            card.classList.remove('bg-blue-600');
-            card.classList.add('bg-white', 'text-slate-900');
-
-            if (!firstCard) {
-                firstCard = card;
+            if (l1Current >= l1Questions.length) {
+                goToScreen('screen-learn-1');
                 return;
             }
 
-            secondCard = card;
-            checkForMatch();
+            progress.innerText = `Pregunta ${l1Current + 1} de 5`;
+            const item = l1Questions[l1Current];
+
+            let html = `<h3 class="text-xl md:text-2xl font-bold text-slate-800 mb-6 speech-target">${item.q}</h3><div class="grid grid-cols-1 gap-3">`;
+            item.options.forEach((opt, idx) => {
+                html += `<button onclick="checkL1Answer(${idx})" class="speech-target bg-white hover:bg-blue-50 border-2 border-blue-300 text-slate-700 font-bold p-4 rounded-2xl shadow transition transform hover:scale-101 text-lg cursor-pointer">${opt}</button>`;
+            });
+            html += `</div>`;
+            container.innerHTML = html;
+            speakCurrentScreen();
+        }
+
+        function checkL1Answer(selectedIdx) {
+            const item = l1Questions[l1Current];
+            const feedback = document.getElementById('l1-feedback');
+            if (selectedIdx === item.correct) {
+                feedback.innerHTML = "<span class='text-emerald-600'>⭐ ¡Correcto!</span>";
+                speakText("¡Correcto!");
+                l1Current++;
+                setTimeout(renderL1Question, 1200);
+            } else {
+                feedback.innerHTML = "<span class='text-rose-600'>❌ Inténtalo de nuevo</span>";
+                speakText("Inténtalo de nuevo");
+            }
+        }
+
+        // --- STREAMING_CHUNK:Level 2 Logic (El Perro Guía) ---
+        const l2Questions = [
+            { q: "Un perro guía ayuda a una persona ciega a desplazarse.", answer: true },
+            { q: "Podemos acariciar a un perro guía mientras está trabajando sin pedir permiso.", answer: false },
+            { q: "Un perro guía está entrenado para ayudar a su persona.", answer: true },
+            { q: "Debemos distraer a un perro guía mientras está trabajando.", answer: false }
+        ];
+        let l2Current = 0;
+
+        function initLevel2() {
+            l2Current = 0;
+            renderL2Question();
+        }
+
+        function renderL2Question() {
+            const container = document.getElementById('l2-container');
+            const progress = document.getElementById('l2-progress');
+            document.getElementById('l2-feedback').innerText = "";
+
+            if (l2Current >= l2Questions.length) {
+                goToScreen('screen-learn-2');
+                return;
+            }
+
+            progress.innerText = `Pregunta ${l2Current + 1} de 4`;
+            const item = l2Questions[l2Current];
+
+            container.innerHTML = `
+                <h3 class="text-xl md:text-2xl font-bold text-slate-800 mb-8 speech-target text-center">"${item.q}"</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <button onclick="checkL2Answer(true)" class="speech-target bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xl p-6 rounded-2xl shadow-lg transition transform hover:scale-105 cursor-pointer">VERDADERO ✅</button>
+                    <button onclick="checkL2Answer(false)" class="speech-target bg-rose-500 hover:bg-rose-600 text-white font-bold text-xl p-6 rounded-2xl shadow-lg transition transform hover:scale-105 cursor-pointer">FALSO ❌</button>
+                </div>
+            `;
+            speakCurrentScreen();
+        }
+
+        function checkL2Answer(userAnswer) {
+            const item = l2Questions[l2Current];
+            const feedback = document.getElementById('l2-feedback');
+            if (userAnswer === item.answer) {
+                feedback.innerHTML = "<span class='text-emerald-600'>⭐ ¡Correcto!</span>";
+                speakText("¡Correcto!");
+                l2Current++;
+                setTimeout(renderL2Question, 1200);
+            } else {
+                feedback.innerHTML = "<span class='text-rose-600'>❌ Inténtalo de nuevo</span>";
+                speakText("Inténtalo de nuevo");
+            }
+        }
+
+        // --- STREAMING_CHUNK:Level 3 Logic (Memorama) ---
+        const memoryItems = [
+            { id: 1, name: "Perro guía", icon: "🦮" },
+            { id: 2, name: "Ojos", icon: "👀" },
+            { id: 3, name: "Bastón blanco", icon: "🦯" },
+            { id: 4, name: "Lentes oscuros", icon: "🕶️" }
+        ];
+        let memoryCards = [];
+        let firstCard = null;
+        let secondCard = null;
+        let lockBoard = false;
+        let matchesFound = 0;
+
+        function initLevel3() {
+            matchesFound = 0;
+            document.getElementById('memory-status').innerText = "";
+            let deck = [...memoryItems, ...memoryItems];
+            deck.sort(() => Math.random() - 0.5);
+            memoryCards = deck.map((item, index) => ({
+                index,
+                id: item.id,
+                icon: item.icon,
+                name: item.name,
+                isFlipped: false,
+                isMatched: false
+            }));
+            renderMemoryGrid();
+        }
+
+        function renderMemoryGrid() {
+            const grid = document.getElementById('memory-grid');
+            let html = "";
+            memoryCards.forEach(card => {
+                let content = "❓";
+                let bgClass = "bg-emerald-500 hover:bg-emerald-600 text-white";
+                if (card.isFlipped || card.isMatched) {
+                    content = card.icon;
+                    bgClass = "bg-white border-2 border-emerald-400 text-slate-800";
+                }
+                html += `<button onclick="flipCard(${card.index})" class="speech-target h-20 md:h-24 rounded-2xl text-3xl md:text-4xl shadow-md transition transform hover:scale-105 flex items-center justify-center cursor-pointer ${bgClass}">${content}</button>`;
+            });
+            grid.innerHTML = html;
+        }
+
+        function flipCard(index) {
+            if (lockBoard) return;
+            let card = memoryCards[index];
+            if (card.isFlipped || card.isMatched) return;
+
+            card.isFlipped = true;
+            renderMemoryGrid();
+            speakText(card.name);
+
+            if (!firstCard) {
+                firstCard = card;
+            } else {
+                secondCard = card;
+                checkForMatch();
+            }
         }
 
         function checkForMatch() {
-            const isMatch = firstCard.dataset.pair === secondCard.dataset.pair;
-            if (isMatch) {
-                firstCard.classList.add('matched');
-                secondCard.classList.add('matched');
-                matchedPairsCount++;
-                document.getElementById('memorama-message').textContent = "⭐ ¡Pareja encontrada!";
+            if (firstCard.id === secondCard.id) {
+                firstCard.isMatched = true;
+                secondCard.isMatched = true;
+                matchesFound++;
+                document.getElementById('memory-status').innerText = "⭐ ¡Pareja encontrada!";
                 speakText("¡Pareja encontrada!");
                 resetTurn();
 
-                if (matchedPairsCount === 4) {
-                    document.getElementById('memorama-message').textContent = "🎉 ¡Memorama completado!";
+                if (matchesFound === 4) {
+                    document.getElementById('memory-status').innerText = "🎉 ¡Memorama completado!";
                     speakText("¡Memorama completado!");
-                    setTimeout(() => {
-                        unlockLevelAndReturn(4);
-                    }, 2000);
+                    setTimeout(() => completeLevel(3), 2000);
                 }
             } else {
                 lockBoard = true;
                 setTimeout(() => {
-                    firstCard.textContent = "❓";
-                    firstCard.classList.remove('bg-white', 'text-slate-900');
-                    firstCard.classList.add('bg-blue-600');
-
-                    secondCard.textContent = "❓";
-                    secondCard.classList.remove('bg-white', 'text-slate-900');
-                    secondCard.classList.add('bg-blue-600');
-
+                    firstCard.isFlipped = false;
+                    secondCard.isFlipped = false;
                     resetTurn();
                 }, 1000);
             }
@@ -688,188 +686,237 @@
             firstCard = null;
             secondCard = null;
             lockBoard = false;
+            renderMemoryGrid();
         }
 
-        // --- LEVEL 4 LOGIC (Sound Identification) ---
-        let currentTargetSound = 'car';
-        const soundList = ['car', 'bell', 'dog', 'ambulance', 'rain', 'extra'];
+        // --- STREAMING_CHUNK:Level 4 Logic (Escucha con Atención) ---
+        let currentAudioTarget = 'ambulancia';
 
         function initLevel4() {
-            hideAllScreens();
-            document.getElementById('screen-level-4').classList.remove('hidden');
-            currentTargetSound = soundList[Math.floor(Math.random() * soundList.length)];
-            document.getElementById('sound-feedback').textContent = "";
-            speakText("Identifica el sonido. Toca escuchar otra vez.");
+            currentAudioTarget = Math.random() > 0.5 ? 'ambulancia' : 'lluvia';
+            document.getElementById('l4-feedback').innerText = "";
+            document.getElementById('audio-hint').innerText = "Haz clic para escuchar el sonido actual";
         }
 
-        function playTargetSound() {
-            speakText(`Reproduciendo sonido de prueba para el nivel cuatro.`);
+        function playCurrentAudio() {
+            // ESPACIOS CLAROS PARA LOS ARCHIVOS DE AUDIO DEL USUARIO:
+            // // AQUÍ COLOCARÉ EL AUDIO DE LA AMBULANCIA
+            // // AQUÍ COLOCARÉ EL AUDIO DE LA LLUVIA
+            // Simulación mediante síntesis de voz o tono si no hay archivo externo
+            speakText(currentAudioTarget === 'ambulancia' ? "¡Suena una ambulancia! Niu nou, niu nou!" : "¡Suena la lluvia! Pitor, pitor, cae la lluvia.");
         }
 
-        function checkSoundAnswer(selected) {
-            const feedback = document.getElementById('sound-feedback');
-            if (selected === currentTargetSound) {
-                feedback.textContent = "⭐ ¡Correcto! ¡Excelente oído!";
-                feedback.className = "text-xl font-bold text-blue-600 speakable";
-                speakText("¡Correcto! Excelente oído.");
-                setTimeout(() => {
-                    unlockLevelAndReturn(5);
-                }, 1500);
+        function checkAudioAnswer(answer) {
+            const feedback = document.getElementById('l4-feedback');
+            if (answer === currentAudioTarget) {
+                feedback.innerHTML = "<span class='text-emerald-600'>⭐ ¡Correcto! Es " + answer + "</span>";
+                speakText("¡Correcto!");
+                setTimeout(() => completeLevel(4), 2000);
             } else {
-                feedback.textContent = "❌ Inténtalo otra vez";
-                feedback.className = "text-xl font-bold text-rose-600 speakable";
-                speakText("Inténtalo otra vez");
+                feedback.innerHTML = "<span class='text-rose-600'>❌ Inténtalo de nuevo</span>";
+                speakText("Inténtalo de nuevo");
             }
         }
 
-        // --- LEVEL 5 LOGIC (Collect White Canes 🦯 & Avoid Stones 🪨) ---
+        // --- STREAMING_CHUNK:Level 5 Minigame Logic with School Goal (Aventura Infantil Camino a la Escuela) ---
         let canvas, ctx;
-        let gameRunning = false;
-        let boyX = 150, boyY = 150;
-        let canesCollected = 0;
+        let player = { x: 40, y: 130, size: 24, speed: 4 };
         let canes = [];
         let stones = [];
-        let gameInterval;
-        let keys = {};
+        let school = { x: 330, y: 105, width: 55, height: 50 };
+        let collectedCanes = 0;
+        let gameActive = false;
 
         function initLevel5() {
-            hideAllScreens();
-            document.getElementById('screen-level-5').classList.remove('hidden');
-            document.getElementById('game-overlay').style.display = 'flex';
-            canesCollected = 0;
-            document.getElementById('score-display').textContent = `Bastones recogidos: ${canesCollected} / 3`;
-            canvas = document.getElementById('game-canvas');
+            canvas = document.getElementById('gameCanvas');
             ctx = canvas.getContext('2d');
-            resizeCanvas();
+            collectedCanes = 0;
+            document.getElementById('l5-counter').innerText = "Bastones encontrados: 0/3";
+            document.getElementById('l5-feedback').innerText = "";
+
+            player.x = 40;
+            player.y = 130;
+
+            // Spawn 3 white canes (bastones blancos 🦯)
+            canes = [
+                { x: 130, y: 80, collected: false },
+                { x: 210, y: 200, collected: false },
+                { x: 270, y: 120, collected: false }
+            ];
+
+            // Spawn 3 stones (piedras 🪨 obstáculos)
+            stones = [
+                { x: 100, y: 180, size: 20 },
+                { x: 190, y: 70, size: 20 },
+                { x: 240, y: 220, size: 20 }
+            ];
+
+            gameActive = true;
+            requestAnimationFrame(updateGame);
         }
 
-        function resizeCanvas() {
-            canvas.width = canvas.parentElement.clientWidth;
-            canvas.height = canvas.parentElement.clientHeight;
-            boyX = canvas.width / 2 - 20;
-            boyY = canvas.height / 2 - 20;
+        function setMove(direction) {
+            if (!gameActive) return;
+            const step = 20;
+            if (direction === 'up') player.y -= step;
+            if (direction === 'down') player.y += step;
+            if (direction === 'left') player.x -= step;
+            if (direction === 'right') player.x += step;
+
+            // Boundary checks
+            if (player.x < 10) player.x = 10;
+            if (player.x > canvas.width - 30) player.x = canvas.width - 30;
+            if (player.y < 20) player.y = 20;
+            if (player.y > canvas.height - 30) player.y = canvas.height - 30;
+
+            checkCollisions();
         }
 
-        function startLevel5Game() {
-            document.getElementById('game-overlay').style.display = 'none';
-            gameRunning = true;
-            canesCollected = 0;
-            canes = [];
-            stones = [];
-            boyX = canvas.width / 2 - 20;
-            boyY = canvas.height / 2 - 20;
-            speakText("¡Inicia el juego! Recoge tres bastones blancos y esquiva las piedras.");
-
-            // Spawn initial items
-            spawnCanesAndStones();
-
-            if (gameInterval) clearInterval(gameInterval);
-            gameInterval = setInterval(updateGame, 30);
-        }
-
-        function spawnCanesAndStones() {
-            canes = [];
-            stones = [];
-            for(let i=0; i<3; i++) {
-                canes.push({
-                    x: Math.random() * (canvas.width - 50),
-                    y: Math.random() * (canvas.height - 50),
-                    size: 30
-                });
-            }
-            for(let i=0; i<4; i++) {
-                stones.push({
-                    x: Math.random() * (canvas.width - 50),
-                    y: Math.random() * (canvas.height - 50),
-                    size: 35
-                });
-            }
-        }
-
-        function moveZeus(dir) {
-            if (!gameRunning) return;
-            const step = 25;
-            if (dir === 'left') boyX = Math.max(10, boyX - step);
-            if (dir === 'right') boyX = Math.min(canvas.width - 50, boyX + step);
-            if (dir === 'up') boyY = Math.max(10, boyY - step);
-            if (dir === 'down') boyY = Math.min(canvas.height - 50, boyY + step);
-        }
-
-        // Keyboard controls
+        // Keyboard support for computer
         window.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowLeft') moveZeus('left');
-            if (e.key === 'ArrowRight') moveZeus('right');
-            if (e.key === 'ArrowUp') moveZeus('up');
-            if (e.key === 'ArrowDown') moveZeus('down');
+            if (document.getElementById('screen-level-5').classList.contains('hidden')) return;
+            if (e.key === 'ArrowUp') { setMove('up'); e.preventDefault(); }
+            if (e.key === 'ArrowDown') { setMove('down'); e.preventDefault(); }
+            if (e.key === 'ArrowLeft') { setMove('left'); e.preventDefault(); }
+            if (e.key === 'ArrowRight') { setMove('right'); e.preventDefault(); }
         });
 
-        function updateGame() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            // Background road grid
-            ctx.fillStyle = '#0f172a';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            // Draw White Canes (🦯)
-            canes.forEach((cane, index) => {
-                ctx.font = '28px serif';
-                ctx.fillText('🦯', cane.x, cane.y + 25);
-
-                // Check collision with boy
-                if (
-                    boyX < cane.x + cane.size &&
-                    boyX + 40 > cane.x &&
-                    boyY < cane.y + cane.size &&
-                    boyY + 40 > cane.y
-                ) {
-                    canes.splice(index, 1);
-                    canesCollected++;
-                    document.getElementById('score-display').textContent = `Bastones recogidos: ${canesCollected} / 3`;
-                    speakText("¡Bastón recogido!");
-
-                    if (canesCollected >= 3) {
-                        gameRunning = false;
-                        clearInterval(gameInterval);
-                        setTimeout(showFinalScreen, 1000);
+        function checkCollisions() {
+            // Check canes
+            canes.forEach(cane => {
+                if (!cane.collected) {
+                    let dist = Math.hypot(player.x - cane.x, player.y - cane.y);
+                    if (dist < 25) {
+                        cane.collected = true;
+                        collectedCanes++;
+                        document.getElementById('l5-counter').innerText = `Bastones encontrados: ${collectedCanes}/3`;
+                        speakText("Bastón encontrado");
                     }
                 }
             });
 
-            // Draw Stones (🪨)
-            stones.forEach((stone) => {
-                ctx.font = '30px serif';
-                ctx.fillText('🪨', stone.x, stone.y + 28);
-
-                // Check collision with stone -> reset or warning
-                if (
-                    boyX < stone.x + stone.size &&
-                    boyX + 40 > stone.x &&
-                    boyY < stone.y + stone.size &&
-                    boyY + 40 > stone.y
-                ) {
-                    gameRunning = false;
-                    clearInterval(gameInterval);
-                    speakText("¡Oh no! Tropezaste con una piedra. Inténtalo de nuevo.");
-                    document.getElementById('game-overlay').style.display = 'flex';
-                    document.getElementById('game-overlay').querySelector('h4').textContent = "¡Cuidado con la piedra! Inténtalo otra vez";
+            // Check stones
+            stones.forEach(stone => {
+                let dist = Math.hypot(player.x - stone.x, player.y - stone.y);
+                if (dist < 22) {
+                    gameActive = false;
+                    document.getElementById('l5-feedback').innerHTML = "🪨 ¡Cuidado! Encontraste una piedra. Reiniciando...";
+                    speakText("¡Cuidado! Encontraste una piedra.");
+                    setTimeout(() => {
+                        initLevel5();
+                    }, 1500);
                 }
             });
 
-            // Draw Boy (👦)
-            ctx.font = '35px serif';
-            ctx.fillText('👦', boyX, boyY + 32);
+            // Check School Goal (requires all 3 canes collected)
+            let inSchoolX = player.x >= school.x - 15 && player.x <= school.x + school.width;
+            let inSchoolY = player.y >= school.y - 15 && player.y <= school.y + school.height;
+            if (inSchoolX && inSchoolY) {
+                if (collectedCanes >= 3) {
+                    gameActive = false;
+                    document.getElementById('l5-feedback').innerHTML = "<span class='text-emerald-600'>🏫 ¡Llegaste a la Escuela!</span>";
+                    speakText("¡Llegaste a la escuela!");
+                    setTimeout(() => {
+                        goToScreen('screen-final');
+                    }, 1500);
+                } else {
+                    document.getElementById('l5-feedback').innerHTML = "⚠️ ¡Te faltan bastones blancos (🦯)! Recógelos todos.";
+                    speakText("Te faltan bastones blancos. Recógelos todos antes de entrar.");
+                }
+            }
         }
 
-        function showFinalScreen() {
-            hideAllScreens();
-            document.getElementById('screen-final').classList.remove('hidden');
-            speakText("¡Lo logramos! Zeus llegó a la escuela.");
-        }
+        function updateGame() {
+            if (!gameActive) return;
 
-        // Automatically launch presentation on window load (connected to external trigger expectation)
-        window.onload = function() {
-            goToZeusPresentation();
-        };
+            // Draw landscape path background
+            ctx.fillStyle = "#d1fae5"; // green soft meadow
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw path winding through
+            ctx.fillStyle = "#fef3c7"; // sandy path
+            ctx.beginPath();
+            ctx.moveTo(0, 150);
+            ctx.bezierCurveTo(130, 50, 270, 250, 400, 150);
+            ctx.lineTo(400, 220);
+            ctx.bezierCurveTo(270, 320, 130, 120, 0, 220);
+            ctx.fill();
+
+            // Draw trees decoration
+            ctx.font = "24px sans-serif";
+            ctx.fillText("🌲", 20, 40);
+            ctx.fillText("🌳", 200, 45);
+            ctx.fillText("🌼", 140, 40);
+            ctx.fillText("🌿", 180, 270);
+
+            // DRAW SCHOOL META (🏫) AT THE END OF THE PATH
+            // School building base
+            ctx.fillStyle = "#f43f5e"; // rose/red brick school building
+            ctx.fillRect(school.x, school.y + 15, school.width, school.height - 15);
+            // School roof
+            ctx.fillStyle = "#3b82f6"; // blue roof
+            ctx.beginPath();
+            ctx.moveTo(school.x - 5, school.y + 15);
+            ctx.lineTo(school.x + school.width / 2, school.y - 10);
+            ctx.lineTo(school.x + school.width + 5, school.y + 15);
+            ctx.closePath();
+            ctx.fill();
+            // School door & windows
+            ctx.fillStyle = "#fbbf24"; // yellow door
+            ctx.fillRect(school.x + 20, school.y + 30, 15, 20);
+            ctx.fillStyle = "#ffffff"; // windows
+            ctx.fillRect(school.x + 6, school.y + 20, 10, 10);
+            ctx.fillRect(school.x + 39, school.y + 20, 10, 10);
+            // School label sign above
+            ctx.font = "16px sans-serif";
+            ctx.fillText("🏫", school.x + 15, school.y - 15);
+
+            // Draw canes (🦯)
+            canes.forEach(cane => {
+                if (!cane.collected) {
+                    ctx.font = "22px sans-serif";
+                    ctx.fillText("🦯", cane.x, cane.y);
+                }
+            });
+
+            // Draw stones (🪨)
+            stones.forEach(stone => {
+                ctx.font = "20px sans-serif";
+                ctx.fillText("🪨", stone.x, stone.y);
+            });
+
+            // Draw Zeus player custom avatar with black hair and dark sunglasses representing visual impairment
+            ctx.save();
+            ctx.translate(player.x, player.y);
+            
+            // Body / Shirt (Blue)
+            ctx.fillStyle = "#3b82f6";
+            ctx.fillRect(-6, 2, 12, 14);
+            
+            // Head (Skin tone)
+            ctx.fillStyle = "#fde047";
+            ctx.beginPath();
+            ctx.arc(0, -5, 8, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Black Hair (Pelo negro)
+            ctx.fillStyle = "#1e293b";
+            ctx.beginPath();
+            ctx.arc(0, -8, 8, Math.PI, Math.PI * 2);
+            ctx.fill();
+
+            // Dark Sunglasses (Lentes oscuros)
+            ctx.fillStyle = "#0f172a";
+            ctx.fillRect(-6, -7, 12, 4);
+
+            // White cane held or nearby indicator
+            ctx.fillStyle = "#f8fafc";
+            ctx.fillRect(6, -2, 2, 16);
+
+            ctx.restore();
+
+            requestAnimationFrame(updateGame);
+        }
     </script>
 </body>
 </html>
