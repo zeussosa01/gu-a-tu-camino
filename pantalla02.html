@@ -696,13 +696,16 @@
             document.getElementById('audio-hint').innerText = "Haz clic para escuchar el sonido actual";
         }
 
-        function playCurrentAudio() {
-            // ESPACIOS CLAROS PARA LOS ARCHIVOS DE AUDIO DEL USUARIO:
-            // // AQUÍ COLOCARÉ EL AUDIO DE LA AMBULANCIA
-            // // AQUÍ COLOCARÉ EL AUDIO DE LA LLUVIA
-            // Simulación mediante síntesis de voz o tono si no hay archivo externo
-            speakText(currentAudioTarget === 'ambulancia' ? "¡Suena una ambulancia! Niu nou, niu nou!" : "¡Suena la lluvia! Pitor, pitor, cae la lluvia.");
-        }
+       function playCurrentAudio() {
+    const audio = new Audio(
+        currentAudioTarget === 'ambulancia'
+            ? 'ambulancia mp3.mp3'
+            : 'lluvia.mp3.mp3'
+    );
+
+    audio.volume = 0.8;
+    audio.play();
+}
 
         function checkAudioAnswer(answer) {
             const feedback = document.getElementById('l4-feedback');
